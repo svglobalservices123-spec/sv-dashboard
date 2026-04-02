@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1e3a8a;
+  --color-secondary: #e53935;
+  --color-accent: #ffffff;
+  --color-dark: #0f172a;
+  --color-muted: #f8fafc;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-muted);
+    color: #111827;
+  }
+}
+
+@layer components {
+  .input-field {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .input-field:focus {
+    ring: 2px;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: #1e40af;
+  }
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background-color: #c62828;
+  }
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+}

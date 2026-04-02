@@ -1,0 +1,61 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import Home from './pages/Home';
+import Success from './pages/Success';
+import AdminDashboard from './pages/AdminDashboard';
+import AddStudent from './pages/AddStudent';
+import StudentDetails from './pages/StudentDetails';
+import AdminLogin from './pages/AdminLogin';
+import AdminSettings from './pages/AdminSettings';
+import NotFound from './pages/NotFound';
+
+// Simple "auth" check
+const ProtectedRoute = ({ children }) => {
+  const isAdmin = localStorage.getItem('isSVAdmin') === 'true';
+  return isAdmin ? children : <Navigate to="/admin/login" />;
+};
+
+function App() {
+  return (
+    <Router>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/success" element={<Success />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/add-student" element={
+          <ProtectedRoute>
+            <AddStudent />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/admin/student/:id" element={
+          <ProtectedRoute>
+            <StudentDetails />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/settings" element={
+          <ProtectedRoute>
+            <AdminSettings />
+          </ProtectedRoute>
+        } />
+
+        {/* Catch-all */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  )
+}
+
+export default App
