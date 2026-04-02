@@ -22,8 +22,8 @@ export const uploadDocuments = (studentId, formData) =>
   });
 
 // Payments (Razorpay)
-export const createRazorpayOrder = (data) => api.post('/payments/create-order', data);
-export const verifyRazorpayPayment = (data) => api.post('/payments/verify', data);
+export const createRazorpayOrder = (data) => api.post('/create-order', data);
+export const verifyRazorpayPayment = (data) => api.post('/verify-payment', data);
 export const savePayment = (studentId, data) => api.post(`/payments/${studentId}`, data);
 export const downloadReceipt = (studentId) => api.get(`/payments/receipt/${studentId}`, { responseType: 'blob' });
 

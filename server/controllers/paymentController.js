@@ -38,7 +38,17 @@ exports.createOrder = async (req, res, next) => {
 // Verify Razorpay Payment
 exports.verifyPayment = async (req, res, next) => {
   try {
-    const { razorpayOrderId, razorpayPaymentId, razorpaySignature, studentId } = req.body;
+    const { 
+      razorpay_order_id, 
+      razorpay_payment_id, 
+      razorpay_signature, 
+      studentId 
+    } = req.body;
+    
+    // Support both if needed, but prefer snake_case
+    const razorpayOrderId = razorpay_order_id || req.body.razorpayOrderId;
+    const razorpayPaymentId = razorpay_payment_id || req.body.razorpayPaymentId;
+    const razorpaySignature = razorpay_signature || req.body.razorpaySignature;
 
     const body = razorpayOrderId + '|' + razorpayPaymentId;
     const expectedSignature = crypto

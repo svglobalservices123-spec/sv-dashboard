@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { createStudent, createRazorpayOrder, verifyRazorpayPayment } from '../utils/api';
 import { Loader2, User, CreditCard, ShieldCheck, MapPin, Building, GraduationCap, Phone, Mail, BookOpen, MapPinned } from 'lucide-react';
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SYDGSpWZcnZGcu';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
 
 const InputField = ({ label, name, type = 'text', placeholder, icon: Icon, required = true, value, onChange, error }) => (
   <div className="space-y-1.5 overflow-hidden">
@@ -112,9 +112,9 @@ const Home = () => {
         handler: async (response) => {
           try {
             await verifyRazorpayPayment({
-              razorpayOrderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
               studentId: studentId
             });
             toast.success('Registration & Payment Successful!');

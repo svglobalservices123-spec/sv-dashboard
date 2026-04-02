@@ -52,8 +52,10 @@ router.post('/documents/upload/:studentId', docUpload, studentController.uploadD
 router.get('/documents/:studentId', studentController.getStudentDocuments);
 
 // Payment Routes (Razorpay)
-router.post('/payments/create-order', paymentController.createOrder);
-router.post('/payments/verify', paymentController.verifyPayment);
+router.post('/create-order', paymentController.createOrder);
+router.post('/verify-payment', paymentController.verifyPayment);
+router.post('/payments/create-order', paymentController.createOrder); // Keep old for compatibility
+router.post('/payments/verify', paymentController.verifyPayment); // Keep old for compatibility
 router.post('/payments/:studentId', studentController.savePayment);
 router.get('/payments/:studentId', studentController.getStudentPayments);
 router.get('/payments/receipt/:studentId', receiptController.downloadReceipt);
