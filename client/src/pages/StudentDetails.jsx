@@ -104,7 +104,7 @@ const StudentDetails = () => {
                           <p className="text-[10px] text-gray-400 font-bold uppercase">{docLabels[doc.documentType] || doc.documentType}</p>
                         </div>
                       </div>
-                      <a href={`http://localhost:5000/${doc.filePath}`} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white text-gray-400 rounded-lg hover:text-white hover:bg-primary transition-all flex items-center justify-center border border-gray-100"><Download size={16} /></a>
+                      <a href={`${import.meta.env.VITE_API_URL}/${doc.filePath}`} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white text-gray-400 rounded-lg hover:text-white hover:bg-primary transition-all flex items-center justify-center border border-gray-100"><Download size={16} /></a>
                     </div>
                   ))}
                 </div>
