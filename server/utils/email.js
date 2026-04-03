@@ -1,13 +1,8 @@
 const nodemailer = require('nodemailer');
 
-const dns = require('dns');
-
-// Force Google DNS to resolve SMTP host correctly
-dns.setServers(['8.8.8.8', '8.8.4.4']);
-
 const sendReceiptEmail = async (studentDetails, paymentDetails) => {
   if (!studentDetails || !paymentDetails) {
-    console.error('Email aborted: Missing student or payment details.');
+    console.error('Email aborted: Missing data.');
     return;
   }
 
@@ -22,8 +17,10 @@ const sendReceiptEmail = async (studentDetails, paymentDetails) => {
     tls: {
       rejectUnauthorized: false
     },
-    connectionTimeout: 10000, // 10 seconds timeout
-    greetingTimeout: 5000,
+    // Fix for Render ENETUNREACH / IPv6 issues: force IPv4
+    family: 4, 
+    connectionTimeout: 10000, 
+    greetingTimeout: 8000,
     socketTimeout: 15000
   });
 
@@ -63,7 +60,12 @@ Payment Details:
     await transporter.sendMail(mailOptions);
     console.log('Receipt email sent to:', studentDetails.email);
   } catch (error) {
-    console.error('Error sending email:', error.message);
+    console.error('Email Delivery Error:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      studentEmail: studentDetails.email
+    });
   }
 };
 
