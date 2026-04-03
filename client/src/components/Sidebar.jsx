@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Users, BarChart3, Settings, ShieldCheck, LogOut, UserPlus, X } from 'lucide-react';
+import { Users, BarChart3, Settings, ShieldCheck, LogOut, UserPlus } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -23,13 +23,20 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm transition-opacity"
           onClick={onClose}
-        ></div>
+        />
       )}
 
       <aside className={`w-64 bg-dark h-full flex flex-col fixed left-0 top-0 border-r border-gray-800 shadow-2xl z-50 transition-all duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-        <div className="p-8 pb-12 border-b border-gray-800 flex justify-between items-center">
+        <div className="p-8 pb-12 border-b border-gray-800 relative">
+          <button 
+            onClick={onClose}
+            className="absolute right-4 top-4 text-gray-500 hover:text-white md:hidden"
+          >
+            <LogOut size={20} className="rotate-180" />
+          </button>
+          
           <div className="flex items-center gap-3">
             <div className="bg-secondary p-2 rounded-lg shadow-lg">
               <ShieldCheck className="text-white" size={24} />
@@ -39,9 +46,6 @@ const Sidebar = ({ isOpen, onClose }) => {
               <p className="text-gray-500 text-xs font-black tracking-widest uppercase">Portal v2.0</p>
             </div>
           </div>
-          <button onClick={onClose} className="md:hidden text-gray-400 hover:text-white">
-            <X size={24} />
-          </button>
         </div>
 
         <nav className="flex-1 px-4 py-8 space-y-2">
@@ -49,7 +53,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <Link
               key={index}
               to={item.path}
-              onClick={() => { if(window.innerWidth < 768) onClose(); }}
+              onClick={() => { if (window.innerWidth < 768) onClose(); }}
               className={`flex items-center space-x-3 px-4 py-3.5 rounded-xl font-black uppercase tracking-widest text-[11px] transition-all duration-300 group ${
                 location.pathname === item.path 
                   ? 'bg-gradient-to-r from-primary to-blue-700 text-white shadow-xl shadow-blue-500/20' 
