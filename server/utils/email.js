@@ -6,6 +6,11 @@ const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const sendReceiptEmail = async (studentDetails, paymentDetails) => {
+  if (!studentDetails || !paymentDetails) {
+    console.error('Email aborted: Missing student or payment details.');
+    return;
+  }
+
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -16,7 +21,10 @@ const sendReceiptEmail = async (studentDetails, paymentDetails) => {
     },
     tls: {
       rejectUnauthorized: false
-    }
+    },
+    connectionTimeout: 10000, // 10 seconds timeout
+    greetingTimeout: 5000,
+    socketTimeout: 15000
   });
 
   const mailOptions = {
@@ -30,7 +38,7 @@ Payment Details:
 - Email ID: ${studentDetails.email}
 - Course: ${studentDetails.course}
 - Amount: ₹520
-- Payment ID: ${paymentDetails.razorpayPaymentId}
+- Payment ID: ${paymentDetails.razorpayPaymentId || 'N/A'}
 - Status: Successful`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
@@ -42,7 +50,7 @@ Payment Details:
           <p><strong>Email ID:</strong> ${studentDetails.email}</p>
           <p><strong>Course:</strong> ${studentDetails.course}</p>
           <p><strong>Amount:</strong> ₹520</p>
-          <p><strong>Payment ID:</strong> ${paymentDetails.razorpayPaymentId}</p>
+          <p><strong>Payment ID:</strong> ${paymentDetails.razorpayPaymentId || 'N/A'}</p>
           <p><strong>Status:</strong> <span style="color: green; font-weight: bold;">Successful</span></p>
         </div>
         <p style="font-size: 12px; color: #666; margin-top: 20px;">© 2026 Svglobal Services • Hyderabad • India</p>
@@ -55,7 +63,7 @@ Payment Details:
     await transporter.sendMail(mailOptions);
     console.log('Receipt email sent to:', studentDetails.email);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email:', error.message);
   }
 };
 

@@ -45,10 +45,17 @@ exports.verifyPayment = async (req, res, next) => {
       studentId 
     } = req.body;
     
+    console.log('Verifying Payment for:', { razorpayOrderId: razorpay_order_id, studentId });
+
     // Support both if needed, but prefer snake_case
     const razorpayOrderId = razorpay_order_id || req.body.razorpayOrderId;
     const razorpayPaymentId = razorpay_payment_id || req.body.razorpayPaymentId;
     const razorpaySignature = razorpay_signature || req.body.razorpaySignature;
+
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+       console.error('Missing Razorpay credentials in request');
+       return res.status(400).json({ success: false, message: 'Missing Razorpay credentials in request.' });
+    }
 
     const body = razorpayOrderId + '|' + razorpayPaymentId;
     const expectedSignature = crypto
@@ -57,26 +64,40 @@ exports.verifyPayment = async (req, res, next) => {
       .digest('hex');
 
     if (expectedSignature === razorpaySignature) {
+      console.log('Signature verified successfully.');
+      
       const updatedPayment = await Payment.findOneAndUpdate(
         { razorpayOrderId },
         { razorpayPaymentId, razorpaySignature, status: 'Paid' },
         { new: true }
       );
       
+      if (!updatedPayment) {
+        console.warn('Payment record not found for Order ID:', razorpayOrderId);
+        // We still consider it a success since signature matched, but we can't send email easily
+      }
+
       const student = await Student.findById(studentId);
-      if (student) {
-        await sendReceiptEmail(student, updatedPayment);
+      if (student && updatedPayment) {
+        // Send email in background - DO NOT AWAIT to prevent timeout/hanging issues in production
+        sendReceiptEmail(student, updatedPayment)
+          .then(() => console.log('Background email sent successful.'))
+          .catch(err => console.error('Background email failure:', err));
+      } else if (!student) {
+        console.error('Student not found for ID:', studentId);
       }
       
-      res.json({ success: true, message: 'Payment verified successfully.' });
+      return res.json({ success: true, message: 'Payment verified successfully.' });
     } else {
+      console.error('Signature Mismatch!');
       await Payment.findOneAndUpdate(
         { razorpayOrderId },
         { status: 'Failed' }
       );
-      res.status(400).json({ success: false, message: 'Payment verification failed.' });
+      return res.status(400).json({ success: false, message: 'Payment verification failed.' });
     }
   } catch (error) {
+    console.error('Verify Payment Error:', error);
     next(error);
   }
 };
