@@ -1,8 +1,4 @@
 const dotenv = require('dotenv');
-const dns = require('dns');
-
-// Force using Google DNS to bypass ISP SRV lookup failures
-dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 // Load env vars FIRST
 dotenv.config();
