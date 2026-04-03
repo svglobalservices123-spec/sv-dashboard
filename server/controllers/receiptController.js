@@ -1,134 +1,6 @@
-const puppeteer = require('puppeteer');
+const PDFDocument = require('pdfkit');
 const Student = require('../models/Student');
 const Payment = require('../models/Payment');
-
-function buildInvoiceHTML(student, payment) {
-  const receiptNo = 'SV-' + new Date(payment.createdAt).getFullYear() + '-' + payment._id.toString().slice(-6).toUpperCase();
-  const dateString = new Date(payment.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
-  const amount = payment.amount || 0;
-  const subtotal = (amount / 1.18).toFixed(2);
-  const gstAmount = (amount - parseFloat(subtotal)).toFixed(2);
-  const currentYear = new Date().getFullYear();
-  const txnId = payment.razorpayPaymentId || 'N/A';
-
-  return '<!DOCTYPE html>' +
-'<html lang="en">' +
-'<head>' +
-'<meta charset="UTF-8"/>' +
-'<meta name="viewport" content="width=device-width, initial-scale=1.0"/>' +
-'<title>Invoice ' + receiptNo + '</title>' +
-'<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>' +
-'</head>' +
-'<body style="margin:0;padding:48px 16px;background:#eceef4;font-family:\'DM Sans\',sans-serif;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;box-sizing:border-box;">' +
-
-'<div style="background:#fafbfd;width:100%;max-width:780px;border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.08),0 32px 64px rgba(0,0,0,.06);overflow:hidden;">' +
-
-  // Gradient Strip
-  '<div style="height:5px;background:linear-gradient(90deg,#0e3bbf 0%,#1a56f0 50%,#c8a84b 100%);"></div>' +
-
-  // Header
-  '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:40px 48px 32px;border-bottom:1px solid #e8eaf0;">' +
-    '<div>' +
-      '<img src="https://svglobalservices.com/wp-content/uploads/2025/12/SVGS-logo-png.png" alt="SV Global Services" style="height:52px;object-fit:contain;"/>' +
-    '</div>' +
-    '<div style="text-align:right;">' +
-      '<p style="font-family:\'Playfair Display\',serif;font-size:36px;letter-spacing:-.5px;color:#0b0f1a;line-height:1;margin:0;">Invoice</p>' +
-      '<p style="font-size:13px;color:#5a6070;margin-top:10px;line-height:1.9;">' +
-        'Invoice&nbsp;#&nbsp;<span style="color:#0b0f1a;font-weight:500;">' + receiptNo + '</span><br/>' +
-        'Date&nbsp;<span style="color:#0b0f1a;font-weight:500;">' + dateString + '</span><br/>' +
-        'Due&nbsp;<span style="color:#0b0f1a;font-weight:500;">Immediate</span>' +
-      '</p>' +
-    '</div>' +
-  '</div>' +
-
-  // Parties
-  '<div style="display:flex;justify-content:space-between;padding:32px 48px;border-bottom:1px solid #e8eaf0;gap:24px;">' +
-    '<div style="flex:1;">' +
-      '<p style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1a56f0;margin:0 0 12px;">Billed From</p>' +
-      '<p style="font-size:16px;font-weight:600;color:#0b0f1a;margin:0 0 4px;">SV Global Services</p>' +
-      '<p style="font-size:13px;color:#5a6070;margin:0;line-height:1.8;">Hyderabad, India<br/>support@svglobalservices.com</p>' +
-    '</div>' +
-    '<div style="flex:1;text-align:right;">' +
-      '<p style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1a56f0;margin:0 0 12px;">Billed To</p>' +
-      '<p style="font-size:16px;font-weight:600;color:#0b0f1a;margin:0 0 4px;">' + student.name + '</p>' +
-      '<p style="font-size:13px;color:#5a6070;margin:0;line-height:1.8;">' + student.email + '<br/>' + student.phone + '</p>' +
-    '</div>' +
-  '</div>' +
-
-  // Table
-  '<div style="padding:0 48px;">' +
-    '<table style="width:100%;border-collapse:collapse;margin:32px 0 0;">' +
-      '<thead>' +
-        '<tr style="border-bottom:2px solid #0b0f1a;">' +
-          '<th style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5a6070;padding:0 0 12px;text-align:left;">Description</th>' +
-          '<th style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5a6070;padding:0 0 12px;text-align:right;">Qty</th>' +
-          '<th style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5a6070;padding:0 0 12px;text-align:right;">Unit Price</th>' +
-          '<th style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5a6070;padding:0 0 12px;text-align:right;">Total</th>' +
-        '</tr>' +
-      '</thead>' +
-      '<tbody>' +
-        '<tr style="border-bottom:1px solid #e8eaf0;">' +
-          '<td style="padding:16px 0;font-size:14px;color:#0b0f1a;vertical-align:middle;">' +
-            '<p style="font-weight:500;margin:0;">Course Enrollment — ' + student.course + '</p>' +
-            '<p style="font-size:12px;color:#9aa0b0;margin:3px 0 0;">Full access · Self-paced · Certificate included</p>' +
-          '</td>' +
-          '<td style="padding:16px 0;font-size:14px;color:#5a6070;text-align:right;vertical-align:middle;">1</td>' +
-          '<td style="padding:16px 0;font-size:14px;color:#5a6070;text-align:right;vertical-align:middle;">\u20B9' + subtotal + '</td>' +
-          '<td style="padding:16px 0;font-size:14px;color:#5a6070;text-align:right;vertical-align:middle;">\u20B9' + subtotal + '</td>' +
-        '</tr>' +
-      '</tbody>' +
-    '</table>' +
-  '</div>' +
-
-  // Totals
-  '<div style="display:flex;justify-content:flex-end;padding:24px 48px 36px;">' +
-    '<div style="width:280px;">' +
-      '<div style="display:flex;justify-content:space-between;font-size:13px;color:#5a6070;margin-bottom:10px;">' +
-        '<span>Subtotal</span><span style="color:#0b0f1a;font-weight:500;">\u20B9' + subtotal + '</span>' +
-      '</div>' +
-      '<div style="display:flex;justify-content:space-between;font-size:13px;color:#5a6070;margin-bottom:10px;">' +
-        '<span>GST (18%)</span><span style="color:#0b0f1a;font-weight:500;">\u20B9' + gstAmount + '</span>' +
-      '</div>' +
-      '<div style="display:flex;justify-content:space-between;font-size:13px;color:#5a6070;margin-bottom:10px;">' +
-        '<span>Discount</span><span style="color:#0b0f1a;font-weight:500;">—</span>' +
-      '</div>' +
-      '<hr style="border:none;border-top:1px solid #e8eaf0;margin:14px 0;"/>' +
-      '<div style="display:flex;justify-content:space-between;align-items:baseline;">' +
-        '<span style="font-family:\'Playfair Display\',serif;font-size:18px;color:#0b0f1a;">Total Due</span>' +
-        '<span style="font-size:28px;font-weight:600;color:#1a56f0;letter-spacing:-.5px;">\u20B9' + amount + '</span>' +
-      '</div>' +
-    '</div>' +
-  '</div>' +
-
-  // Payment Info
-  '<div style="margin:0 48px 40px;border:1px solid #d0dcf8;border-radius:6px;background:#eef6ff;padding:20px 24px;display:flex;gap:0;align-items:center;">' +
-    '<div style="flex:1;">' +
-      '<p style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9aa0b0;margin:0 0 5px;">Payment Method</p>' +
-      '<p style="font-size:13px;font-weight:500;color:#1040c0;margin:0;">Razorpay</p>' +
-    '</div>' +
-    '<div style="flex:1;">' +
-      '<p style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9aa0b0;margin:0 0 5px;">Transaction ID</p>' +
-      '<p style="font-size:13px;font-weight:500;color:#1040c0;margin:0;">' + txnId + '</p>' +
-    '</div>' +
-    '<div style="flex:1;">' +
-      '<p style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9aa0b0;margin:0 0 5px;">Status</p>' +
-      '<span style="display:inline-flex;align-items:center;gap:7px;background:#dcfce7;color:#166534;border:1px solid #bbf7d0;border-radius:20px;font-size:12px;font-weight:600;padding:4px 12px;">' +
-        '<span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span>' +
-        'Paid' +
-      '</span>' +
-    '</div>' +
-  '</div>' +
-
-  // Footer
-  '<div style="border-top:1px solid #e8eaf0;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;">' +
-    '<p style="font-family:\'Playfair Display\',serif;font-size:16px;color:#5a6070;font-style:italic;margin:0;">Thank you for your enrollment!</p>' +
-    '<p style="font-size:12px;color:#9aa0b0;margin:0;">&copy; ' + currentYear + ' SV Global Services</p>' +
-  '</div>' +
-
-'</div>' +
-'</body>' +
-'</html>';
-}
 
 exports.downloadReceipt = async (req, res, next) => {
    try {
@@ -140,40 +12,93 @@ exports.downloadReceipt = async (req, res, next) => {
          return res.status(404).json({ message: 'Receipt not found or payment not successful' });
       }
 
-      const htmlContent = buildInvoiceHTML(student, payment);
+      const doc = new PDFDocument({ margin: 50 });
+      const filename = `Receipt_${student.name.replace(/\s+/g, '_')}_${Date.now()}.pdf`;
 
-      let browser;
-      try {
-        browser = await puppeteer.launch({
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-        });
-        const page = await browser.newPage();
+      res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-type', 'application/pdf');
 
-        await page.emulateMediaType('screen');
-        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+      doc.pipe(res);
 
-        const pdfBuffer = await page.pdf({
-          format: 'A4',
-          printBackground: true,
-          margin: { top: '0px', right: '0px', bottom: '0px', left: '0px' },
-        });
+      // Header
+      doc.fillColor('#1e3a8a')
+         .fontSize(24)
+         .text('Svglobal Services', { align: 'center' });
+      doc.fontSize(10)
+         .text('Professional Skill Development Program', { align: 'center' })
+         .moveDown(2);
 
-        await browser.close();
+      // Receipt Title
+      doc.fillColor('#000000')
+         .fontSize(18)
+         .text('PAYMENT RECEIPT', { align: 'center', underline: true })
+         .moveDown(2);
 
-        const filename = 'Receipt_' + student.name.replace(/\s+/g, '_') + '_' + Date.now() + '.pdf';
+      // Receipt Info
+      doc.fontSize(12)
+         .text(`Receipt No: RCT${payment._id.toString().slice(-8).toUpperCase()}`, { align: 'right' })
+         .text(`Date: ${new Date(payment.createdAt).toLocaleDateString()}`, { align: 'right' })
+         .moveDown();
 
-        res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
-        res.setHeader('Content-type', 'application/pdf');
-        res.end(pdfBuffer);
-      } catch (pdfError) {
-        if (browser) await browser.close();
-        console.error('Puppeteer PDF generation error:', pdfError);
-        res.status(500).json({ message: 'Failed to generate PDF document' });
-      }
+      // Student & Payment Details
+      const tableTop = 250;
+      doc.font('Helvetica-Bold').text('Bill To:', 50, tableTop);
+      doc.font('Helvetica').text(student.name, 50, tableTop + 20);
+      doc.text(student.email, 50, tableTop + 35);
+      doc.text(student.phone, 50, tableTop + 50);
+
+      doc.font('Helvetica-Bold').text('Course Details:', 350, tableTop);
+      doc.font('Helvetica').text(student.course, 350, tableTop + 20);
+      doc.text(`Branch: ${student.branch}`, 350, tableTop + 35);
+      doc.text(`Roll No: ${student.rollNumber}`, 350, tableTop + 50);
+
+      // Table Header
+      const itemTableTop = 350;
+      doc.rect(50, itemTableTop, 500, 25).fill('#f3f4f6').stroke('#1e3a8a');
+      doc.fillColor('#1e3a8a').font('Helvetica-Bold');
+      doc.text('Description', 60, itemTableTop + 7);
+      doc.text('Amount', 450, itemTableTop + 7, { width: 90, align: 'right' });
+
+      // Table Content
+      doc.fillColor('#000000').font('Helvetica');
+      doc.text(`Course Registration Fee - ${student.course}`, 60, itemTableTop + 35);
+      doc.text(`₹${payment.amount.toFixed(2)}`, 450, itemTableTop + 35, { width: 90, align: 'right' });
+
+      // Totals
+      const totalTop = itemTableTop + 70;
+      doc.font('Helvetica-Bold').text('Total Paid:', 350, totalTop);
+      doc.text(`₹${payment.amount.toFixed(2)}`, 450, totalTop, { width: 90, align: 'right' });
+
+      doc.moveDown(3);
+      doc.fontSize(10)
+         .fillColor('#666666')
+         .text('Payment ID:', 50)
+         .fillColor('#000000')
+         .text(payment.razorpayPaymentId, 120);
+
+      doc.fontSize(10)
+         .fillColor('#666666')
+         .text('Order ID:', 50)
+         .fillColor('#000000')
+         .text(payment.razorpayOrderId, 120);
+
+      // Verification Seal
+      doc.moveDown(4);
+      doc.fillColor('#10b981')
+         .fontSize(14)
+         .font('Helvetica-Bold')
+         .text('VERIFIED & PAID', { align: 'center' });
+
+      // Footer
+      const footerTop = 700;
+      doc.fontSize(8)
+         .fillColor('#999999')
+         .text('This is a computer-generated receipt and does not require a physical signature.', 50, footerTop, { align: 'center' });
+      doc.text('Svglobal Services • HYDERABAD • INDIA', 50, footerTop + 15, { align: 'center' });
+
+      doc.end();
 
    } catch (error) {
-      console.error('Download Receipt error:', error);
       next(error);
    }
 };
