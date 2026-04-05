@@ -143,7 +143,8 @@ const Home = () => {
             toast.success('Registration & Payment Successful!');
             navigate('/success', { state: { studentId } });
           } catch (err) {
-            toast.error('Payment verification failed. Please contact support.');
+            console.error('Verification error:', err);
+            navigate('/failure', { state: { message: 'Payment verification failed. Please contact support.' } });
           }
         },
         prefill: {
@@ -155,7 +156,10 @@ const Home = () => {
       };
 
       const rzp = new window.Razorpay(options);
-      rzp.on('payment.failed', () => toast.error('Payment failed. Please try again.'));
+      rzp.on('payment.failed', (response) => {
+        console.error('Payment failed:', response.error);
+        navigate('/failure', { state: { message: response.error.description || 'Payment failed. Please try again.' } });
+      });
       rzp.open();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Submission failed. Please try again.');

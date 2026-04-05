@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import Success from './pages/Success';
+import Failure from './pages/Failure';
 import AdminDashboard from './pages/AdminDashboard';
 import AddStudent from './pages/AddStudent';
 import StudentDetails from './pages/StudentDetails';
@@ -23,6 +24,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/failure" element={<Failure />} />
         
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
