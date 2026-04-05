@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { createStudent, createRazorpayOrder, verifyRazorpayPayment } from '../utils/api';
+import api, { createStudent, createRazorpayOrder, verifyRazorpayPayment } from '../utils/api';
 import { Loader2, User, CreditCard, ShieldCheck, MapPin, Building, GraduationCap, Phone, Mail, BookOpen, MapPinned } from 'lucide-react';
 
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
@@ -63,22 +63,34 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // 1. Warm up Render Backend (Free tier cold start)
+    const wakeupBackend = async () => {
+      try {
+        await api.get('/'); // Just a ping to wake up the server
+        console.log('Backend wake-up ping successful');
+      } catch (err) {
+        console.log('Backend wake-up ping (expected for cold start or non-root endpoint)');
+      }
+    };
+    wakeupBackend();
+
+    // 2. Pre-load Razorpay Script
+    const loadRazorpayScript = () => {
+      if (document.getElementById('razorpay-script')) return;
+      const script = document.createElement('script');
+      script.id = 'razorpay-script';
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      document.body.appendChild(script);
+    };
+    loadRazorpayScript();
+  }, []);
+
+  useEffect(() => {
     const isAllFilled = Object.values(formData).every(val => val.trim() !== '');
     const hasNoErrors = Object.values(errors).every(err => !err);
     setIsFormValid(isAllFilled && hasNoErrors);
   }, [formData, errors]);
-
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      if (document.getElementById('razorpay-script')) return resolve(true);
-      const script = document.createElement('script');
-      script.id = 'razorpay-script';
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,12 +102,23 @@ const Home = () => {
       const res1 = await createStudent(formData);
       const studentId = res1.data.studentId;
 
-      // Step 2: Load Razorpay
-      const loaded = await loadRazorpayScript();
-      if (!loaded) {
-        toast.error('Razorpay SDK failed to load.');
-        setLoading(false);
-        return;
+      // Step 2: Ensure Razorpay is loaded (it should be already)
+      if (!window.Razorpay) {
+        // Fallback: wait a bit or try loading again
+        await new Promise(resolve => {
+          let attempts = 0;
+          const interval = setInterval(() => {
+            if (window.Razorpay || attempts > 20) {
+              clearInterval(interval);
+              resolve();
+            }
+            attempts++;
+          }, 500);
+        });
+        
+        if (!window.Razorpay) {
+          throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
+        }
       }
 
       // Step 3: Create Order
