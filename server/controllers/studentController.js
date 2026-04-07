@@ -8,8 +8,8 @@ const XLSX = require('xlsx');
 // Create Student
 exports.createStudent = async (req, res, next) => {
   try {
-    const { name, phone, email, branch, rollNumber, collegeName, location, course } = req.body;
-    const student = await Student.create({ name, phone, email, branch, rollNumber, collegeName, location, course });
+    const { name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year } = req.body;
+    const student = await Student.create({ name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year });
     res.status(201).json({ success: true, studentId: student._id });
   } catch (error) {
     next(error);
@@ -171,7 +171,9 @@ exports.exportStudentsExcel = async (req, res, next) => {
           Email: sObj.email,
           Phone: sObj.phone,
           'Roll Number': sObj.rollNumber,
-          Course: sObj.course,
+          'Specialized Course': sObj.course,
+          'Course Type': sObj.courseType,
+          Year: sObj.year,
           Branch: sObj.branch,
           College: sObj.collegeName,
           Location: sObj.location,

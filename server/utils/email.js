@@ -21,7 +21,9 @@ const sendReceiptEmail = async (student, payment) => {
             <h3 style="margin-top: 0;">Payment Details</h3>
             <p><strong>Student Name:</strong> ${student.name}</p>
             <p><strong>Email ID:</strong> ${student.email}</p>
-            <p><strong>Course:</strong> ${student.course}</p>
+            <p><strong>Specialized Course:</strong> ${student.course}</p>
+            <p><strong>Course Type:</strong> ${student.courseType || '—'}</p>
+            <p><strong>Academic Year:</strong> ${student.year || '—'}</p>
             <p><strong>Amount:</strong> ₹2</p>
             <p><strong>Payment ID:</strong> ${payment.razorpayPaymentId || 'N/A'}</p>
             <p><strong>Status:</strong> <span style="color: green; font-weight: bold;">Successful</span></p>

@@ -31,6 +31,7 @@ const Home = () => {
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', branch: '',
     rollNumber: '', collegeName: '', location: '', course: '',
+    courseType: '', year: ''
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,8 @@ const Home = () => {
     'VLSI & PCB',
     'WEB TECHNOLOGIES'
   ];
+  const courseTypes = ['Diploma', 'B tech', 'Degree', 'Other'];
+  const years = ['1st year', '2nd year', '3rd year', '4th year', 'Other'];
 
   const validateField = (name, value) => {
     let error = '';
@@ -238,6 +241,40 @@ const Home = () => {
                   ))}
                 </select>
                 {errors.course && <p className="text-[9px] font-bold text-secondary uppercase tracking-wider px-1">{errors.course}</p>}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
+                    <GraduationCap size={12} className={errors.courseType ? 'text-secondary' : 'text-primary'} />
+                    Course Type <span className="text-secondary">*</span>
+                  </label>
+                  <select
+                    name="courseType"
+                    value={formData.courseType}
+                    onChange={handleInputChange}
+                    className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.courseType ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
+                  >
+                    <option value="">Select Course</option>
+                    {courseTypes.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
+                    <BookOpen size={12} className={errors.year ? 'text-secondary' : 'text-primary'} />
+                    Current Year <span className="text-secondary">*</span>
+                  </label>
+                  <select
+                    name="year"
+                    value={formData.year}
+                    onChange={handleInputChange}
+                    className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.year ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
+                  >
+                    <option value="">Select Year</option>
+                    {years.map(y => <option key={y} value={y}>{y}</option>)}
+                  </select>
+                </div>
               </div>
             </div>
 

@@ -9,6 +9,8 @@ const studentSchema = new mongoose.Schema({
   collegeName: { type: String, required: true },
   location: { type: String, required: true },
   course: { type: String, required: true },
+  courseType: { type: String, required: true },
+  year: { type: String, required: true },
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
   createdAt: { type: Date, default: Date.now },
 });

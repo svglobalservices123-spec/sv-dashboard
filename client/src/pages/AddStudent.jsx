@@ -10,6 +10,7 @@ const AddStudent = () => {
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', branch: '',
     rollNumber: '', collegeName: '', location: '', course: '',
+    courseType: '', year: '',
     paymentAmount: '2', paymentStatus: 'Paid'
   });
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,8 @@ const AddStudent = () => {
     'VLSI & PCB',
     'WEB TECHNOLOGIES'
   ];
+  const courseTypes = ['Diploma', 'B tech', 'Degree', 'Other'];
+  const years = ['1st year', '2nd year', '3rd year', '4th year', 'Other'];
 
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -36,6 +39,8 @@ const AddStudent = () => {
         collegeName: formData.collegeName,
         location: formData.location,
         course: formData.course,
+        courseType: formData.courseType,
+        year: formData.year,
       });
       const studentId = res1.data.studentId;
 
@@ -87,6 +92,20 @@ const AddStudent = () => {
               </div>
               <div className="space-y-2"><label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Department/Branch</label><input type="text" name="branch" value={formData.branch} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. Computer Science" /></div>
               <div className="space-y-2"><label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Identity/Roll Number</label><input type="text" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Univ Roll No" /></div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Course Type</label>
+                <select name="courseType" value={formData.courseType} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                  <option value="">Select Course</option>
+                  {courseTypes.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Current Year</label>
+                <select name="year" value={formData.year} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                  <option value="">Select Year</option>
+                  {years.map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
               <div className="space-y-2"><label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">University/Institution</label><input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="College Name" /></div>
               <div className="space-y-2"><label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Postal Location</label><input type="text" name="location" value={formData.location} onChange={handleInputChange} required className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="City Name" /></div>
             </div>

@@ -91,6 +91,8 @@ const StudentDetails = () => {
                 <InfoRow icon={<Phone size={18} />} label="Security Contact" value={student.phone} color="text-green-500" />
                 <InfoRow icon={<Mail size={18} />} label="Registry Email" value={student.email} color="text-amber-500" />
                 <InfoRow icon={<GraduationCap size={18} />} label="Assigned Course" value={student.course} color="text-primary" />
+                <InfoRow icon={<BookOpen size={18} />} label="Course Level" value={student.courseType || '—'} color="text-indigo-500" />
+                <InfoRow icon={<Clock size={18} />} label="Current Year" value={student.year || '—'} color="text-rose-500" />
                 <InfoRow icon={<GraduationCap size={18} />} label="Academic Stream" value={student.branch || '—'} color="text-secondary" />
                 <InfoRow icon={<ShieldCheck size={18} />} label="University ID" value={student.rollNumber || '—'} color="text-blue-500" />
                 <InfoRow icon={<Building size={18} />} label="Institution" value={student.collegeName || '—'} color="text-purple-500" />
