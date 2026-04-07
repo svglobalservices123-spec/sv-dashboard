@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getStudentDetails, updateStudentStatus, deleteStudent } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Download, FileText, IndianRupee, CreditCard, Phone, Mail, GraduationCap, MapPin, Building, CheckCircle2, XCircle, Trash2, Loader2, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Download, FileText, IndianRupee, CreditCard, Phone, Mail, GraduationCap, MapPin, Building, CheckCircle2, XCircle, Trash2, Loader2, ShieldCheck, BookOpen, Clock } from 'lucide-react';
 
 const StudentDetails = () => {
   const { id } = useParams();
