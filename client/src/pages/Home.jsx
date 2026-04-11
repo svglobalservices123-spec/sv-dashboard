@@ -189,10 +189,26 @@ const Home = () => {
           <h1 className="text-5xl md:text-6xl font-display font-black tracking-tighter italic uppercase leading-none">
             Internship <span className="text-secondary not-italic">Registration Form</span>
           </h1>
-          <p className="opacity-70 font-bold text-xs uppercase tracking-[0.4em] text-blue-100 max-w-lg mx-auto">
-            Professional internship training on advanced technologies AI,IOT,CYBERSECURITY
-            Organised by : sv global services in collaboration with Google & IBM certification
-          </p>
+          
+          <div className="space-y-6 max-w-3xl mx-auto mt-8">
+            <p className="text-sm md:text-base text-blue-50 font-semibold tracking-wide leading-relaxed">
+              Professional internship training on advanced technologies:
+              <span className="text-secondary font-black ml-2">AI, IOT & CYBERSECURITY</span>
+            </p>
+            
+            <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/5 hover:bg-white/10 transition-all border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-blue-200">Organised by:</span>
+                <span className="text-sm md:text-base font-black text-white tracking-wider">SV GLOBAL SERVICES</span>
+              </div>
+              <div className="hidden sm:block w-1.5 h-1.5 rounded-full bg-secondary"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-secondary text-center bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
+                  Google & IBM Certified
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
