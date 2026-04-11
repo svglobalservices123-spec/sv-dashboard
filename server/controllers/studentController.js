@@ -9,7 +9,20 @@ const XLSX = require('xlsx');
 exports.createStudent = async (req, res, next) => {
   try {
     const { name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year } = req.body;
-    const student = await Student.create({ name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year });
+    
+    // Generate Application ID: 112032026 + 3 digits (e.g. 001, 002)
+    // Format: [Date][203][Year][Serial]
+    const count = await Student.countDocuments();
+    const serial = (count + 1).toString().padStart(3, '0');
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, '0');
+    const yearStr = now.getFullYear().toString();
+    const applicationId = `${day}203${yearStr}${serial}`;
+
+    const student = await Student.create({ 
+      name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year,
+      applicationId 
+    });
     res.status(201).json({ success: true, studentId: student._id });
   } catch (error) {
     next(error);
