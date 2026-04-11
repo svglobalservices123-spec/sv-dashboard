@@ -11,7 +11,7 @@ const AddStudent = () => {
     name: '', phone: '', email: '', branch: '',
     rollNumber: '', collegeName: '', location: '', course: '',
     courseType: '', year: '',
-    paymentAmount: '2', paymentStatus: 'Paid'
+    paymentAmount: '589', paymentStatus: 'Paid'
   });
   const [loading, setLoading] = useState(false);
 
@@ -119,7 +119,7 @@ const AddStudent = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-muted/50 p-8 rounded-[2rem] border border-gray-100">
                <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Collected Amount (₹)</label>
-                  <input type="number" name="paymentAmount" value={formData.paymentAmount} onChange={handleInputChange} className="input-field py-4 border-transparent focus:bg-white focus:border-primary" placeholder="2" />
+                  <input type="number" name="paymentAmount" value={formData.paymentAmount} onChange={handleInputChange} className="input-field py-4 border-transparent focus:bg-white focus:border-primary" placeholder="589" />
                </div>
                <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Transaction Status</label>

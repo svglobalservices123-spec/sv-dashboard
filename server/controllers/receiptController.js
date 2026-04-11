@@ -61,11 +61,14 @@ exports.downloadReceipt = async (req, res, next) => {
 
       // Table Content
       doc.fillColor('#000000').font('Helvetica');
-      doc.text(`Course Registration Fee - ${student.course}`, 60, itemTableTop + 35);
-      doc.text(`₹${payment.amount.toFixed(2)}`, 450, itemTableTop + 35, { width: 90, align: 'right' });
+      doc.text(`Course Fee - ${student.course}`, 60, itemTableTop + 35);
+      doc.text(`₹499.00`, 450, itemTableTop + 35, { width: 90, align: 'right' });
+      
+      doc.text(`GST (18%)`, 60, itemTableTop + 55);
+      doc.text(`₹90.00`, 450, itemTableTop + 55, { width: 90, align: 'right' });
 
       // Totals
-      const totalTop = itemTableTop + 70;
+      const totalTop = itemTableTop + 90;
       doc.font('Helvetica-Bold').text('Total Paid:', 350, totalTop);
       doc.text(`₹${payment.amount.toFixed(2)}`, 450, totalTop, { width: 90, align: 'right' });
 

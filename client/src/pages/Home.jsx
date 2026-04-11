@@ -307,18 +307,18 @@ const Home = () => {
             <div className="bg-slate-50 p-6 rounded-2xl border border-gray-100 space-y-4">
               <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
                 <span>Course Fee</span>
-                <span className="text-dark">₹1.70</span>
+                <span className="text-dark">₹499</span>
               </div>
               <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
                 <span>GST (18%)</span>
-                <span className="text-dark">₹0.30</span>
+                <span className="text-dark">₹90</span>
               </div>
               <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
                 <div className="space-y-0.5">
                   <p className="text-[10px] font-black uppercase tracking-widest text-primary">Final Amount</p>
                   <p className="text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em]">Secure Payment via Razorpay</p>
                 </div>
-                <p className="text-3xl font-display font-black text-primary italic">₹2</p>
+                <p className="text-3xl font-display font-black text-primary italic">₹589</p>
               </div>
             </div>
             )}
@@ -342,7 +342,7 @@ const Home = () => {
                   {loading ? (
                     <><Loader2 className="animate-spin" size={20} /> Processing...</>
                   ) : (
-                    <><CreditCard size={18} /> Register & Pay ₹2</>
+                    <><CreditCard size={18} /> Register & Pay ₹589</>
                   )}
                 </button>
                 <button
