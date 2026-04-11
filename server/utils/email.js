@@ -1,6 +1,15 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
 const sendReceiptEmail = async (student, payment) => {
   try {
@@ -11,8 +20,8 @@ const sendReceiptEmail = async (student, payment) => {
 
     const appId = student.applicationId || 'N/A';
 
-    const { data, error } = await resend.emails.send({
-      from: 'Svglobal Services <onboarding@resend.dev>',
+    const mailOptions = {
+      from: `"Svglobal Services" <${process.env.EMAIL_USER}>`,
       to: student.email,
       subject: `Internship Registration Successful – Application No. ${appId}`,
       html: `
@@ -41,7 +50,7 @@ const sendReceiptEmail = async (student, payment) => {
           
           <p>Thank you for choosing us.</p>
           
-          <div style="margin-top: 40px; padding-top: 20px; border-t: 1px solid #e2e8f0; font-size: 14px; color: #475569;">
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 14px; color: #475569;">
             <p style="margin: 5px 0;"><strong>Best regards,</strong></p>
             <p style="margin: 5px 0; font-weight: bold; color: #1e3a8a;">SV GLOBAL SERVICES</p>
             <p style="margin: 5px 0;">📞 +91 7995586120</p>
@@ -53,13 +62,10 @@ const sendReceiptEmail = async (student, payment) => {
           </div>
         </div>
       `,
-    });
+    };
 
-    if (error) {
-      return console.error('Resend sending error:', error);
-    }
-
-    console.log('Success email sent via Resend to:', student.email, 'AppID:', appId);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Success email sent via SMTP to:', student.email, 'AppID:', appId, 'MessageID:', info.messageId);
   } catch (error) {
     console.error('Fatal Email Error:', error);
   }
