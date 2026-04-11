@@ -36,6 +36,7 @@ const Home = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [step, setStep] = useState(1);
 
   const courses = [
     'AI',
@@ -200,15 +201,20 @@ const Home = () => {
 
           <div className="flex items-center gap-4 mb-10 pb-6 border-b border-gray-50">
             <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary border border-primary/10">
-              <User size={24} />
+              {step === 1 ? <User size={24} /> : <CreditCard size={24} />}
             </div>
             <div>
-              <h2 className="text-sm font-black uppercase tracking-widest text-dark">Personal Information</h2>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">All fields are mandatory</p>
+              <h2 className="text-sm font-black uppercase tracking-widest text-dark">
+                {step === 1 ? 'Personal Information' : 'Payment Details'}
+              </h2>
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                {step === 1 ? 'All fields are mandatory' : 'Review and pay'}
+              </p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
+            {step === 1 && (
             <div className="grid grid-cols-1 gap-6">
               <InputField label="Full Name" name="name" placeholder="John Doe" icon={User} value={formData.name} onChange={handleInputChange} error={errors.name} />
 
@@ -278,8 +284,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            )}
 
             {/* Payment Summary */}
+            {step === 2 && (
             <div className="bg-slate-50 p-6 rounded-2xl border border-gray-100 space-y-4">
               <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
                 <span>Course Fee</span>
@@ -297,18 +305,40 @@ const Home = () => {
                 <p className="text-3xl font-display font-black text-primary italic">₹2</p>
               </div>
             </div>
+            )}
 
-            <button
-              type="submit"
-              disabled={loading || !isFormValid}
-              className={`w-full py-6 text-xs font-black uppercase tracking-[0.4em] rounded-2xl shadow-[0_25px_60px_-15px_rgba(30,58,138,0.3)] transition-all flex items-center justify-center gap-4 ${(!isFormValid || loading) ? 'bg-gray-200 text-gray-400 shadow-none cursor-not-allowed' : 'btn-primary hover:scale-[1.02] active:scale-95'}`}
-            >
-              {loading ? (
-                <><Loader2 className="animate-spin" size={20} /> Processing...</>
-              ) : (
-                <><CreditCard size={18} /> Register & Pay ₹2</>
-              )}
-            </button>
+            {step === 1 ? (
+              <button
+                type="button"
+                disabled={!isFormValid}
+                onClick={() => setStep(2)}
+                className={`w-full py-6 text-xs font-black uppercase tracking-[0.4em] rounded-2xl shadow-[0_25px_60px_-15px_rgba(30,58,138,0.3)] transition-all flex items-center justify-center gap-4 ${!isFormValid ? 'bg-gray-200 text-gray-400 shadow-none cursor-not-allowed' : 'btn-primary hover:scale-[1.02] active:scale-95'}`}
+              >
+                Next Step
+              </button>
+            ) : (
+              <div className="space-y-4">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-6 text-xs font-black uppercase tracking-[0.4em] rounded-2xl shadow-[0_25px_60px_-15px_rgba(30,58,138,0.3)] transition-all flex items-center justify-center gap-4 ${loading ? 'bg-gray-200 text-gray-400 shadow-none cursor-not-allowed' : 'btn-primary hover:scale-[1.02] active:scale-95'}`}
+                >
+                  {loading ? (
+                    <><Loader2 className="animate-spin" size={20} /> Processing...</>
+                  ) : (
+                    <><CreditCard size={18} /> Register & Pay ₹2</>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  disabled={loading}
+                  className="w-full py-4 text-xs font-black uppercase tracking-[0.4em] text-gray-500 hover:text-dark transition-all flex items-center justify-center gap-2"
+                >
+                  Go Back
+                </button>
+              </div>
+            )}
 
             <p className="text-center text-[8px] font-black uppercase tracking-[0.3em] text-gray-300">
               © 2026 Svglobal Services • Privacy Policy • Terms
