@@ -64,7 +64,7 @@ exports.verifyPayment = async (req, res, next) => {
       .digest('hex');
 
     if (expectedSignature === razorpaySignature) {
-      console.log('Signature verified successfully.');
+      console.log('✅ Signature verified successfully.');
       
       const updatedPayment = await Payment.findOneAndUpdate(
         { razorpayOrderId },
@@ -73,18 +73,22 @@ exports.verifyPayment = async (req, res, next) => {
       );
       
       if (!updatedPayment) {
-        console.warn('Payment record not found for Order ID:', razorpayOrderId);
-        // We still consider it a success since signature matched, but we can't send email easily
+        console.warn('⚠️ Payment record not found for Order ID:', razorpayOrderId);
+      } else {
+        console.log('✅ Payment record updated to Paid.');
       }
 
+      console.log('🔍 Looking for student with ID:', studentId);
       const student = await Student.findById(studentId);
-      if (student && updatedPayment) {
-        // Send email in background - DO NOT AWAIT to prevent timeout/hanging issues in production
-        sendReceiptEmail(student, updatedPayment)
-          .then(() => console.log('Background email sent successful.'))
-          .catch(err => console.error('Background email failure:', err));
-      } else if (!student) {
-        console.error('Student not found for ID:', studentId);
+      
+      if (student) {
+        console.log('✅ Student found:', student.email);
+        // Trigger email sending
+        sendReceiptEmail(student, updatedPayment || { razorpayPaymentId })
+          .then(() => console.log('📧 Success email triggered successfully.'))
+          .catch(err => console.error('❌ Email trigger failed:', err));
+      } else {
+        console.error('❌ Student NOT found for ID:', studentId);
       }
       
       return res.json({ success: true, message: 'Payment verified successfully.' });
