@@ -25,7 +25,7 @@ exports.downloadReceipt = async (req, res, next) => {
          .fontSize(24)
          .text('Svglobal Services', { align: 'center' });
       doc.fontSize(10)
-         .text('Professional Skill Development Program', { align: 'center' })
+         .text('Professional Internship Training Program', { align: 'center' })
          .moveDown(2);
 
       // Receipt Title
