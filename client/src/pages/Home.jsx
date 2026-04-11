@@ -118,7 +118,7 @@ const Home = () => {
             attempts++;
           }, 500);
         });
-        
+
         if (!window.Razorpay) {
           throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
         }
@@ -186,10 +186,11 @@ const Home = () => {
             <ShieldCheck size={14} /> Secure Enrollment 2026
           </div>
           <h1 className="text-5xl md:text-6xl font-display font-black tracking-tighter italic uppercase leading-none">
-            Student <span className="text-secondary not-italic">Registration</span>
+            Internship <span className="text-secondary not-italic">Registration Form</span>
           </h1>
           <p className="opacity-70 font-bold text-xs uppercase tracking-[0.4em] text-blue-100 max-w-lg mx-auto">
-            Professional Skill Development & Certification Program
+            Professional internship training on advanced technologies AI,IOT,CYBERSECURITY
+            Organised by : sv global services in collaboration with Google & IBM certification
           </p>
         </div>
       </header>
