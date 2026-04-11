@@ -45,7 +45,10 @@ exports.verifyPayment = async (req, res, next) => {
       studentId 
     } = req.body;
     
-    console.log('Verifying Payment for:', { razorpayOrderId: razorpay_order_id, studentId });
+    const fs = require('fs');
+    fs.appendFileSync('debug_verify.txt', `${new Date().toISOString()} - Verify attempt for: ${studentId}, Order: ${razorpay_order_id}\n`);
+
+    console.log('✅ Verifying Payment for:', { razorpayOrderId: razorpay_order_id, studentId });
 
     // Support both if needed, but prefer snake_case
     const razorpayOrderId = razorpay_order_id || req.body.razorpayOrderId;
@@ -82,13 +85,21 @@ exports.verifyPayment = async (req, res, next) => {
       const student = await Student.findById(studentId);
       
       if (student) {
+        fs.appendFileSync('debug_verify.txt', `${new Date().toISOString()} - Student found: ${student.email}\n`);
         console.log('✅ Student found:', student.email);
         // Trigger email sending
         sendReceiptEmail(student, updatedPayment || { razorpayPaymentId })
-          .then(() => console.log('📧 Success email triggered successfully.'))
-          .catch(err => console.error('❌ Email trigger failed:', err));
+          .then(() => {
+            console.log('📧 Success email triggered successfully.');
+            fs.appendFileSync('debug_verify.txt', `${new Date().toISOString()} - Email triggered successfully\n`);
+          })
+          .catch(err => {
+            console.error('❌ Email trigger failed:', err);
+            fs.appendFileSync('debug_verify.txt', `${new Date().toISOString()} - Email trigger FAILED: ${err.message}\n`);
+          });
       } else {
         console.error('❌ Student NOT found for ID:', studentId);
+        fs.appendFileSync('debug_verify.txt', `${new Date().toISOString()} - Student NOT FOUND for ID: ${studentId}\n`);
       }
       
       return res.json({ success: true, message: 'Payment verified successfully.' });
