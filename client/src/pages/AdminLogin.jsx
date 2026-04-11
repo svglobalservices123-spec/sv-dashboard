@@ -21,7 +21,7 @@ const AdminLogin = () => {
         toast.success('Login Successful!');
         navigate('/admin');
       } else {
-        toast.error('Invalid credentials. Hint: admin@svsolutions.com / admin@123');
+        toast.error('Invalid credentials');
       }
       setLoading(false);
     }, 1000);
@@ -47,13 +47,13 @@ const AdminLogin = () => {
             <label className="text-xs font-black uppercase tracking-widest text-gray-400">Registry Email</label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
-              <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
-                className="input-field pl-12" 
-                placeholder="admin@svsolutions.com"
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="input-field pl-12"
+                placeholder="enter your email"
               />
             </div>
           </div>
@@ -62,19 +62,19 @@ const AdminLogin = () => {
             <label className="text-xs font-black uppercase tracking-widest text-gray-400">Security Key</label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
-              <input 
-                type="password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
-                className="input-field pl-12" 
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="input-field pl-12"
                 placeholder="••••••••"
               />
             </div>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className={`btn-primary w-full py-4 flex items-center justify-center gap-2 text-sm uppercase tracking-[0.2em] shadow-lg shadow-blue-500/20 active:scale-95 transition-all ${loading ? 'opacity-50' : ''}`}
           >
