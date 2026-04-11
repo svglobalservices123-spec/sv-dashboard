@@ -16,7 +16,7 @@ const AdminLogin = () => {
     // Simulated login for demo purposes
     // Use proper backend auth for real apps
     setTimeout(() => {
-      if (email === 'admin@svsolutions.com' && password === 'admin@123') {
+      if (email === 'admin@svglobalservices.com' && password === 'admin@SV2026$') {
         localStorage.setItem('isSVAdmin', 'true');
         toast.success('Login Successful!');
         navigate('/admin');
