@@ -4,17 +4,21 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Get authenticated Drive client using Service Account credentials.
+ * Get authenticated Drive client using OAuth2 with refresh token.
+ * Uploads files as the actual Google account owner (rajeshsvglobal@gmail.com).
  */
 const getDriveClient = () => {
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    },
-    scopes: ['https://www.googleapis.com/auth/drive'],
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
   });
-  return google.drive({ version: 'v3', auth });
+
+  return google.drive({ version: 'v3', auth: oauth2Client });
 };
 
 /**
@@ -49,7 +53,6 @@ const uploadFileToDrive = async (filePath, fileName) => {
       requestBody: fileMetadata,
       media: media,
       fields: 'id, webViewLink',
-      supportsAllDrives: true,
     });
 
     // Make the file readable by anyone with the link
@@ -59,7 +62,6 @@ const uploadFileToDrive = async (filePath, fileName) => {
         role: 'reader',
         type: 'anyone',
       },
-      supportsAllDrives: true,
     });
 
     console.log('DEBUG: Upload successful. File ID:', response.data.id);
