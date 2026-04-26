@@ -189,13 +189,13 @@ const Home = () => {
           <h1 className="text-5xl md:text-6xl font-display font-black tracking-tighter italic uppercase leading-none">
             Internship <span className="text-secondary not-italic">Registration Form</span>
           </h1>
-          
+
           <div className="space-y-6 max-w-3xl mx-auto mt-8">
             <p className="text-sm md:text-base text-blue-50 font-semibold tracking-wide leading-relaxed">
               Professional internship training on advanced technologies:
               <span className="text-secondary font-black ml-2">AI, IOT & CYBERSECURITY</span>
             </p>
-            
+
             <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/5 hover:bg-white/10 transition-all border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-blue-200">Organised by:</span>
@@ -209,20 +209,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-               <button 
-                 onClick={() => document.querySelector('main').scrollIntoView({ behavior: 'smooth' })}
-                 className="px-8 py-4 bg-white text-primary rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all shadow-xl"
-               >
-                 View Courses
-               </button>
-               <button 
-                 onClick={() => navigate('/diploma-internship')}
-                 className="px-8 py-4 bg-secondary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-secondary/90 transition-all shadow-xl shadow-red-500/20"
-               >
-                 Diploma Internship Registration
-               </button>
-            </div>
+
           </div>
 
         </div>
@@ -247,96 +234,96 @@ const Home = () => {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {step === 1 && (
-            <div className="grid grid-cols-1 gap-6">
-              <InputField label="Full Name" name="name" placeholder="John Doe" icon={User} value={formData.name} onChange={handleInputChange} error={errors.name} />
+              <div className="grid grid-cols-1 gap-6">
+                <InputField label="Full Name" name="name" placeholder="John Doe" icon={User} value={formData.name} onChange={handleInputChange} error={errors.name} />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="Phone Number" name="phone" placeholder="9876543210" icon={Phone} type="tel" value={formData.phone} onChange={handleInputChange} error={errors.phone} />
-                <InputField label="Email ID" name="email" placeholder="john@example.com" icon={Mail} type="email" value={formData.email} onChange={handleInputChange} error={errors.email} />
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputField label="Phone Number" name="phone" placeholder="9876543210" icon={Phone} type="tel" value={formData.phone} onChange={handleInputChange} error={errors.phone} />
+                  <InputField label="Email ID" name="email" placeholder="john@example.com" icon={Mail} type="email" value={formData.email} onChange={handleInputChange} error={errors.email} />
+                </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="Branch" name="branch" placeholder="e.g. CSE, ECE" icon={GraduationCap} value={formData.branch} onChange={handleInputChange} error={errors.branch} />
-                <InputField label="Roll Number" name="rollNumber" placeholder="Univ Roll No" icon={MapPinned} value={formData.rollNumber} onChange={handleInputChange} error={errors.rollNumber} />
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputField label="Branch" name="branch" placeholder="e.g. CSE, ECE" icon={GraduationCap} value={formData.branch} onChange={handleInputChange} error={errors.branch} />
+                  <InputField label="Roll Number" name="rollNumber" placeholder="Univ Roll No" icon={MapPinned} value={formData.rollNumber} onChange={handleInputChange} error={errors.rollNumber} />
+                </div>
 
-              <InputField label="College Name" name="collegeName" placeholder="Full College Identity" icon={Building} value={formData.collegeName} onChange={handleInputChange} error={errors.collegeName} />
-              <InputField label="Location / City" name="location" placeholder="e.g. Hyderabad" icon={MapPin} value={formData.location} onChange={handleInputChange} error={errors.location} />
+                <InputField label="College Name" name="collegeName" placeholder="Full College Identity" icon={Building} value={formData.collegeName} onChange={handleInputChange} error={errors.collegeName} />
+                <InputField label="Location / City" name="location" placeholder="e.g. Hyderabad" icon={MapPin} value={formData.location} onChange={handleInputChange} error={errors.location} />
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
-                  <BookOpen size={12} className={errors.course ? 'text-secondary' : 'text-primary'} />
-                  Select Course <span className="text-secondary">*</span>
-                </label>
-                <select
-                  name="course"
-                  value={formData.course}
-                  onChange={handleInputChange}
-                  className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.course ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
-                >
-                  <option value="">Select Course</option>
-                  {courses.map(course => (
-                    <option key={course} value={course}>{course}</option>
-                  ))}
-                </select>
-                {errors.course && <p className="text-[9px] font-bold text-secondary uppercase tracking-wider px-1">{errors.course}</p>}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
-                    <GraduationCap size={12} className={errors.courseType ? 'text-secondary' : 'text-primary'} />
-                    Course Type <span className="text-secondary">*</span>
+                    <BookOpen size={12} className={errors.course ? 'text-secondary' : 'text-primary'} />
+                    Select Course <span className="text-secondary">*</span>
                   </label>
                   <select
-                    name="courseType"
-                    value={formData.courseType}
+                    name="course"
+                    value={formData.course}
                     onChange={handleInputChange}
-                    className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.courseType ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
+                    className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.course ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
                   >
                     <option value="">Select Course</option>
-                    {courseTypes.map(c => <option key={c} value={c}>{c}</option>)}
+                    {courses.map(course => (
+                      <option key={course} value={course}>{course}</option>
+                    ))}
                   </select>
+                  {errors.course && <p className="text-[9px] font-bold text-secondary uppercase tracking-wider px-1">{errors.course}</p>}
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
-                    <BookOpen size={12} className={errors.year ? 'text-secondary' : 'text-primary'} />
-                    Current Year <span className="text-secondary">*</span>
-                  </label>
-                  <select
-                    name="year"
-                    value={formData.year}
-                    onChange={handleInputChange}
-                    className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.year ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
-                  >
-                    <option value="">Select Year</option>
-                    {years.map(y => <option key={y} value={y}>{y}</option>)}
-                  </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
+                      <GraduationCap size={12} className={errors.courseType ? 'text-secondary' : 'text-primary'} />
+                      Course Type <span className="text-secondary">*</span>
+                    </label>
+                    <select
+                      name="courseType"
+                      value={formData.courseType}
+                      onChange={handleInputChange}
+                      className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.courseType ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
+                    >
+                      <option value="">Select Course</option>
+                      {courseTypes.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1.5 px-1">
+                      <BookOpen size={12} className={errors.year ? 'text-secondary' : 'text-primary'} />
+                      Current Year <span className="text-secondary">*</span>
+                    </label>
+                    <select
+                      name="year"
+                      value={formData.year}
+                      onChange={handleInputChange}
+                      className={`input-field py-4 px-5 bg-white cursor-pointer transition-all duration-300 border-2 ${errors.year ? 'border-secondary focus:ring-secondary/20' : 'border-gray-100 focus:border-primary focus:ring-primary/10'}`}
+                    >
+                      <option value="">Select Year</option>
+                      {years.map(y => <option key={y} value={y}>{y}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
             )}
 
             {/* Payment Summary */}
             {step === 2 && (
-            <div className="bg-slate-50 p-6 rounded-2xl border border-gray-100 space-y-4">
-              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
-                <span>Course Fee</span>
-                <span className="text-dark">₹499</span>
-              </div>
-              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
-                <span>GST (18%)</span>
-                <span className="text-dark">₹90</span>
-              </div>
-              <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
-                <div className="space-y-0.5">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-primary">Final Amount</p>
-                  <p className="text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em]">Secure Payment via Razorpay</p>
+              <div className="bg-slate-50 p-6 rounded-2xl border border-gray-100 space-y-4">
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  <span>Course Fee</span>
+                  <span className="text-dark">₹499</span>
                 </div>
-                <p className="text-3xl font-display font-black text-primary italic">₹589</p>
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  <span>GST (18%)</span>
+                  <span className="text-dark">₹90</span>
+                </div>
+                <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
+                  <div className="space-y-0.5">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary">Final Amount</p>
+                    <p className="text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em]">Secure Payment via Razorpay</p>
+                  </div>
+                  <p className="text-3xl font-display font-black text-primary italic">₹589</p>
+                </div>
               </div>
-            </div>
             )}
 
             {step === 1 ? (

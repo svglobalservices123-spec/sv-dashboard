@@ -26,34 +26,24 @@ const DiplomaInternshipSuccess = () => {
         <h1 className="text-4xl md:text-5xl font-display font-black text-dark mb-4 tracking-tighter italic uppercase">
           Internship <span className="text-secondary not-italic">Confirmed!</span>
         </h1>
-        
+
         <p className="text-gray-500 font-medium text-lg mb-10 leading-relaxed max-w-lg mx-auto">
           Your application for the **Diploma Internship Program** has been successfully submitted. Our academic team will review your documents and contact you soon.
         </p>
 
-        {/* Info Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 text-left">
-          <div className="bg-muted/50 p-6 rounded-3xl border border-gray-100">
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">What's Next?</p>
-            <p className="text-xs font-bold text-dark leading-relaxed">Wait for our confirmation email within 24-48 hours regarding your selection.</p>
-          </div>
-          <div className="bg-muted/50 p-6 rounded-3xl border border-gray-100">
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Document Status</p>
-            <p className="text-xs font-bold text-dark leading-relaxed">Your files have been safely uploaded to our secure Google Cloud vault.</p>
-          </div>
-        </div>
+
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
-            to="/diploma-internship" 
+          <Link
+            to="/diploma-internship"
             className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-primary text-white rounded-2xl hover:scale-105 active:scale-95 transition-all font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-500/30"
           >
             <ArrowLeft size={16} /> Back to Registration
           </Link>
-          
-          <Link 
-            to="/" 
+
+          <Link
+            to="https://svglobalservices.com/industrial-training/"
             className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-white border border-gray-200 text-dark rounded-2xl hover:bg-gray-50 transition-all font-black text-[10px] uppercase tracking-widest"
           >
             <Home size={16} /> Main Website
@@ -62,7 +52,7 @@ const DiplomaInternshipSuccess = () => {
 
         {/* Footer info */}
         <div className="mt-12 pt-8 border-t border-gray-50">
-            <p className="text-[9px] font-black text-gray-300 uppercase tracking-[0.4em]">Transaction Reference: DI-{Date.now().toString().slice(-6)}</p>
+          <p className="text-[9px] font-black text-gray-300 uppercase tracking-[0.4em]">Transaction Reference: DI-{Date.now().toString().slice(-6)}</p>
         </div>
       </div>
 
