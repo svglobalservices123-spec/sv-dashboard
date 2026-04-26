@@ -41,7 +41,8 @@ exports.submitApplication = async (req, res, next) => {
         // We will process uploads sequentially or in parallel
         // Let's do parallel for speed
         uploadTasks.push(
-          uploadFileToDrive(file.path, fileName, FOLDER_ID).then(result => {
+          uploadFileToDrive(file.path, fileName).then(result => {
+
             uploadedDocs[key] = {
               id: result.id,
               url: result.url

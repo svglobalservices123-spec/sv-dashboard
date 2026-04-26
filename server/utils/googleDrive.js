@@ -1,4 +1,6 @@
+require('dotenv').config();
 const { google } = require('googleapis');
+
 const fs = require('fs');
 const path = require('path');
 
@@ -22,12 +24,15 @@ const drive = google.drive({ version: 'v3', auth });
  * @param {string} folderId - ID of the folder to upload to
  * @returns {Promise<Object>} - Drive file ID and public URL
  */
-const uploadFileToDrive = async (filePath, fileName, folderId) => {
+const uploadFileToDrive = async (filePath, fileName) => {
   try {
+    console.log("FOLDER ID:", process.env.GOOGLE_DRIVE_FOLDER_ID);
+    
     const fileMetadata = {
       name: fileName,
-      parents: folderId ? [folderId] : [],
+      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
     };
+
 
     const media = {
       mimeType: getMimeType(filePath),
