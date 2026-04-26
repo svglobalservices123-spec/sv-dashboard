@@ -9,6 +9,7 @@ const diplomaInternshipSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   dob: { type: String, required: true },
   city: { type: String }, // Added for filtering/admin requirements
+  state: { type: String }, // Added per new requirement
 
 
   // Step 2: Personal Details

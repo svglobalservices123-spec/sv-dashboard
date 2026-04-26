@@ -16,6 +16,8 @@ import BtechInternshipForm from './pages/BtechInternshipForm';
 import AdminBtechInternship from './pages/AdminBtechInternship';
 import BtechInternshipDetails from './pages/BtechInternshipDetails';
 import BtechInternshipSuccess from './pages/BtechInternshipSuccess';
+import AdminAddDiplomaInternship from './pages/AdminAddDiplomaInternship';
+import AdminAddBtechInternship from './pages/AdminAddBtechInternship';
 import NotFound from './pages/NotFound';
 
 
@@ -64,6 +66,12 @@ function App() {
           </ProtectedRoute>
         } />
 
+        <Route path="/admin/diploma-internship/add" element={
+          <ProtectedRoute>
+            <AdminAddDiplomaInternship />
+          </ProtectedRoute>
+        } />
+
         <Route path="/admin/btech-internship" element={
           <ProtectedRoute>
             <AdminBtechInternship />
@@ -73,6 +81,12 @@ function App() {
         <Route path="/admin/btech-internship/:id" element={
           <ProtectedRoute>
             <BtechInternshipDetails />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/btech-internship/add" element={
+          <ProtectedRoute>
+            <AdminAddBtechInternship />
           </ProtectedRoute>
         } />
 

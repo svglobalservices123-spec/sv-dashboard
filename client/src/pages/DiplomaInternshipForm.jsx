@@ -94,6 +94,7 @@ const DiplomaInternshipForm = () => {
   const [formData, setFormData] = useState({
     studentEmail: '', studentFullName: '', studentPhone: '', parentPhone: '', gender: '', dob: '', city: '',
     fatherName: '', motherName: '', age: '', caste: '', aadharNumber: '', sscHallTicket: '',
+    state: '',
     collegeName: '', branch: '', rollNumber: '', gpa: '',
     trainingMode: '', companyName: '', course: '',
     declaration: false
@@ -176,8 +177,8 @@ const DiplomaInternshipForm = () => {
         return false;
       }
     } else if (step === 2) {
-      const { fatherName, age, caste, aadharNumber } = formData;
-      if (!fatherName || !age || !caste || !aadharNumber) {
+      const { fatherName, age, caste, aadharNumber, state } = formData;
+      if (!fatherName || !age || !caste || !aadharNumber || !state) {
         toast.error('Please fill all required fields');
         return false;
       }
@@ -305,6 +306,14 @@ const DiplomaInternshipForm = () => {
                 </InputWrapper>
                 <InputWrapper label="SSC Hall Ticket Number" icon={<ShieldCheck size={12}/>}>
                   <input type="text" name="sscHallTicket" value={formData.sscHallTicket} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Roll No" />
+                </InputWrapper>
+                <InputWrapper label="State" icon={<ShieldCheck size={12}/>} required>
+                  <select name="state" value={formData.state} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                    <option value="">Select State</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                  </select>
                 </InputWrapper>
               </div>
             )}

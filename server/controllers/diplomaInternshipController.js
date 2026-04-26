@@ -15,17 +15,15 @@ exports.submitApplication = async (req, res, next) => {
     }
 
     const {
-      studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, city,
+      studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, city, state,
       fatherName, motherName, age, caste, aadharNumber, sscHallTicket,
       collegeName, branch, rollNumber, gpa,
       trainingMode, companyName, course
     } = req.body;
 
-    const files = req.files;
-    if (!files || Object.keys(files).length < 4) {
-      res.status(400);
-      throw new Error('All 4 documents are required.');
-    }
+    const files = req.files || {};
+    // Files are optional for manual admin entry, but required for public form.
+    // We'll let the frontend handle the requirement logic for the public form.
 
     // Upload files to Google Drive
     const uploadTasks = [];
@@ -57,7 +55,7 @@ exports.submitApplication = async (req, res, next) => {
     await Promise.all(uploadTasks);
 
     const application = await DiplomaInternship.create({
-      studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, city,
+      studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, city, state,
       fatherName, motherName, age, caste, aadharNumber, sscHallTicket,
       collegeName, branch, rollNumber, gpa,
       trainingMode, companyName, course,
@@ -80,11 +78,14 @@ exports.submitApplication = async (req, res, next) => {
 
 exports.getAllApplications = async (req, res, next) => {
   try {
-    const { course, city } = req.query;
+    const { course, city, state } = req.query;
     let query = {};
     
     if (course && course !== 'all') {
       query.course = course;
+    }
+    if (state && state !== 'all') {
+      query.state = state;
     }
     // For city, we don't have a direct 'city' field in DiplomaInternship model based on user request.
     // However, they asked for "City wise" filter. I should probably add city or check where it comes from.
@@ -120,10 +121,11 @@ exports.getApplicationDetails = async (req, res, next) => {
 
 exports.exportToExcel = async (req, res, next) => {
   try {
-    const { course, city } = req.query;
+    const { course, city, state } = req.query;
     let query = {};
     if (course && course !== 'all') query.course = course;
     if (city && city !== 'all') query.city = { $regex: city, $options: 'i' };
+    if (state && state !== 'all') query.state = state;
 
     const applications = await DiplomaInternship.find(query).sort({ createdAt: -1 });
 
@@ -135,6 +137,7 @@ exports.exportToExcel = async (req, res, next) => {
       'Gender': app.gender,
       'DOB': app.dob,
       'City': app.city || 'N/A',
+      'State': app.state || 'N/A',
       'Father Name': app.fatherName,
       'Mother Name': app.motherName || 'N/A',
       'Age': app.age,

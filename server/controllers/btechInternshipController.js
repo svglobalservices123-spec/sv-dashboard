@@ -21,11 +21,9 @@ exports.submitApplication = async (req, res, next) => {
       trainingMode, companyName, course
     } = req.body;
 
-    const files = req.files;
-    if (!files || Object.keys(files).length < 4) {
-      res.status(400);
-      throw new Error('All 4 documents are required.');
-    }
+    const files = req.files || {};
+    // Files are optional for manual admin entry, but required for public form.
+    // We'll let the frontend handle the requirement logic for the public form.
 
     // Upload files to Google Drive (Btech folder)
     const uploadTasks = [];

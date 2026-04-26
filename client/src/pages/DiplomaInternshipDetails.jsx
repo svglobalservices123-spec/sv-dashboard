@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { 
   User, Mail, Phone, Calendar, Users, Fingerprint, 
   GraduationCap, Briefcase, FileText, ExternalLink, 
-  Trash2, ChevronLeft, Loader2, MapPin, CheckCircle
+  Trash2, ChevronLeft, Loader2, MapPin, CheckCircle, Globe
 } from 'lucide-react';
 
 
@@ -117,6 +117,7 @@ const DiplomaInternshipDetails = () => {
             <DetailItem label="Gender" value={app.gender} icon={<Users size={10} />} />
             <DetailItem label="Date of Birth" value={app.dob} icon={<Calendar size={10} />} />
             <DetailItem label="Location / City" value={app.city} icon={<MapPin size={10} />} />
+            <DetailItem label="State" value={app.state} icon={<Globe size={10} />} />
           </DetailSection>
 
           {/* Column 2: Academic */}

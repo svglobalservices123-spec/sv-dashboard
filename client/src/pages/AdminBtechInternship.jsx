@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getBtechInternships, deleteBtechInternship, exportBtechInternships } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Eye, Trash2, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone, Globe } from 'lucide-react';
+import { Search, Eye, Trash2, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone, Globe, Plus } from 'lucide-react';
 
 const AdminBtechInternship = () => {
+  const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -90,6 +91,9 @@ const AdminBtechInternship = () => {
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button onClick={fetchData} className="p-4 bg-emerald-500/10 text-emerald-600 rounded-2xl hover:bg-emerald-600 hover:text-white transition-all shadow-lg shadow-emerald-500/10" title="Refresh">
               <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+            </button>
+            <button onClick={() => navigate('/admin/btech-internship/add')} className="flex items-center gap-3 px-8 py-4 bg-secondary text-white rounded-2xl hover:scale-105 transition-all font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-500/20">
+              <Plus size={18} /> Manual Enrollment
             </button>
             <button onClick={handleExport} className="flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-all font-black text-[10px] uppercase tracking-widest shadow-xl shadow-green-500/20 flex-1 sm:flex-none group">
               <FileSpreadsheet size={18} className="group-hover:scale-110 transition-transform" />

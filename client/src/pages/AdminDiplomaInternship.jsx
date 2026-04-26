@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { getDiplomaInternships, deleteDiplomaInternship, exportDiplomaInternships } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone } from 'lucide-react';
+import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone, Globe, Plus } from 'lucide-react';
 
 
 const AdminDiplomaInternship = () => {
+  const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({ course: 'all', city: 'all' });
+  const [filters, setFilters] = useState({ course: 'all', city: 'all', state: 'all' });
 
   useEffect(() => { fetchData(); }, []);
 
@@ -62,8 +63,9 @@ const AdminDiplomaInternship = () => {
     
     const matchesCourse = filters.course === 'all' || app.course === filters.course;
     const matchesCity = filters.city === 'all' || (app.city || '').toLowerCase() === filters.city.toLowerCase();
+    const matchesState = filters.state === 'all' || (app.state || '') === filters.state;
     
-    return matchesSearch && matchesCourse && matchesCity;
+    return matchesSearch && matchesCourse && matchesCity && matchesState;
   });
 
   // Get unique cities and courses for filters
@@ -93,9 +95,19 @@ const AdminDiplomaInternship = () => {
               {cities.filter(c => c !== 'all').map(c => <option key={c} value={c}>{c}</option>)}
             </select>
 
+            <select value={filters.state} onChange={(e) => setFilters({...filters, state: e.target.value})} className="input-field py-4 px-6 text-[10px] font-black uppercase tracking-widest cursor-pointer flex-1 xl:w-40 xl:flex-none bg-muted/50 border-transparent focus:bg-white focus:border-primary">
+              <option value="all">All States</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+            </select>
+
             <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button onClick={fetchData} className="p-4 bg-primary/10 text-primary rounded-2xl hover:bg-primary hover:text-white transition-all shadow-lg shadow-blue-500/10" title="Refresh">
                   <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+                </button>
+                <button onClick={() => navigate('/admin/diploma-internship/add')} className="flex items-center gap-3 px-8 py-4 bg-secondary text-white rounded-2xl hover:scale-105 transition-all font-black text-[10px] uppercase tracking-widest shadow-xl shadow-secondary/20">
+                  <Plus size={18} /> Manual Enrollment
                 </button>
                 <button 
                   onClick={handleExport} 
@@ -116,6 +128,7 @@ const AdminDiplomaInternship = () => {
                 <tr className="bg-gray-50/80 border-b border-gray-100">
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Student</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Academic</th>
+                  <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">State</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Training</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Applied Date</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Actions</th>
@@ -155,6 +168,12 @@ const AdminDiplomaInternship = () => {
                             <p className="text-[11px] font-black text-dark uppercase tracking-tight">{app.collegeName}</p>
                         </div>
                         <p className="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-widest">{app.branch}</p>
+                    </td>
+                    <td className="px-8 py-6">
+                        <div className="flex items-center gap-2">
+                            <Globe size={12} className="text-emerald-500" />
+                            <p className="text-[11px] font-black text-dark uppercase tracking-tight">{app.state || 'N/A'}</p>
+                        </div>
                     </td>
                     <td className="px-8 py-6">
                         <div className="flex items-center gap-2">
