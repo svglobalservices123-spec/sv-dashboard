@@ -8,7 +8,13 @@ import AddStudent from './pages/AddStudent';
 import StudentDetails from './pages/StudentDetails';
 import AdminLogin from './pages/AdminLogin';
 import AdminSettings from './pages/AdminSettings';
+import DiplomaInternshipForm from './pages/DiplomaInternshipForm';
+import AdminDiplomaInternship from './pages/AdminDiplomaInternship';
+import DiplomaInternshipDetails from './pages/DiplomaInternshipDetails';
 import NotFound from './pages/NotFound';
+
+
+
 
 // Simple "auth" check
 const ProtectedRoute = ({ children }) => {
@@ -23,7 +29,9 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/diploma-internship" element={<DiplomaInternshipForm />} />
         <Route path="/success" element={<Success />} />
+
         <Route path="/failure" element={<Failure />} />
         
         {/* Admin Routes */}
@@ -34,6 +42,20 @@ function App() {
             <AdminDashboard />
           </ProtectedRoute>
         } />
+        
+        <Route path="/admin/diploma-internship" element={
+          <ProtectedRoute>
+            <AdminDiplomaInternship />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/diploma-internship/:id" element={
+          <ProtectedRoute>
+            <DiplomaInternshipDetails />
+          </ProtectedRoute>
+        } />
+
+
 
         <Route path="/admin/add-student" element={
           <ProtectedRoute>

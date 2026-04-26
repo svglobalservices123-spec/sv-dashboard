@@ -10,6 +10,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
 const studentRoutes = require('./routes/studentRoutes');
+const diplomaInternshipRoutes = require('./routes/diplomaInternshipRoutes');
+
 const errorHandler = require('./middleware/errorMiddleware');
 const path = require('path');
 const fs = require('fs');
@@ -40,6 +42,8 @@ app.get('/', (req, res) => {
 
 // API Routes
 app.use('/api', studentRoutes);
+app.use('/api/diploma-internship', diplomaInternshipRoutes);
+
 
 // Error handler
 app.use(errorHandler);

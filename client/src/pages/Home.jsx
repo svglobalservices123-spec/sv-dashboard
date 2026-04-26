@@ -208,7 +208,23 @@ const Home = () => {
                 </span>
               </div>
             </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+               <button 
+                 onClick={() => document.querySelector('main').scrollIntoView({ behavior: 'smooth' })}
+                 className="px-8 py-4 bg-white text-primary rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all shadow-xl"
+               >
+                 View Courses
+               </button>
+               <button 
+                 onClick={() => navigate('/diploma-internship')}
+                 className="px-8 py-4 bg-secondary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-secondary/90 transition-all shadow-xl shadow-red-500/20"
+               >
+                 Diploma Internship Registration
+               </button>
+            </div>
           </div>
+
         </div>
       </header>
 

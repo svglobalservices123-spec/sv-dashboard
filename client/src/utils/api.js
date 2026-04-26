@@ -27,4 +27,14 @@ export const verifyRazorpayPayment = (data) => api.post('/verify-payment', data)
 export const savePayment = (studentId, data) => api.post(`/payments/${studentId}`, data);
 export const downloadReceipt = (studentId) => api.get(`/payments/receipt/${studentId}`, { responseType: 'blob' });
 
+// Diploma Internship
+export const submitDiplomaInternship = (formData) => api.post('/diploma-internship/submit', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+export const getDiplomaInternships = (filters = {}) => api.get('/diploma-internship/applications', { params: filters });
+export const getDiplomaInternshipDetails = (id) => api.get(`/diploma-internship/applications/${id}`);
+export const deleteDiplomaInternship = (id) => api.delete(`/diploma-internship/applications/${id}`);
+export const exportDiplomaInternships = (filters = {}) => api.get('/diploma-internship/export', { params: filters, responseType: 'blob' });
+
+
 export default api;
