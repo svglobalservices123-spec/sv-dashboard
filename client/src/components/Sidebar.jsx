@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Users, BarChart3, Settings, ShieldCheck, LogOut, UserPlus } from 'lucide-react';
+import { Users, BarChart3, Settings, ShieldCheck, LogOut, UserPlus, GraduationCap } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -9,6 +9,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
     { title: 'Dashboard', icon: <BarChart3 size={20} />, path: '/admin' },
     { title: 'Diploma Internship', icon: <Users size={20} />, path: '/admin/diploma-internship' },
+    { title: 'Btech/Degree Internship', icon: <GraduationCap size={20} />, path: '/admin/btech-internship' },
     { title: 'Add Student', icon: <UserPlus size={20} />, path: '/admin/add-student' },
 
     { title: 'Settings', icon: <Settings size={20} />, path: '/admin/settings' },

@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const connectDB = require('./config/db');
 const studentRoutes = require('./routes/studentRoutes');
 const diplomaInternshipRoutes = require('./routes/diplomaInternshipRoutes');
+const btechInternshipRoutes = require('./routes/btechInternshipRoutes');
 
 const errorHandler = require('./middleware/errorMiddleware');
 const path = require('path');
@@ -43,6 +44,7 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api', studentRoutes);
 app.use('/api/diploma-internship', diplomaInternshipRoutes);
+app.use('/api/btech-internship', btechInternshipRoutes);
 
 
 // Error handler

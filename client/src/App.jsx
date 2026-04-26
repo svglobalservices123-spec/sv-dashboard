@@ -12,8 +12,11 @@ import DiplomaInternshipForm from './pages/DiplomaInternshipForm';
 import AdminDiplomaInternship from './pages/AdminDiplomaInternship';
 import DiplomaInternshipDetails from './pages/DiplomaInternshipDetails';
 import DiplomaInternshipSuccess from './pages/DiplomaInternshipSuccess';
+import BtechInternshipForm from './pages/BtechInternshipForm';
+import AdminBtechInternship from './pages/AdminBtechInternship';
+import BtechInternshipDetails from './pages/BtechInternshipDetails';
+import BtechInternshipSuccess from './pages/BtechInternshipSuccess';
 import NotFound from './pages/NotFound';
-
 
 
 
@@ -33,6 +36,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/diploma-internship" element={<DiplomaInternshipForm />} />
         <Route path="/diploma-internship/success" element={<DiplomaInternshipSuccess />} />
+        <Route path="/btech-internship" element={<BtechInternshipForm />} />
+        <Route path="/btech-internship/success" element={<BtechInternshipSuccess />} />
         <Route path="/success" element={<Success />} />
 
 
@@ -56,6 +61,18 @@ function App() {
         <Route path="/admin/diploma-internship/:id" element={
           <ProtectedRoute>
             <DiplomaInternshipDetails />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/btech-internship" element={
+          <ProtectedRoute>
+            <AdminBtechInternship />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/btech-internship/:id" element={
+          <ProtectedRoute>
+            <BtechInternshipDetails />
           </ProtectedRoute>
         } />
 

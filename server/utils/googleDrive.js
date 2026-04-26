@@ -27,8 +27,8 @@ const getDriveClient = () => {
  * @param {string} fileName - Name to save as in Drive
  * @returns {Promise<Object>} - Drive file ID and public URL
  */
-const uploadFileToDrive = async (filePath, fileName) => {
-  const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
+const uploadFileToDrive = async (filePath, fileName, customFolderId = null) => {
+  const folderId = (customFolderId || process.env.GOOGLE_DRIVE_FOLDER_ID)?.trim();
 
   if (!folderId) {
     throw new Error('GOOGLE_DRIVE_FOLDER_ID is not defined. Upload aborted.');
