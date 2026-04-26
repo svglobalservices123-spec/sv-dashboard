@@ -63,14 +63,15 @@ const DiplomaInternshipDetails = () => {
     </div>
   );
 
-  const DetailItem = ({ label, value, icon }) => (
+  const DetailItem = ({ label, value, icon, isDark = false }) => (
     <div className="group">
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1 mb-1 group-hover:text-primary transition-colors flex items-center gap-2">
+      <p className={`text-[10px] font-black uppercase tracking-widest ml-1 mb-1 group-hover:text-primary transition-colors flex items-center gap-2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
         {icon} {label}
       </p>
-      <p className="text-sm font-black text-dark tracking-tight break-words">{value || 'N/A'}</p>
+      <p className={`text-sm font-black tracking-tight break-words ${isDark ? 'text-white' : 'text-dark'}`}>{value || 'N/A'}</p>
     </div>
   );
+
 
   const DocumentCard = ({ label, doc }) => (
     <div className="bg-muted/50 p-6 rounded-3xl border border-gray-100 hover:border-primary/30 transition-all group flex items-center justify-between">
@@ -138,10 +139,11 @@ const DiplomaInternshipDetails = () => {
                     Training Parameters
                 </h3>
                 <div className="space-y-6">
-                    <DetailItem label="Mode of Training" value={app.trainingMode} icon={<Briefcase size={10} className="text-secondary" />} />
-                    <DetailItem label="Target Course" value={app.course} icon={<GraduationCap size={10} className="text-secondary" />} />
-                    <DetailItem label="Company Name" value={app.companyName} icon={<Briefcase size={10} className="text-secondary" />} />
+                    <DetailItem label="Mode of Training" value={app.trainingMode} icon={<Briefcase size={10} className="text-secondary" />} isDark={true} />
+                    <DetailItem label="Target Course" value={app.course} icon={<GraduationCap size={10} className="text-secondary" />} isDark={true} />
+                    <DetailItem label="Company Name" value={app.companyName} icon={<Briefcase size={10} className="text-secondary" />} isDark={true} />
                 </div>
+
                 <div className="mt-10 pt-8 border-t border-gray-800">
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Registration Date</p>
                     <p className="text-lg font-display font-black italic">{new Date(app.createdAt).toLocaleString()}</p>
