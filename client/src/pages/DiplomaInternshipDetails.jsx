@@ -6,8 +6,9 @@ import { toast } from 'react-hot-toast';
 import { 
   User, Mail, Phone, Calendar, Users, Fingerprint, 
   GraduationCap, Briefcase, FileText, ExternalLink, 
-  Trash2, ChevronLeft, Loader2, MapPin
+  Trash2, ChevronLeft, Loader2, MapPin, CheckCircle
 } from 'lucide-react';
+
 
 const DiplomaInternshipDetails = () => {
   const { id } = useParams();

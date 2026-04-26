@@ -3,7 +3,8 @@ import { getDiplomaInternships, deleteDiplomaInternship, exportDiplomaInternship
 import AdminLayout from '../components/AdminLayout';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase } from 'lucide-react';
+import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone } from 'lucide-react';
+
 
 const AdminDiplomaInternship = () => {
   const [applications, setApplications] = useState([]);
