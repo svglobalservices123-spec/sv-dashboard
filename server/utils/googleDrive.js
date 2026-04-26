@@ -4,17 +4,19 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 
-const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  },
-  scopes: SCOPES,
-});
+const getDriveClient = () => {
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    },
+    scopes: SCOPES,
+  });
+  return google.drive({ version: 'v3', auth });
+};
 
-const drive = google.drive({ version: 'v3', auth });
 
 
 /**
@@ -26,12 +28,20 @@ const drive = google.drive({ version: 'v3', auth });
  */
 const uploadFileToDrive = async (filePath, fileName) => {
   try {
-    console.log("FOLDER ID:", process.env.GOOGLE_DRIVE_FOLDER_ID);
+    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
+    console.log("DEBUG: Attempting upload with Folder ID:", folderId);
+    
+    if (!folderId) {
+      throw new Error("GOOGLE_DRIVE_FOLDER_ID is not defined in environment variables");
+    }
+
+    const drive = getDriveClient();
     
     const fileMetadata = {
       name: fileName,
-      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
+      parents: [folderId],
     };
+
 
 
     const media = {
