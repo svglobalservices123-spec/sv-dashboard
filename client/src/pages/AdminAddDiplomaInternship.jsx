@@ -5,7 +5,7 @@ import { submitDiplomaInternship } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
 import {
   User, Mail, Phone, Calendar, Users, Fingerprint,
-  GraduationCap, Briefcase, Send, Loader2, MapPin, Globe
+  GraduationCap, Briefcase, Send, Loader2, MapPin, Globe, FileText, Upload
 } from 'lucide-react';
 
 const SectionTitle = ({ icon, title }) => (
@@ -29,6 +29,30 @@ const InputField = ({ label, name, value, onChange, type = "text", placeholder, 
   </div>
 );
 
+const FileField = ({ label, name, onChange, required = false }) => (
+  <div className="space-y-2">
+    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">{label} {required && '*'}</label>
+    <div className="relative group">
+      <input 
+        type="file" 
+        name={name} 
+        onChange={onChange} 
+        required={required} 
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+      />
+      <div className="flex items-center gap-4 py-4 px-6 bg-muted/30 border-2 border-dashed border-gray-200 rounded-2xl group-hover:border-primary/50 group-hover:bg-white transition-all">
+        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-gray-400 group-hover:text-primary shadow-sm transition-colors">
+          <Upload size={18} />
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <p className="text-xs font-bold text-gray-500 truncate group-hover:text-dark">Click or Drag to upload</p>
+          <p className="text-[10px] text-gray-400 font-medium">PDF, JPG, PNG up to 10MB</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const AdminAddDiplomaInternship = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -40,8 +64,15 @@ const AdminAddDiplomaInternship = () => {
     trainingMode: '', companyName: '', course: '',
     declaration: true
   });
+  const [files, setFiles] = useState({
+    collegeIdCard: null,
+    aadharCard: null,
+    sscMemo: null,
+    photo: null
+  });
 
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleFileChange = (e) => setFiles({ ...files, [e.target.name]: e.target.files[0] });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +80,9 @@ const AdminAddDiplomaInternship = () => {
     try {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
+      Object.keys(files).forEach(key => {
+        if (files[key]) data.append(key, files[key]);
+      });
 
       await submitDiplomaInternship(data);
       toast.success('Diploma Internship record added!');
@@ -107,6 +141,16 @@ const AdminAddDiplomaInternship = () => {
               <InputField label="Training Mode" name="trainingMode" value={formData.trainingMode} onChange={handleInputChange} options={["OJT", "In Hands Training", "Other"]} />
               <InputField label="Target Course" name="course" value={formData.course} onChange={handleInputChange} options={["Java / Python", "AI / ML / Cyber Security", "Cloud Computing / Networking", "Embedded Systems / PCB", "CSE"]} required={formData.trainingMode === 'In Hands Training'} />
               <InputField label="Company Name" name="companyName" value={formData.companyName} onChange={handleInputChange} placeholder="Optional" required={false} />
+            </div>
+          </section>
+
+          <section>
+            <SectionTitle icon={<FileText size={16} />} title="Document Vault (Optional)" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <FileField label="College ID Card" name="collegeIdCard" onChange={handleFileChange} />
+              <FileField label="Aadhar Card" name="aadharCard" onChange={handleFileChange} />
+              <FileField label="SSC Memo" name="sscMemo" onChange={handleFileChange} />
+              <FileField label="Student Photo" name="photo" onChange={handleFileChange} />
             </div>
           </section>
 
