@@ -11,7 +11,9 @@ import AdminSettings from './pages/AdminSettings';
 import DiplomaInternshipForm from './pages/DiplomaInternshipForm';
 import AdminDiplomaInternship from './pages/AdminDiplomaInternship';
 import DiplomaInternshipDetails from './pages/DiplomaInternshipDetails';
+import DiplomaInternshipSuccess from './pages/DiplomaInternshipSuccess';
 import NotFound from './pages/NotFound';
+
 
 
 
@@ -30,7 +32,9 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/diploma-internship" element={<DiplomaInternshipForm />} />
+        <Route path="/diploma-internship/success" element={<DiplomaInternshipSuccess />} />
         <Route path="/success" element={<Success />} />
+
 
         <Route path="/failure" element={<Failure />} />
         

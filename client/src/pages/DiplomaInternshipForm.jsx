@@ -223,7 +223,8 @@ const DiplomaInternshipForm = () => {
       
       toast.success('Registration Successful!');
       localStorage.removeItem('diploma_internship_draft');
-      navigate('/success');
+      navigate('/diploma-internship/success');
+
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to submit application.');
     } finally {
