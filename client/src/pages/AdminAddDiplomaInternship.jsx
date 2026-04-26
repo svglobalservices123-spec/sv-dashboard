@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { submitDiplomaInternship } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
-import { 
-  User, Mail, Phone, Calendar, Users, Fingerprint, 
+import {
+  User, Mail, Phone, Calendar, Users, Fingerprint,
   GraduationCap, Briefcase, Send, Loader2, MapPin, Globe
 } from 'lucide-react';
 
@@ -28,7 +28,7 @@ const AdminAddDiplomaInternship = () => {
     try {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
-      
+
       await submitDiplomaInternship(data);
       toast.success('Diploma Internship record added!');
       navigate('/admin/diploma-internship');
@@ -61,12 +61,12 @@ const AdminAddDiplomaInternship = () => {
   );
 
   return (
-    <AdminLayout title="Manual <span className='text-secondary uppercase not-italic'>Enrollment</span>" subtitle="Add diploma internship application manually">
+    <AdminLayout title="Manual Enrollment" subtitle="Add diploma internship application manually">
       <form onSubmit={handleSubmit} className="space-y-8 pb-20 max-w-6xl">
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-8 md:p-12 space-y-12">
-          
+
           <section>
-            <SectionTitle icon={<User size={16}/>} title="Basic Identification" />
+            <SectionTitle icon={<User size={16} />} title="Basic Identification" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <InputField label="Student Email" name="studentEmail" type="email" placeholder="student@gmail.com" />
               <InputField label="Full Name" name="studentFullName" placeholder="e.g. Rahul Sharma" />
@@ -78,7 +78,7 @@ const AdminAddDiplomaInternship = () => {
           </section>
 
           <section>
-            <SectionTitle icon={<Globe size={16}/>} title="Personal Background" />
+            <SectionTitle icon={<Globe size={16} />} title="Personal Background" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InputField label="Father Name" name="fatherName" placeholder="Father's Name" />
               <InputField label="Mother Name" name="motherName" placeholder="Mother's Name" required={false} />
@@ -92,7 +92,7 @@ const AdminAddDiplomaInternship = () => {
           </section>
 
           <section>
-            <SectionTitle icon={<GraduationCap size={16}/>} title="Academic Profile" />
+            <SectionTitle icon={<GraduationCap size={16} />} title="Academic Profile" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InputField label="College Name" name="collegeName" placeholder="Full College Name" />
               <InputField label="Branch" name="branch" placeholder="e.g. ECE" />
@@ -102,7 +102,7 @@ const AdminAddDiplomaInternship = () => {
           </section>
 
           <section>
-            <SectionTitle icon={<Briefcase size={16}/>} title="Training Preferences" />
+            <SectionTitle icon={<Briefcase size={16} />} title="Training Preferences" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <InputField label="Training Mode" name="trainingMode" options={["OJT", "In Hands Training", "Other"]} />
               <InputField label="Target Course" name="course" options={["Java / Python", "AI / ML / Cyber Security", "Cloud Computing / Networking", "Embedded Systems / PCB", "CSE"]} required={formData.trainingMode === 'In Hands Training'} />
@@ -112,7 +112,7 @@ const AdminAddDiplomaInternship = () => {
 
           <div className="pt-8 border-t border-gray-100 flex justify-end">
             <button type="submit" disabled={loading} className="w-full md:w-auto flex items-center justify-center gap-4 px-12 py-5 bg-primary text-white rounded-2xl hover:scale-[1.02] active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/40 disabled:opacity-50">
-              {loading ? <><Loader2 className="animate-spin" size={18}/> Authorizing Entry...</> : <><Send size={18}/> Register Application</>}
+              {loading ? <><Loader2 className="animate-spin" size={18} /> Authorizing Entry...</> : <><Send size={18} /> Register Application</>}
             </button>
           </div>
         </div>
