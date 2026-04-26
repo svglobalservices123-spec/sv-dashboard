@@ -40,10 +40,12 @@ const uploadFileToDrive = async (filePath, fileName) => {
     };
 
     const response = await drive.files.create({
-      resource: fileMetadata,
+      requestBody: fileMetadata,
       media: media,
       fields: 'id, webViewLink',
+      supportsAllDrives: true,
     });
+
 
     // Make the file readable by anyone with the link (optional, but requested for admin)
     // Actually, service account files are private by default. 
@@ -59,7 +61,9 @@ const uploadFileToDrive = async (filePath, fileName) => {
             role: 'reader',
             type: 'anyone',
         },
+        supportsAllDrives: true,
     });
+
 
     return {
       id: response.data.id,
