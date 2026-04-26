@@ -1,35 +1,37 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-
 const fs = require('fs');
 const path = require('path');
 
-const SCOPES = ['https://www.googleapis.com/auth/drive'];
-
+/**
+ * Get authenticated Drive client using OAuth2 (user's own account).
+ * Service Accounts have ZERO storage quota on personal Google Drive,
+ * so we use OAuth2 with a refresh token to upload as the actual user.
+ */
 const getDriveClient = () => {
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    },
-    scopes: SCOPES,
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
   });
-  return google.drive({ version: 'v3', auth });
+
+  return google.drive({ version: 'v3', auth: oauth2Client });
 };
-
-
 
 /**
  * Uploads a file to Google Drive
  * @param {string} filePath - Path to the local file
  * @param {string} fileName - Name to save as in Drive
- * @param {string} folderId - ID of the folder to upload to
  * @returns {Promise<Object>} - Drive file ID and public URL
  */
 const uploadFileToDrive = async (filePath, fileName) => {
   try {
     const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
-    console.log("DEBUG: Attempting upload with Folder ID:", folderId);
+    console.log("DEBUG: Uploading file:", fileName, "to folder:", folderId);
     
     if (!folderId) {
       throw new Error("GOOGLE_DRIVE_FOLDER_ID is not defined in environment variables");
@@ -42,8 +44,6 @@ const uploadFileToDrive = async (filePath, fileName) => {
       parents: [folderId],
     };
 
-
-
     const media = {
       mimeType: getMimeType(filePath),
       body: fs.createReadStream(filePath),
@@ -53,34 +53,25 @@ const uploadFileToDrive = async (filePath, fileName) => {
       requestBody: fileMetadata,
       media: media,
       fields: 'id, webViewLink',
-      supportsAllDrives: true,
     });
 
-
-    // Make the file readable by anyone with the link (optional, but requested for admin)
-    // Actually, service account files are private by default. 
-    // We can grant permission to everyone or just return the link.
-    // Given the requirement "Open uploaded documents (Google Drive links)", 
-    // we might need to make them public or share with specific emails.
-    // For now, let's just make it public for simplicity if needed, 
-    // or just return the view link.
-    
+    // Make the file readable by anyone with the link
     await drive.permissions.create({
-        fileId: response.data.id,
-        requestBody: {
-            role: 'reader',
-            type: 'anyone',
-        },
-        supportsAllDrives: true,
+      fileId: response.data.id,
+      requestBody: {
+        role: 'reader',
+        type: 'anyone',
+      },
     });
 
+    console.log("DEBUG: Upload successful. File ID:", response.data.id);
 
     return {
       id: response.data.id,
       url: response.data.webViewLink,
     };
   } catch (error) {
-    console.error('Error uploading to Google Drive:', error);
+    console.error('Error uploading to Google Drive:', error.message);
     throw error;
   }
 };
