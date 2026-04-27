@@ -10,14 +10,40 @@ exports.createStudent = async (req, res, next) => {
   try {
     const { name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year } = req.body;
     
-    // Generate Application ID: 112032026 + 3 digits (e.g. 001, 002)
-    // Format: [Date][203][Year][Serial]
-    const count = await Student.countDocuments();
-    const serial = (count + 1).toString().padStart(3, '0');
-    const now = new Date();
-    const day = now.getDate().toString().padStart(2, '0');
-    const yearStr = now.getFullYear().toString();
-    const applicationId = `${day}203${yearStr}${serial}`;
+    // Generate Application ID: [Date][203][Year][Serial]
+    // We use a robust approach to find a unique ID and avoid race conditions
+    let applicationId;
+    let isUnique = false;
+    
+    // Get the highest existing serial to start from
+    const lastStudent = await Student.findOne().sort({ createdAt: -1 });
+    let currentSerialNum = 0;
+    if (lastStudent && lastStudent.applicationId) {
+      // The applicationId format is [day(2)]203[year(4)][serial(3+)]
+      // We extract the part after the first 9 characters
+      const serialPart = lastStudent.applicationId.substring(9);
+      currentSerialNum = parseInt(serialPart) || 0;
+    } else {
+      // Fallback to count if no last student or format mismatch
+      currentSerialNum = await Student.countDocuments();
+    }
+
+    let nextSerialNum = currentSerialNum + 1;
+
+    while (!isUnique) {
+      const serial = nextSerialNum.toString().padStart(3, '0');
+      const now = new Date();
+      const day = now.getDate().toString().padStart(2, '0');
+      const yearStr = now.getFullYear().toString();
+      applicationId = `${day}203${yearStr}${serial}`;
+      
+      const existing = await Student.findOne({ applicationId });
+      if (!existing) {
+        isUnique = true;
+      } else {
+        nextSerialNum++;
+      }
+    }
 
     const student = await Student.create({ 
       name, phone, email, branch, rollNumber, collegeName, location, course, courseType, year,
