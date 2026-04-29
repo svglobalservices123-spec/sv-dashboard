@@ -6,7 +6,7 @@ import {
   User, Mail, Phone, Calendar, Users, Fingerprint, 
   GraduationCap, Briefcase, FileUp, CheckCircle, 
   ChevronRight, ChevronLeft, Loader2, Upload,
-  ShieldCheck, Send, Globe
+  ShieldCheck, Send, Globe, MapPin
 } from 'lucide-react';
 
 const ProgressBar = ({ step }) => {

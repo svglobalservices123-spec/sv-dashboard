@@ -5,7 +5,7 @@ import { submitBtechInternship } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
 import {
   User, Mail, Phone, Calendar, Users, Fingerprint,
-  GraduationCap, Briefcase, Send, Loader2, Globe, FileText, Upload
+  GraduationCap, Briefcase, Send, Loader2, Globe, FileText, Upload, MapPin
 } from 'lucide-react';
 
 const SectionTitle = ({ icon, title }) => (
