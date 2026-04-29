@@ -258,7 +258,8 @@ const DiplomaInternshipForm = () => {
           <h1 className="text-4xl md:text-5xl font-display font-black text-dark tracking-tighter italic">
             Diploma <span className="text-secondary not-italic">Industrial Training - Telangana</span>
           </h1>
-          <p className="text-gray-500 font-medium max-w-xl mx-auto italic">Official 6 Months Industrial Training Registration Portal</p>
+          <p className="text-gray-500 font-medium max-w-xl mx-auto italic">6-Month Industrial Training Registration Form (For 5th & 6th Semester Students)
+          </p>
         </header>
 
         <div className="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-8 md:p-16 relative overflow-hidden">
