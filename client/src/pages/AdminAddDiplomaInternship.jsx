@@ -120,7 +120,7 @@ const AdminAddDiplomaInternship = () => {
               <InputField label="Caste" name="caste" value={formData.caste} onChange={handleInputChange} placeholder="e.g. OBC" />
               <InputField label="Aadhar Number" name="aadharNumber" value={formData.aadharNumber} onChange={handleInputChange} placeholder="XXXX XXXX XXXX" />
               <InputField label="SSC Hall Ticket" name="sscHallTicket" value={formData.sscHallTicket} onChange={handleInputChange} placeholder="SSC Roll No" required={false} />
-              <InputField label="City" name="city" value={formData.city} onChange={handleInputChange} placeholder="e.g. Hyderabad" />
+              <InputField label="City" name="city" value={formData.city} onChange={handleInputChange} options={["Hyderabad", "Bangalore", "Chennai", "Sri City (Anantapur)", "Tirupati"]} />
               <InputField label="State" name="state" value={formData.state} onChange={handleInputChange} options={["Telangana", "Andhra Pradesh", "Tamil Nadu"]} />
             </div>
           </section>
@@ -129,7 +129,19 @@ const AdminAddDiplomaInternship = () => {
             <SectionTitle icon={<GraduationCap size={16} />} title="Academic Profile" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InputField label="College Name" name="collegeName" value={formData.collegeName} onChange={handleInputChange} placeholder="Full College Name" />
-              <InputField label="Branch" name="branch" value={formData.branch} onChange={handleInputChange} placeholder="e.g. ECE" />
+              <InputField label="Branch" name="branch" value={formData.branch} onChange={handleInputChange} options={[
+                "Computer Science Engineering (CSE)",
+                "Information Technology (IT)",
+                "Artificial Intelligence (AI)",
+                "Artificial Intelligence & Machine Learning (AI-ML)",
+                "Data Science",
+                "Cyber Security",
+                "Electronics & Communication Engineering (ECE)",
+                "Electrical & Electronics Engineering (EEE)",
+                "Mechanical Engineering (ME)",
+                "Civil Engineering (CE)",
+                "others"
+              ]} />
               <InputField label="Roll Number" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} placeholder="Univ Roll No" />
               <InputField label="Academic GPA" name="gpa" value={formData.gpa} onChange={handleInputChange} placeholder="e.g. 8.5" />
             </div>
@@ -138,8 +150,13 @@ const AdminAddDiplomaInternship = () => {
           <section>
             <SectionTitle icon={<Briefcase size={16} />} title="Training Preferences" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <InputField label="Training Mode" name="trainingMode" value={formData.trainingMode} onChange={handleInputChange} options={["OJT", "In Hands Training", "Other"]} />
-              <InputField label="Target Course" name="course" value={formData.course} onChange={handleInputChange} options={["Java / Python", "AI / ML / Cyber Security", "Cloud Computing / Networking", "Embedded Systems / PCB", "CSE"]} required={formData.trainingMode === 'In Hands Training'} />
+              <InputField label="Training Mode" name="trainingMode" value={formData.trainingMode} onChange={handleInputChange} options={[
+                { value: "OJT", label: "1. OJT- ON JOB TRAINING[Stipend ]" },
+                { value: "In Hands Training", label: "2. IN HANDS TRAINING [NO Stipend paid ]" }
+              ]} />
+              <InputField label="Target Course" name="course" value={formData.course} onChange={handleInputChange} options={[
+                "C", "Java", "Python", "Full Stack Development", "AI", "Machine Learning", "Cyber Security", "IoT", "Robotics", "Cloud Computing", "Networking", "AWS", "DevOps", "5G Technologies", "Embedded Systems", "PCB Design", "Solar Design", "VLSI", "MATLAB", "Arduino", "Raspberry Pi", "EMS", "NDT Tools Design", "CNC Programming", "AutoCAD", "SketchUp", "Revit", "Site Engineering", "Quantity Survey", "Advanced Survey", "Other"
+              ]} required={formData.trainingMode === 'In Hands Training'} />
               <InputField label="Company Name" name="companyName" value={formData.companyName} onChange={handleInputChange} placeholder="Optional" required={false} />
             </div>
           </section>

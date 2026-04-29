@@ -11,6 +11,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterCity, setFilterCity] = useState('all');
 
   useEffect(() => { fetchData(); }, []);
 
@@ -58,8 +59,11 @@ const AdminDashboard = () => {
     const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.phone.includes(searchTerm) || (s.city || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterStatus === 'all' || s.paymentStatus === filterStatus;
-    return matchesSearch && matchesFilter;
+    const matchesCity = filterCity === 'all' || (s.city || '').toLowerCase() === filterCity.toLowerCase();
+    return matchesSearch && matchesFilter && matchesCity;
   });
+
+  const cities = ['all', ...new Set(students.map(s => s.city).filter(Boolean))];
 
   const StatCard = ({ icon, label, value, color }) => (
     <div className={`bg-white rounded-[2rem] p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden`}>
@@ -91,6 +95,10 @@ const AdminDashboard = () => {
               <option value="all">All Status</option>
               <option value="Paid">Paid Only</option>
               <option value="Pending">Pending Only</option>
+            </select>
+            <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)} className="input-field py-4 px-6 text-[10px] font-black uppercase tracking-widest cursor-pointer flex-1 xl:w-48 xl:flex-none bg-muted/50 border-transparent focus:bg-white focus:border-primary">
+              <option value="all">All Locations</option>
+              {cities.filter(c => c !== 'all').map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button onClick={fetchData} className="p-4 bg-primary/10 text-primary rounded-2xl hover:bg-primary hover:text-white transition-all shadow-lg shadow-blue-500/10 flex-shrink-0" title="Refresh">

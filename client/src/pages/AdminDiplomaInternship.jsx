@@ -70,7 +70,7 @@ const AdminDiplomaInternship = () => {
 
   // Get unique cities and courses for filters
   const cities = ['all', ...new Set(applications.map(a => a.city).filter(Boolean))];
-  const courses = ['all', 'Java / Python', 'AI / ML / Cyber Security', 'Cloud Computing / Networking', 'Embedded Systems / PCB', 'CSE'];
+  const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
   return (
     <AdminLayout title={<>Diploma <span className="text-secondary not-italic uppercase">Internship</span></>} subtitle="Manage specialized diploma internship applications">

@@ -95,8 +95,8 @@ const DiplomaInternshipForm = () => {
     studentEmail: '', studentFullName: '', studentPhone: '', parentPhone: '', gender: '', dob: '', city: '',
     fatherName: '', motherName: '', age: '', caste: '', aadharNumber: '', sscHallTicket: '',
     state: '',
-    collegeName: '', branch: '', rollNumber: '', gpa: '',
-    trainingMode: '', companyName: '', course: '',
+    collegeName: '', branch: '', otherBranch: '', rollNumber: '', gpa: '',
+    trainingMode: '', companyName: '', course: '', otherCourse: '',
     declaration: false
   });
 
@@ -171,9 +171,13 @@ const DiplomaInternshipForm = () => {
 
   const validateStep = () => {
     if (step === 1) {
-      const { studentEmail, studentFullName, studentPhone, parentPhone, gender, dob } = formData;
-      if (!studentEmail || !studentFullName || !studentPhone || !parentPhone || !gender || !dob) {
+      const { studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, collegeName, branch, city } = formData;
+      if (!studentEmail || !studentFullName || !studentPhone || !parentPhone || !gender || !dob || !collegeName || !branch || !city) {
         toast.error('Please fill all required fields');
+        return false;
+      }
+      if (branch === 'others' && !formData.otherBranch) {
+        toast.error('Please specify your branch');
         return false;
       }
     } else if (step === 2) {
@@ -183,8 +187,8 @@ const DiplomaInternshipForm = () => {
         return false;
       }
     } else if (step === 3) {
-      const { collegeName, branch, rollNumber, gpa } = formData;
-      if (!collegeName || !branch || !rollNumber || !gpa) {
+      const { rollNumber, gpa } = formData;
+      if (!rollNumber || !gpa) {
         toast.error('Please fill all required fields');
         return false;
       }
@@ -196,6 +200,10 @@ const DiplomaInternshipForm = () => {
       }
       if (trainingMode === 'In Hands Training' && !formData.course) {
         toast.error('Please select a course');
+        return false;
+      }
+      if (formData.course === 'Other' && !formData.otherCourse) {
+        toast.error('Please specify your course');
         return false;
       }
     } else if (step === 5) {
@@ -217,7 +225,11 @@ const DiplomaInternshipForm = () => {
     setLoading(true);
     try {
       const data = new FormData();
-      Object.keys(formData).forEach(key => data.append(key, formData[key]));
+      const submissionData = { ...formData };
+      if (submissionData.branch === 'others') submissionData.branch = submissionData.otherBranch;
+      if (submissionData.course === 'Other') submissionData.course = submissionData.otherCourse;
+
+      Object.keys(submissionData).forEach(key => data.append(key, submissionData[key]));
       Object.keys(files).forEach(key => data.append(key, files[key]));
 
       await submitDiplomaInternship(data);
@@ -244,9 +256,9 @@ const DiplomaInternshipForm = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dark">Official Registration Portal</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-black text-dark tracking-tighter italic">
-            Diploma <span className="text-secondary not-italic">Internship</span>
+            Diploma <span className="text-secondary not-italic">Industrial Training</span>
           </h1>
-          <p className="text-gray-500 font-medium max-w-xl mx-auto">Students 6 months training registration form for 5th& 6th semester</p>
+          <p className="text-gray-500 font-medium max-w-xl mx-auto">Students 6 Months Training Registration form for 5th& 6th Semester</p>
         </header>
 
         <div className="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-8 md:p-16 relative overflow-hidden">
@@ -280,9 +292,43 @@ const DiplomaInternshipForm = () => {
                 <InputWrapper label="Date of Birth" icon={<Calendar size={12} />} required>
                   <input type="date" name="dob" value={formData.dob} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" />
                 </InputWrapper>
-                <InputWrapper label="City" icon={<MapPin size={12} />}>
-                  <input type="text" name="city" value={formData.city} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. Hyderabad" />
+                <InputWrapper label="City" icon={<MapPin size={12} />} required>
+                  <select name="city" value={formData.city} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                    <option value="">Select Location</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Sri City (Anantapur)">Sri City (Anantapur)</option>
+                    <option value="Tirupati">Tirupati</option>
+                  </select>
                 </InputWrapper>
+
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4 border-t border-gray-100 pt-8">
+                  <InputWrapper label="College Name" icon={<GraduationCap size={12} />} required>
+                    <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Full College Name" />
+                  </InputWrapper>
+                  <InputWrapper label="Branch" icon={<GraduationCap size={12} />} required>
+                    <select name="branch" value={formData.branch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                      <option value="">Select Branch</option>
+                      <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
+                      <option value="Information Technology (IT)">Information Technology (IT)</option>
+                      <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
+                      <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Cyber Security">Cyber Security</option>
+                      <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
+                      <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
+                      <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
+                      <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
+                      <option value="others">others</option>
+                    </select>
+                  </InputWrapper>
+                  {formData.branch === 'others' && (
+                    <InputWrapper label="Enter Branch / Batch" icon={<GraduationCap size={12} />} required>
+                      <input type="text" name="otherBranch" value={formData.otherBranch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Specify your branch/batch" />
+                    </InputWrapper>
+                  )}
+                </div>
               </div>
             )}
 
@@ -321,12 +367,6 @@ const DiplomaInternshipForm = () => {
             {/* Step 3: College Details */}
             {step === 3 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <InputWrapper label="College Name" icon={<GraduationCap size={12} />} required>
-                  <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Full College Name" />
-                </InputWrapper>
-                <InputWrapper label="Branch" icon={<GraduationCap size={12} />} required>
-                  <input type="text" name="branch" value={formData.branch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. ECE / CSE" />
-                </InputWrapper>
                 <InputWrapper label="Roll Number" icon={<Fingerprint size={12} />} required>
                   <input type="text" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="College Roll No" />
                 </InputWrapper>
@@ -343,9 +383,8 @@ const DiplomaInternshipForm = () => {
                   <InputWrapper label="Choose Mode of Training" icon={<Briefcase size={12} />} required>
                     <div className="grid grid-cols-1 gap-3">
                       {[
-                        { id: 'OJT', label: 'OJT / Job Training (Stipend Company Training)' },
-                        { id: 'In Hands Training', label: 'In Hands Training (Online / Offline Courses Training)' },
-                        { id: 'Other', label: 'Other' }
+                        { id: 'OJT', label: '1. OJT- ON JOB TRAINING[Stipend ]' },
+                        { id: 'In Hands Training', label: '2. IN HANDS TRAINING [NO Stipend paid ]' }
                       ].map(mode => (
                         <label key={mode.id} className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all cursor-pointer ${formData.trainingMode === mode.id ? 'border-primary bg-primary/5' : 'border-gray-100 hover:border-gray-200'}`}>
                           <input type="radio" name="trainingMode" value={mode.id} checked={formData.trainingMode === mode.id} onChange={handleInputChange} className="w-5 h-5 accent-primary" />
@@ -364,14 +403,45 @@ const DiplomaInternshipForm = () => {
                       <InputWrapper label="Course Selection" icon={<GraduationCap size={12} />} required>
                         <select name="course" value={formData.course} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
                           <option value="">Select Course</option>
-                          <option value="Java / Python">Java / Python</option>
-                          <option value="AI / ML / Cyber Security">AI / ML / Cyber Security</option>
-                          <option value="Cloud Computing / Networking">Cloud Computing / Networking</option>
-                          <option value="Embedded Systems / PCB">Embedded Systems / PCB</option>
-                          <option value="CSE">CSE</option>
+                          <option value="C">C</option>
+                          <option value="Java">Java</option>
+                          <option value="Python">Python</option>
+                          <option value="Full Stack Development">Full Stack Development</option>
+                          <option value="AI">AI</option>
+                          <option value="Machine Learning">Machine Learning</option>
+                          <option value="Cyber Security">Cyber Security</option>
+                          <option value="IoT">IoT</option>
+                          <option value="Robotics">Robotics</option>
+                          <option value="Cloud Computing">Cloud Computing</option>
+                          <option value="Networking">Networking</option>
+                          <option value="AWS">AWS</option>
+                          <option value="DevOps">DevOps</option>
+                          <option value="5G Technologies">5G Technologies</option>
+                          <option value="Embedded Systems">Embedded Systems</option>
+                          <option value="PCB Design">PCB Design</option>
+                          <option value="Solar Design">Solar Design</option>
+                          <option value="VLSI">VLSI</option>
+                          <option value="MATLAB">MATLAB</option>
+                          <option value="Arduino">Arduino</option>
+                          <option value="Raspberry Pi">Raspberry Pi</option>
+                          <option value="EMS">EMS</option>
+                          <option value="NDT Tools Design">NDT Tools Design</option>
+                          <option value="CNC Programming">CNC Programming</option>
+                          <option value="AutoCAD">AutoCAD</option>
+                          <option value="SketchUp">SketchUp</option>
+                          <option value="Revit">Revit</option>
+                          <option value="Site Engineering">Site Engineering</option>
+                          <option value="Quantity Survey">Quantity Survey</option>
+                          <option value="Advanced Survey">Advanced Survey</option>
+                          <option value="Other">Other</option>
                         </select>
                       </InputWrapper>
                     )}
+
+                    {formData.course === 'Other' && (
+                      <InputWrapper label="Specify Other Course" icon={<GraduationCap size={12} />} required>
+                        <input type="text" name="otherCourse" value={formData.otherCourse} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Enter course name" />
+                      </InputWrapper>
                   </div>
                 </div>
               </div>
@@ -409,7 +479,7 @@ const DiplomaInternshipForm = () => {
                   </div>
                   <div className="flex justify-between border-b border-gray-100 pb-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Course</span>
-                    <span className="text-sm font-black text-dark">{formData.course || 'N/A'}</span>
+                    <span className="text-sm font-black text-dark">{formData.course === 'Other' ? formData.otherCourse : (formData.course || 'N/A')}</span>
                   </div>
                   <label className="flex items-start gap-4 cursor-pointer mt-8">
                     <input type="checkbox" name="declaration" checked={formData.declaration} onChange={handleInputChange} className="w-5 h-5 accent-primary mt-1" />
