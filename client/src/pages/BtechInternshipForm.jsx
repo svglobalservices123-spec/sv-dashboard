@@ -133,7 +133,9 @@ const BtechInternshipForm = () => {
             <div className="bg-emerald-600 p-1.5 rounded-lg"><GraduationCap className="text-white" size={16}/></div>
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dark">Degree Registration Portal</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-display font-black text-dark tracking-tighter italic">Btech/Degree <span className="text-emerald-600 not-italic">Internship</span></h1>
+          <h1 className="text-4xl md:text-5xl font-display font-black text-dark tracking-tighter italic">
+            Andhra Pradesh- <span className="text-emerald-600 not-italic">Diploma Industrial Training</span>
+          </h1>
           <p className="text-gray-500 font-medium max-w-xl mx-auto">Complete your professional registration in minutes through our secure multi-step wizard.</p>
         </header>
 
