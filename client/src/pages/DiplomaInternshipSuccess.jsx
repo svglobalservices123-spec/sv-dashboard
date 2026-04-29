@@ -24,12 +24,79 @@ const DiplomaInternshipSuccess = () => {
         </div>
 
         <h1 className="text-4xl md:text-5xl font-display font-black text-dark mb-4 tracking-tighter italic uppercase">
-          Internship <span className="text-secondary not-italic">Confirmed!</span>
+          Training Application
+          <span className="text-secondary not-italic">Confirmed!</span>
         </h1>
 
-        <p className="text-gray-500 font-medium text-lg mb-10 leading-relaxed max-w-lg mx-auto">
-          Your application for the **Diploma Internship Program** has been successfully submitted. Our academic team will review your documents and contact you soon.
-        </p>
+        <div className="text-left space-y-8 mb-12">
+          {/* Instructions Card */}
+          <div className="bg-muted/50 rounded-[2rem] p-8 border border-gray-100">
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-4 flex items-center gap-2">
+              <Download size={14} /> Basic Details & Requirements
+            </h3>
+            <p className="text-sm font-bold text-gray-700 leading-relaxed mb-6">
+              Dear candidates, please read the basic details:
+              <br /><br />
+              • You are applying for Diploma 6-months industrial training as per the SBTET curriculum.
+              <br />
+              • Candidates should follow the guidelines of the SBTET training curriculum.
+              <br />
+              • All candidates should submit an NOC letter, Indemnity Bond, and Insurance during the training program.
+            </p>
+
+            <div className="space-y-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Keep the below documents ready:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {['1. SSC Memo – PDF', '2. Aadhaar Card – PDF', '3. College ID Card – PDF', '4. Passport Size Photo – PDF'].map((doc, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                    <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 flex-shrink-0">
+                      <CheckCircle2 size={12} />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-600">{doc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="flex items-center gap-3 text-green-700">
+                <CheckCircle2 size={16} />
+                <span className="text-xs font-black uppercase tracking-wider">Yes, I have read all points and all the documents are ready.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Terms Card */}
+          <div className="bg-muted/50 rounded-[2rem] p-8 border border-gray-100">
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-secondary mb-4 flex items-center gap-2">
+              <ShieldCheck size={14} /> Terms and Conditions
+            </h3>
+            <ul className="space-y-4">
+              {[
+                'All students should maintain 90% training attendance during the training as per the SBTET curriculum.',
+                'NOC letter and training offer letter will not be re-issued or changed once issued.',
+                'Fee payment will not be refunded once paid.',
+                'I will follow the training company’s rules, regulations, and guidelines.',
+                'I will attend all the training sessions and maintain polite and respectful behaviour.'
+              ].map((term, i) => (
+                <li key={i} className="flex items-start gap-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></div>
+                  <p className="text-[11px] font-bold text-gray-600 leading-relaxed">{term}</p>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 pt-6 border-t border-gray-200 flex items-center gap-4">
+              <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+                <ShieldCheck size={20} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-secondary">Declaration</p>
+                <p className="text-[11px] font-bold text-gray-700 italic">I have read and I agree to all the above points.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 
