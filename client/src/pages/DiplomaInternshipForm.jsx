@@ -255,10 +255,10 @@ const DiplomaInternshipForm = () => {
             </div>
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dark">Official Registration Portal</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-display font-black text-dark tracking-tighter italic">
-            Diploma <span className="text-secondary not-italic">Industrial Training</span>
+          <h1 className="text-4xl md:text-5xl font-display font-black text-dark tracking-tighter italic">
+            Diploma <span className="text-secondary not-italic">Industrial Training - Telangana</span>
           </h1>
-          <p className="text-gray-500 font-medium max-w-xl mx-auto">Students 6 Months Training Registration form for 5th& 6th Semester</p>
+          <p className="text-gray-500 font-medium max-w-xl mx-auto italic">Official 6 Months Industrial Training Registration Portal</p>
         </header>
 
         <div className="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-8 md:p-16 relative overflow-hidden">

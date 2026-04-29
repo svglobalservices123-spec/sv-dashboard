@@ -73,7 +73,7 @@ const AdminDiplomaInternship = () => {
   const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
   return (
-    <AdminLayout title={<>Diploma <span className="text-secondary not-italic uppercase">Internship</span></>} subtitle="Manage specialized diploma internship applications">
+    <AdminLayout title={<>Diploma <span className="text-secondary not-italic uppercase">Industrial Training - Telangana</span></>} subtitle="Manage specialized industrial training applications">
         {/* Filters Panel */}
         <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/20">
           <div className="relative w-full xl:w-[400px]">
