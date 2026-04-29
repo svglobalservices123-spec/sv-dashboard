@@ -28,6 +28,14 @@ const DiplomaInternshipSuccess = () => {
           <span className="text-secondary not-italic">Confirmed!</span>
         </h1>
 
+        <p className="text-gray-500 font-medium text-lg mb-10 leading-relaxed max-w-lg mx-auto">
+          Dear Student,
+          <br /><br />
+          Your application for industrial training has been successfully submitted. Our academic team will review your documents and contact you shortly.
+          <br /><br />
+          Thank you.
+        </p>
+
         <div className="text-left space-y-8 mb-12">
           {/* Instructions Card */}
           <div className="bg-muted/50 rounded-[2rem] p-8 border border-gray-100">

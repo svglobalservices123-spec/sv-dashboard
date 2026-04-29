@@ -18,8 +18,16 @@ const BtechInternshipSuccess = () => {
           <span className="text-[10px] font-black uppercase tracking-widest">Submission Verified & Logged</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-display font-black text-dark mb-4 tracking-tighter italic uppercase">
-          Internship <span className="text-emerald-600 not-italic">Confirmed!</span>
+          Training Application  <span className="text-emerald-600 not-italic">Confirmed!</span>
         </h1>
+
+        <p className="text-gray-500 font-medium text-lg mb-10 leading-relaxed max-w-lg mx-auto">
+          Dear Student,
+          <br /><br />
+          Your application for industrial training has been successfully submitted. Our academic team will review your documents and contact you shortly.
+          <br /><br />
+          Thank you.
+        </p>
         <div className="text-left space-y-8 mb-12">
           {/* Instructions Card */}
           <div className="bg-muted/50 rounded-[2rem] p-8 border border-gray-100">
