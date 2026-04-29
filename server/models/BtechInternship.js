@@ -8,6 +8,7 @@ const btechInternshipSchema = new mongoose.Schema({
   parentPhone: { type: String, required: true },
   gender: { type: String, required: true },
   dob: { type: String, required: true },
+  city: { type: String }, // Added for filtering/admin requirements
 
   // Step 2: Personal Details
   fatherName: { type: String, required: true },

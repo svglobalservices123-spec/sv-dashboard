@@ -10,7 +10,7 @@ const AdminBtechInternship = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({ course: 'all', state: 'all' });
+  const [filters, setFilters] = useState({ course: 'all', state: 'all', city: 'all' });
 
   useEffect(() => { fetchData(); }, []);
 
@@ -59,11 +59,13 @@ const AdminBtechInternship = () => {
       (app.state || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCourse = filters.course === 'all' || app.course === filters.course;
     const matchesState = filters.state === 'all' || app.state === filters.state;
-    return matchesSearch && matchesCourse && matchesState;
+    const matchesCity = filters.city === 'all' || app.city === filters.city;
+    return matchesSearch && matchesCourse && matchesState && matchesCity;
   });
 
-  const states = ['all', 'Telangana', 'Andhra Pradesh', 'Tamil Nadu'];
-  const courses = ['all', 'Java / Python', 'AI / ML / Cyber Security', 'Cloud Computing / Networking', 'Embedded Systems / PCB', 'CSE'];
+  const states = ['all', ...new Set(applications.map(a => a.state).filter(Boolean))];
+  const cities = ['all', ...new Set(applications.map(a => a.city).filter(Boolean))];
+  const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
   return (
     <AdminLayout title={<>Btech/Degree <span className="text-emerald-500 not-italic uppercase">Internship</span></>} subtitle="Manage degree internship applications">
@@ -79,6 +81,13 @@ const AdminBtechInternship = () => {
             <select value={filters.course} onChange={(e) => setFilters({...filters, course: e.target.value})} className="input-field py-4 px-6 text-[10px] font-black uppercase tracking-widest cursor-pointer bg-muted/50 border-transparent focus:bg-white focus:border-primary">
               <option value="all">All Courses</option>
               {courses.filter(c => c !== 'all').map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 flex-1 xl:flex-none">
+            <MapPin size={16} className="text-gray-400 hidden sm:block" />
+            <select value={filters.city} onChange={(e) => setFilters({...filters, city: e.target.value})} className="input-field py-4 px-6 text-[10px] font-black uppercase tracking-widest cursor-pointer bg-muted/50 border-transparent focus:bg-white focus:border-primary">
+              <option value="all">All Cities</option>
+              {cities.filter(c => c !== 'all').map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2 flex-1 xl:flex-none">

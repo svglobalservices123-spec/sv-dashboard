@@ -61,7 +61,7 @@ const AdminAddBtechInternship = () => {
     fatherName: '', motherName: '', age: '', caste: '', aadharNumber: '', sscHallTicket: '',
     state: '',
     collegeName: '', branch: '', rollNumber: '', degreePercentage: '',
-    trainingMode: '', companyName: '', course: '',
+    trainingMode: '', companyName: '', course: '', city: '',
     declaration: true
   });
   const [files, setFiles] = useState({
@@ -108,6 +108,7 @@ const AdminAddBtechInternship = () => {
               <InputField label="Date of Birth" name="dob" value={formData.dob} onChange={handleInputChange} type="date" />
               <InputField label="Student Phone" name="studentPhone" value={formData.studentPhone} onChange={handleInputChange} placeholder="+91 XXXXX XXXXX" />
               <InputField label="Parent Phone" name="parentPhone" value={formData.parentPhone} onChange={handleInputChange} placeholder="+91 XXXXX XXXXX" />
+              <InputField label="City / Location" name="city" value={formData.city} onChange={handleInputChange} options={["Hyderabad", "Bangalore", "Chennai", "Sri City (Anantapur)", "Tirupati"]} />
             </div>
           </section>
 
@@ -128,7 +129,19 @@ const AdminAddBtechInternship = () => {
             <SectionTitle icon={<GraduationCap size={16} />} title="Academic Profile" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InputField label="College Name" name="collegeName" value={formData.collegeName} onChange={handleInputChange} placeholder="Full College Name" />
-              <InputField label="Branch" name="branch" value={formData.branch} onChange={handleInputChange} placeholder="e.g. ECE" />
+              <InputField label="Branch" name="branch" value={formData.branch} onChange={handleInputChange} options={[
+                "Computer Science Engineering (CSE)",
+                "Information Technology (IT)",
+                "Artificial Intelligence (AI)",
+                "Artificial Intelligence & Machine Learning (AI-ML)",
+                "Data Science",
+                "Cyber Security",
+                "Electronics & Communication Engineering (ECE)",
+                "Electrical & Electronics Engineering (EEE)",
+                "Mechanical Engineering (ME)",
+                "Civil Engineering (CE)",
+                "others"
+              ]} />
               <InputField label="Roll Number" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} placeholder="Univ Roll No" />
               <InputField label="Degree Percentage (%)" name="degreePercentage" value={formData.degreePercentage} onChange={handleInputChange} placeholder="e.g. 75%" />
             </div>
@@ -137,8 +150,16 @@ const AdminAddBtechInternship = () => {
           <section>
             <SectionTitle icon={<Briefcase size={16} />} title="Training Preferences" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <InputField label="Training Mode" name="trainingMode" value={formData.trainingMode} onChange={handleInputChange} options={["OJT", "In Hands Training", "Other"]} />
-              <InputField label="Target Course" name="course" value={formData.course} onChange={handleInputChange} options={["Java / Python", "AI / ML / Cyber Security", "Cloud Computing / Networking", "Embedded Systems / PCB", "CSE"]} required={formData.trainingMode === 'In Hands Training'} />
+              <InputField label="Training Mode" name="trainingMode" value={formData.trainingMode} onChange={handleInputChange} options={[
+                { value: "OJT", label: "1. OJT- ON JOB TRAINING[Stipend ]" },
+                { value: "In Hands Training", label: "2. IN HANDS TRAINING [NO Stipend paid ]" }
+              ]} />
+              <InputField label="Target Course" name="course" value={formData.course} onChange={handleInputChange} options={[
+                "C", "Java", "Python", "Full Stack Development", "AI", "Machine Learning", "Cyber Security", "IoT", "Robotics", 
+                "Cloud Computing", "Networking", "AWS", "DevOps", "5G Technologies", "Embedded Systems", "PCB Design", 
+                "Solar Design", "VLSI", "MATLAB", "Arduino", "Raspberry Pi", "EMS", "NDT Tools Design", "CNC Programming", 
+                "AutoCAD", "SketchUp", "Revit", "Site Engineering", "Quantity Survey", "Advanced Survey", "Other"
+              ]} required={formData.trainingMode === 'In Hands Training'} />
               <InputField label="Company Name" name="companyName" value={formData.companyName} onChange={handleInputChange} placeholder="Optional" required={false} />
             </div>
           </section>

@@ -68,8 +68,8 @@ const BtechInternshipForm = () => {
     studentEmail:'',studentFullName:'',studentPhone:'',parentPhone:'',gender:'',dob:'',
     fatherName:'',motherName:'',age:'',caste:'',aadharNumber:'',sscHallTicket:'',
     state:'',
-    collegeName:'',branch:'',rollNumber:'',degreePercentage:'',
-    trainingMode:'',companyName:'',course:'',
+    collegeName:'',branch:'',otherBranch:'',rollNumber:'',degreePercentage:'',
+    trainingMode:'',companyName:'',course:'',otherCourse:'',city:'',
     declaration:false
   });
   const [files, setFiles] = useState({collegeIdCard:null,aadharCard:null,sscMemo:null,photo:null});
@@ -97,10 +97,10 @@ const BtechInternshipForm = () => {
   const prevStep = () => { setStep(step-1);window.scrollTo(0,0); };
 
   const validateStep = () => {
-    if(step===1){const{studentEmail,studentFullName,fatherName,studentPhone,parentPhone,gender}=formData;if(!studentEmail||!studentFullName||!fatherName||!studentPhone||!parentPhone||!gender){toast.error('Please fill all required fields');return false;}}
+    if(step===1){const{studentEmail,studentFullName,fatherName,studentPhone,parentPhone,gender,collegeName,branch,city}=formData;if(!studentEmail||!studentFullName||!fatherName||!studentPhone||!parentPhone||!gender||!collegeName||!branch||!city){toast.error('Please fill all required fields');return false;}if(branch==='others'&&!formData.otherBranch){toast.error('Please specify your branch');return false;}}
     else if(step===2){const{age,dob,caste,aadharNumber,state}=formData;if(!age||!dob||!caste||!aadharNumber||!state){toast.error('Please fill all required fields including State');return false;}}
-    else if(step===3){const{collegeName,branch,rollNumber,degreePercentage}=formData;if(!collegeName||!branch||!rollNumber||!degreePercentage){toast.error('Please fill all required fields');return false;}}
-    else if(step===4){if(!formData.trainingMode){toast.error('Please choose mode of training');return false;}if(formData.trainingMode==='In Hands Training'&&!formData.course){toast.error('Please select a course');return false;}}
+    else if(step===3){const{rollNumber,degreePercentage}=formData;if(!rollNumber||!degreePercentage){toast.error('Please fill all required fields');return false;}}
+    else if(step===4){if(!formData.trainingMode){toast.error('Please choose mode of training');return false;}if(formData.trainingMode==='In Hands Training'&&!formData.course){toast.error('Please select a course');return false;}if(formData.course==='Other'&&!formData.otherCourse){toast.error('Please specify your course');return false;}}
     else if(step===5){if(!files.collegeIdCard||!files.aadharCard||!files.sscMemo||!files.photo){toast.error('Please upload all required documents');return false;}}
     return true;
   };
@@ -111,7 +111,11 @@ const BtechInternshipForm = () => {
     setLoading(true);
     try{
       const data=new FormData();
-      Object.keys(formData).forEach(k=>data.append(k,formData[k]));
+      const sd={...formData};
+      if(sd.branch==='others')sd.branch=sd.otherBranch;
+      if(sd.course==='Other')sd.course=sd.otherCourse;
+
+      Object.keys(sd).forEach(k=>data.append(k,sd[k]));
       Object.keys(files).forEach(k=>data.append(k,files[k]));
       await submitBtechInternship(data);
       toast.success('Registration Successful!');
@@ -147,6 +151,41 @@ const BtechInternshipForm = () => {
                 <IW label="Gender" icon={<Users size={12}/>} required>
                   <select name="gender" value={formData.gender} onChange={hic} className={ic+" cursor-pointer"}><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
                 </IW>
+                <IW label="Location" icon={<MapPin size={12}/>} required>
+                  <select name="city" value={formData.city} onChange={hic} className={ic+" cursor-pointer"}>
+                    <option value="">Select Location</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Sri City (Anantapur)">Sri City (Anantapur)</option>
+                    <option value="Tirupati">Tirupati</option>
+                  </select>
+                </IW>
+
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4 border-t border-gray-100 pt-8">
+                  <IW label="College Name" icon={<GraduationCap size={12}/>} required><input type="text" name="collegeName" value={formData.collegeName} onChange={hic} className={ic} placeholder="Full College Name"/></IW>
+                  <IW label="Branch" icon={<GraduationCap size={12}/>} required>
+                    <select name="branch" value={formData.branch} onChange={hic} className={ic+" cursor-pointer"}>
+                      <option value="">Select Branch</option>
+                      <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
+                      <option value="Information Technology (IT)">Information Technology (IT)</option>
+                      <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
+                      <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Cyber Security">Cyber Security</option>
+                      <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
+                      <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
+                      <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
+                      <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
+                      <option value="others">others</option>
+                    </select>
+                  </IW>
+                  {formData.branch==='others'&&(
+                    <IW label="Enter Branch / Batch" icon={<GraduationCap size={12}/>} required>
+                      <input type="text" name="otherBranch" value={formData.otherBranch} onChange={hic} className={ic} placeholder="Specify your branch/batch"/>
+                    </IW>
+                  )}
+                </div>
               </div>
             )}
             {step===2&&(
@@ -163,8 +202,6 @@ const BtechInternshipForm = () => {
             )}
             {step===3&&(
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <IW label="College Name" icon={<GraduationCap size={12}/>} required><input type="text" name="collegeName" value={formData.collegeName} onChange={hic} className={ic} placeholder="Full College Name"/></IW>
-                <IW label="Branch" icon={<GraduationCap size={12}/>} required><input type="text" name="branch" value={formData.branch} onChange={hic} className={ic} placeholder="e.g. ECE / CSE"/></IW>
                 <IW label="Roll Number" icon={<Fingerprint size={12}/>} required><input type="text" name="rollNumber" value={formData.rollNumber} onChange={hic} className={ic} placeholder="College Roll No"/></IW>
                 <IW label="Degree Percentage (%)" icon={<CheckCircle size={12}/>} required><input type="text" name="degreePercentage" value={formData.degreePercentage} onChange={hic} className={ic} placeholder="e.g. 75% or 8.2 CGPA"/></IW>
               </div>
@@ -174,7 +211,7 @@ const BtechInternshipForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <IW label="Choose Mode of Training" icon={<Briefcase size={12}/>} required>
                     <div className="grid grid-cols-1 gap-3">
-                      {[{id:'OJT',label:'OJT / Job Training (Stipend Company Training)'},{id:'In Hands Training',label:'In Hands Training (Online / Offline Courses Training)'},{id:'Other',label:'Other'}].map(m=>(
+                      {[{id:'OJT',label:'1. OJT- ON JOB TRAINING[Stipend ]'},{id:'In Hands Training',label:'2. IN HANDS TRAINING [NO Stipend paid ]'}].map(m=>(
                         <label key={m.id} className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all cursor-pointer ${formData.trainingMode===m.id?'border-emerald-500 bg-emerald-50/50':'border-gray-100 hover:border-gray-200'}`}>
                           <input type="radio" name="trainingMode" value={m.id} checked={formData.trainingMode===m.id} onChange={hic} className="w-5 h-5 accent-emerald-600"/><span className="text-sm font-bold text-dark">{m.label}</span>
                         </label>
@@ -186,8 +223,44 @@ const BtechInternshipForm = () => {
                     {formData.trainingMode==='In Hands Training'&&(
                       <IW label="Course Selection" icon={<GraduationCap size={12}/>} required>
                         <select name="course" value={formData.course} onChange={hic} className={ic+" cursor-pointer"}>
-                          <option value="">Select Course</option><option value="Java / Python">Java / Python</option><option value="AI / ML / Cyber Security">AI / ML / Cyber Security</option><option value="Cloud Computing / Networking">Cloud Computing / Networking</option><option value="Embedded Systems / PCB">Embedded Systems / PCB</option><option value="CSE">CSE</option>
+                          <option value="">Select Course</option>
+                          <option value="C">C</option>
+                          <option value="Java">Java</option>
+                          <option value="Python">Python</option>
+                          <option value="Full Stack Development">Full Stack Development</option>
+                          <option value="AI">AI</option>
+                          <option value="Machine Learning">Machine Learning</option>
+                          <option value="Cyber Security">Cyber Security</option>
+                          <option value="IoT">IoT</option>
+                          <option value="Robotics">Robotics</option>
+                          <option value="Cloud Computing">Cloud Computing</option>
+                          <option value="Networking">Networking</option>
+                          <option value="AWS">AWS</option>
+                          <option value="DevOps">DevOps</option>
+                          <option value="5G Technologies">5G Technologies</option>
+                          <option value="Embedded Systems">Embedded Systems</option>
+                          <option value="PCB Design">PCB Design</option>
+                          <option value="Solar Design">Solar Design</option>
+                          <option value="VLSI">VLSI</option>
+                          <option value="MATLAB">MATLAB</option>
+                          <option value="Arduino">Arduino</option>
+                          <option value="Raspberry Pi">Raspberry Pi</option>
+                          <option value="EMS">EMS</option>
+                          <option value="NDT Tools Design">NDT Tools Design</option>
+                          <option value="CNC Programming">CNC Programming</option>
+                          <option value="AutoCAD">AutoCAD</option>
+                          <option value="SketchUp">SketchUp</option>
+                          <option value="Revit">Revit</option>
+                          <option value="Site Engineering">Site Engineering</option>
+                          <option value="Quantity Survey">Quantity Survey</option>
+                          <option value="Advanced Survey">Advanced Survey</option>
+                          <option value="Other">Other</option>
                         </select>
+                      </IW>
+                    )}
+                    {formData.course==='Other'&&(
+                      <IW label="Specify Other Course" icon={<GraduationCap size={12}/>} required>
+                        <input type="text" name="otherCourse" value={formData.otherCourse} onChange={hic} className={ic} placeholder="Enter course name"/>
                       </IW>
                     )}
                   </div>
@@ -213,7 +286,7 @@ const BtechInternshipForm = () => {
                   {[['Student Name',formData.studentFullName],['College',formData.collegeName],['State',formData.state],['Course',formData.course||'N/A'],['Training Mode',formData.trainingMode]].map(([l,v])=>(
                     <div key={l} className="flex justify-between border-b border-gray-100 pb-4">
                       <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{l}</span>
-                      <span className="text-sm font-black text-dark truncate ml-4 text-right">{v}</span>
+                      <span className="text-sm font-black text-dark truncate ml-4 text-right">{l==='Course' && formData.course==='Other' ? formData.otherCourse : v}</span>
                     </div>
                   ))}
                   <label className="flex items-start gap-4 cursor-pointer mt-8">
