@@ -442,6 +442,7 @@ const DiplomaInternshipForm = () => {
                       <InputWrapper label="Specify Other Course" icon={<GraduationCap size={12} />} required>
                         <input type="text" name="otherCourse" value={formData.otherCourse} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Enter course name" />
                       </InputWrapper>
+                    )}
                   </div>
                 </div>
               </div>
