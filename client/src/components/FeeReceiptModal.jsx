@@ -122,23 +122,31 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
 
       <style>{`
         @media print {
-          body * {
-            visibility: hidden;
-          }
-          #printable-receipt, #printable-receipt * {
-            visibility: visible;
-          }
-          #printable-receipt {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            border: none;
-            padding: 0;
+          @page {
+            size: A4;
             margin: 0;
           }
-          .no-print {
+          body {
+            visibility: hidden;
+            background: white !important;
+          }
+          .no-print, nav, header, footer, button {
             display: none !important;
+          }
+          #printable-receipt {
+            visibility: visible !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 210mm !important;
+            height: auto !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 15mm !important;
+            display: block !important;
+          }
+          #printable-receipt * {
+            visibility: visible !important;
           }
         }
       `}</style>
