@@ -1,8 +1,33 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 const FeeReceiptModal = ({ receipt, onClose }) => {
   const handlePrint = () => {
-    window.print();
+    const printWindow = window.open('', '_blank');
+    const receiptHtml = document.getElementById('printable-receipt').innerHTML;
+    
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Fee Receipt - ${receipt.name}</title>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+          <script src="https://cdn.tailwindcss.com"></script>
+          <style>
+            @media print {
+              @page { size: A4; margin: 0; }
+              body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            }
+            body { font-family: 'Inter', sans-serif; padding: 15mm; background: white; }
+            .receipt-container { width: 100%; max-width: 210mm; margin: 0 auto; position: relative; }
+          </style>
+        </head>
+        <body onload="window.print(); window.close();">
+          <div class="receipt-container">
+            ${receiptHtml}
+          </div>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   return (
@@ -109,7 +134,7 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
                     <td className="py-6 text-right font-bold text-gray-600">{receipt.paymentMode}</td>
                     <td className="py-6 text-right font-black text-blue-900">₹{receipt.amount.toLocaleString()}</td>
                   </tr>
-                  <tr className="bg-blue-900 text-white">
+                  <tr className="bg-[#1e3a8a] text-white">
                     <td colSpan="2" className="py-4 px-6 text-right font-black uppercase tracking-widest text-sm">Total Amount Paid</td>
                     <td className="py-4 px-6 text-right font-black text-2xl">₹{receipt.amount.toLocaleString()}</td>
                   </tr>
@@ -120,7 +145,7 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
             {/* Footer Section */}
             <div className="grid grid-cols-2 gap-12 mt-20">
               <div className="space-y-4">
-                <h4 className="text-[11px] font-black text-blue-900 uppercase tracking-widest underline decoration-red-600 underline-offset-4">Terms & Conditions</h4>
+                <h4 className="text-[11px] font-black text-blue-900 uppercase tracking-widest underline decoration-[#dc2626] underline-offset-4">Terms & Conditions</h4>
                 <ul className="text-[10px] text-gray-500 space-y-2 leading-relaxed">
                   <li className="flex gap-2"><span>•</span> Fee once paid is non-refundable and non-transferable under any circumstances.</li>
                   <li className="flex gap-2"><span>•</span> This receipt is valid for a period of 6 months from the date of issue.</li>
@@ -142,47 +167,10 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
             </div>
 
             {/* Footer Decorative Line */}
-            <div className="absolute bottom-0 left-0 right-0 h-2 bg-red-600"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-[#dc2626]"></div>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media print {
-          @page {
-            size: A4;
-            margin: 0;
-          }
-          html, body, #root, #root * {
-            visibility: hidden !important;
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-          #printable-receipt, #printable-receipt * {
-            visibility: visible !important;
-          }
-          #printable-receipt {
-            position: fixed !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 210mm !important;
-            height: 297mm !important;
-            background-color: white !important;
-            margin: 0 !important;
-            padding: 15mm !important;
-            box-sizing: border-box !important;
-            z-index: 99999 !important;
-            border: none !important;
-            display: block !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          .no-print {
-            display: none !important;
-          }
-          /* Ensure backgrounds print */
-          .bg-blue-900 {
-            background-color: #1e3a8a !important;
             color: white !important;
           }
           .bg-red-600 {
