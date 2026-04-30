@@ -45,6 +45,7 @@ app.get('/', (req, res) => {
 app.use('/api', studentRoutes);
 app.use('/api/diploma-internship', diplomaInternshipRoutes);
 app.use('/api/btech-internship', btechInternshipRoutes);
+app.use('/api/fee-receipt', require('./routes/feeReceiptRoutes'));
 
 
 // Error handler

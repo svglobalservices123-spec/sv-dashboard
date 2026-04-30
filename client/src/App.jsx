@@ -18,6 +18,9 @@ import BtechInternshipDetails from './pages/BtechInternshipDetails';
 import BtechInternshipSuccess from './pages/BtechInternshipSuccess';
 import AdminAddDiplomaInternship from './pages/AdminAddDiplomaInternship';
 import AdminAddBtechInternship from './pages/AdminAddBtechInternship';
+import AccountsLogin from './pages/AccountsLogin';
+import AccountsDashboard from './pages/AccountsDashboard';
+import FeeReceiptForm from './pages/FeeReceiptForm';
 import NotFound from './pages/NotFound';
 
 
@@ -27,6 +30,11 @@ import NotFound from './pages/NotFound';
 const ProtectedRoute = ({ children }) => {
   const isAdmin = localStorage.getItem('isSVAdmin') === 'true';
   return isAdmin ? children : <Navigate to="/admin/login" />;
+};
+
+const AccountsProtectedRoute = ({ children }) => {
+  const isAccountsAdmin = localStorage.getItem('isAccountsAdmin') === 'true';
+  return isAccountsAdmin ? children : <Navigate to="/accounts-login" />;
 };
 
 function App() {
@@ -108,6 +116,19 @@ function App() {
           <ProtectedRoute>
             <AdminSettings />
           </ProtectedRoute>
+        } />
+
+        {/* Accounts-only Routes */}
+        <Route path="/accounts-login" element={<AccountsLogin />} />
+        <Route path="/accounts-dashboard" element={
+          <AccountsProtectedRoute>
+            <AccountsDashboard />
+          </AccountsProtectedRoute>
+        } />
+        <Route path="/accounts-receipt/new" element={
+          <AccountsProtectedRoute>
+            <FeeReceiptForm />
+          </AccountsProtectedRoute>
         } />
 
         {/* Catch-all */}
