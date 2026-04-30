@@ -8,7 +8,7 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto no-print">
+    <div className="fixed inset-0 z-50 flex justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10 overflow-y-auto no-print items-start">
       <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         {/* Modal Header */}
         <div className="flex justify-between items-center p-6 bg-white border-b border-gray-100 text-blue-900 sticky top-0 z-10">
