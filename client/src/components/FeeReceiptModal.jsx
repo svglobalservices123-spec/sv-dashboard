@@ -11,19 +11,19 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto no-print">
       <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         {/* Modal Header */}
-        <div className="flex justify-between items-center p-6 bg-slate-900 text-white sticky top-0 z-10">
-          <h2 className="text-xl font-bold">Fee Receipt View</h2>
+        <div className="flex justify-between items-center p-6 bg-white border-b border-gray-100 text-blue-900 sticky top-0 z-10">
+          <h2 className="text-xl font-black uppercase tracking-tight">Receipt Preview</h2>
           <div className="flex gap-4">
             <button 
               onClick={handlePrint}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2 transition-all"
+              className="px-6 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg shadow-blue-900/10"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
               Print Receipt
             </button>
             <button 
               onClick={onClose}
-              className="p-2 hover:bg-white/10 rounded-lg transition-all"
+              className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-all"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
