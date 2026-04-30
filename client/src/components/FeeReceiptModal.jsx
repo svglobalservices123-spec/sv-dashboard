@@ -1,8 +1,6 @@
 import React, { useRef } from 'react';
 
 const FeeReceiptModal = ({ receipt, onClose }) => {
-  const printRef = useRef();
-
   const handlePrint = () => {
     window.print();
   };
@@ -10,9 +8,12 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10 overflow-y-auto no-print items-start">
       <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-        {/* Modal Header */}
-        <div className="flex justify-between items-center p-6 bg-white border-b border-gray-100 text-blue-900 sticky top-0 z-10">
-          <h2 className="text-xl font-black uppercase tracking-tight">Receipt Preview</h2>
+        {/* Modal Header (Non-Printable) */}
+        <div className="flex justify-between items-center p-6 bg-white border-b border-gray-100 text-blue-900 sticky top-0 z-10 no-print">
+          <div className="flex items-center gap-3">
+             <div className="w-2 h-8 bg-red-600 rounded-full"></div>
+             <h2 className="text-xl font-black uppercase tracking-tight">Receipt Preview</h2>
+          </div>
           <div className="flex gap-4">
             <button 
               onClick={handlePrint}
@@ -31,123 +32,141 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
         </div>
 
         {/* Receipt Content (A4 Style) */}
-        <div className="p-8 md:p-12 bg-white text-slate-900 min-h-[600px] flex items-center justify-center">
+        <div className="p-4 md:p-12 bg-gray-100 flex items-center justify-center min-h-screen">
           <div 
             id="printable-receipt"
-            className="w-full max-w-[800px] border-2 border-slate-300 p-8 md:p-12 relative"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="w-full max-w-[210mm] bg-white border border-gray-200 p-[15mm] relative shadow-sm"
+            style={{ fontFamily: "'Inter', sans-serif", boxSizing: 'border-box' }}
           >
-            {/* Header */}
-            <div className="flex justify-between items-start mb-8 border-b-2 border-slate-100 pb-6">
-              <img 
-                src="https://svglobalservices.com/wp-content/uploads/2025/12/SVGS-logo-png.png" 
-                alt="Logo" 
-                className="h-16 md:h-20"
-              />
-              <div className="text-right">
-                <h1 className="text-2xl font-black text-blue-900 tracking-tighter">FEE RECEIPT</h1>
-                <p className="text-slate-500 font-bold mt-1">Date: {new Date(receipt.date).toLocaleDateString()}</p>
-                <p className="text-slate-400 text-xs mt-1">ID: {receipt._id.toString().toUpperCase()}</p>
-              </div>
-            </div>
-
-            {/* Student Details Grid */}
-            <div className="grid grid-cols-2 gap-x-8 gap-y-6 mb-10">
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Student Name</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.name}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Roll Number</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.rollNumber}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Branch</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.branch}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Phone Number</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.phone}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">College Name</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.collegeName}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Purpose of Payment</p>
-                <p className="text-lg font-bold border-b border-slate-200 pb-1">{receipt.purpose}</p>
-              </div>
-            </div>
-
-            {/* Payment Summary */}
-            <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-10">
-              <div className="flex justify-between items-center mb-4">
-                <p className="text-slate-500 font-medium">Payment Mode</p>
-                <p className="font-bold text-slate-900">{receipt.paymentMode}</p>
-              </div>
-              <div className="flex justify-between items-center pt-4 border-t border-slate-200">
-                <p className="text-xl font-black text-slate-900">Total Amount</p>
-                <p className="text-3xl font-black text-blue-900">₹{receipt.amount.toLocaleString()}</p>
-              </div>
-            </div>
-
-            {/* Terms and Signatures */}
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-              <div className="flex-1">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Terms & Conditions</h4>
-                <ul className="text-[11px] text-slate-500 space-y-1 list-disc pl-4 italic">
-                  <li>Fee once paid is non-refundable</li>
-                  <li>Receipt valid for 6 months</li>
-                  <li>All dues must be cleared before Viva</li>
-                </ul>
-              </div>
-              
-              <div className="relative text-center min-w-[200px]">
+            {/* Header Section */}
+            <div className="flex justify-between items-start mb-12">
+              <div className="space-y-4">
                 <img 
-                  src="https://svglobalservices.com/wp-content/uploads/2026/04/62e9f268-5bde-4ca3-8bba-a841117d6b0d.png" 
-                  alt="Stamp" 
-                  className="absolute -top-16 left-1/2 -translate-x-1/2 h-24 opacity-80"
+                  src="https://svglobalservices.com/wp-content/uploads/2025/12/SVGS-logo-png.png" 
+                  alt="SVGS Logo" 
+                  className="h-16 md:h-20 object-contain"
                 />
-                <div className="border-t-2 border-slate-900 pt-2 mt-12">
-                  <p className="text-xs font-black uppercase tracking-widest">Authorized Signature</p>
+                <div className="text-[10px] text-gray-400 font-medium leading-relaxed">
+                  <p>SV Global Services India Private Limited</p>
+                  <p>Hyderabad, Telangana, India</p>
+                  <p>support@svglobalservices.com</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <h1 className="text-4xl font-black text-blue-900 tracking-tighter mb-2">FEE RECEIPT</h1>
+                <div className="space-y-1">
+                  <p className="text-xs font-bold text-gray-500">Date: <span className="text-blue-900">{new Date(receipt.date).toLocaleDateString('en-GB')}</span></p>
+                  <p className="text-[10px] font-bold text-gray-400">RECEIPT NO: <span className="text-gray-600">{receipt._id.toString().toUpperCase()}</span></p>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Accent */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-900"></div>
+            {/* Student Info Box */}
+            <div className="mb-10 border-t-4 border-blue-900 pt-8">
+              <div className="grid grid-cols-2 gap-x-12 gap-y-8">
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Student Name</p>
+                  <p className="text-lg font-bold text-blue-950 border-b border-gray-100 pb-1">{receipt.name}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Roll Number</p>
+                  <p className="text-lg font-bold text-blue-950 border-b border-gray-100 pb-1">{receipt.rollNumber}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Branch / Stream</p>
+                  <p className="text-lg font-bold text-blue-950 border-b border-gray-100 pb-1">{receipt.branch}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Contact Number</p>
+                  <p className="text-lg font-bold text-blue-950 border-b border-gray-100 pb-1">{receipt.phone}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">College Institution</p>
+                  <p className="text-lg font-bold text-blue-950 border-b border-gray-100 pb-1">{receipt.collegeName}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Purpose Section */}
+            <div className="mb-10 bg-gray-50 p-6 rounded-xl border border-gray-100">
+               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Purpose of Payment</p>
+               <p className="text-blue-900 font-bold">{receipt.purpose}</p>
+            </div>
+
+            {/* Payment Summary Table */}
+            <div className="mb-12">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-gray-200">
+                    <th className="text-left py-4 text-[11px] font-black text-gray-400 uppercase tracking-widest">Description</th>
+                    <th className="text-right py-4 text-[11px] font-black text-gray-400 uppercase tracking-widest">Payment Mode</th>
+                    <th className="text-right py-4 text-[11px] font-black text-gray-400 uppercase tracking-widest">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-6 font-bold text-blue-950">Registration / Training Fee</td>
+                    <td className="py-6 text-right font-bold text-gray-600">{receipt.paymentMode}</td>
+                    <td className="py-6 text-right font-black text-blue-900">₹{receipt.amount.toLocaleString()}</td>
+                  </tr>
+                  <tr className="bg-blue-900 text-white">
+                    <td colSpan="2" className="py-4 px-6 text-right font-black uppercase tracking-widest text-sm">Total Amount Paid</td>
+                    <td className="py-4 px-6 text-right font-black text-2xl">₹{receipt.amount.toLocaleString()}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Footer Section */}
+            <div className="grid grid-cols-2 gap-12 mt-20">
+              <div className="space-y-4">
+                <h4 className="text-[11px] font-black text-blue-900 uppercase tracking-widest underline decoration-red-600 underline-offset-4">Terms & Conditions</h4>
+                <ul className="text-[10px] text-gray-500 space-y-2 leading-relaxed">
+                  <li className="flex gap-2"><span>•</span> Fee once paid is non-refundable and non-transferable under any circumstances.</li>
+                  <li className="flex gap-2"><span>•</span> This receipt is valid for a period of 6 months from the date of issue.</li>
+                  <li className="flex gap-2"><span>•</span> All pending dues must be cleared before the commencement of Viva/Final Exam.</li>
+                </ul>
+              </div>
+              
+              <div className="relative flex flex-col items-center justify-end">
+                <img 
+                  src="https://svglobalservices.com/wp-content/uploads/2026/04/62e9f268-5bde-4ca3-8bba-a841117d6b0d.png" 
+                  alt="Stamp" 
+                  className="absolute bottom-10 h-32 opacity-70 z-0 pointer-events-none"
+                />
+                <div className="w-full border-t-2 border-blue-900 pt-3 relative z-10 text-center">
+                  <p className="text-[11px] font-black text-blue-900 uppercase tracking-[0.2em]">Authorized Signature</p>
+                  <p className="text-[9px] font-bold text-gray-400 mt-1 italic">SV Global Services India Pvt Ltd</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Decorative Line */}
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-red-600"></div>
           </div>
         </div>
       </div>
 
       <style>{`
         @media print {
-          /* Reset Page */
           @page {
             size: A4;
             margin: 0;
           }
-          
-          /* Hide EVERYTHING in the document */
           html, body, #root, #root * {
             visibility: hidden !important;
             margin: 0 !important;
             padding: 0 !important;
-            height: auto !important;
           }
-
-          /* Show ONLY the printable receipt and its children */
           #printable-receipt, #printable-receipt * {
             visibility: visible !important;
           }
-
-          /* Position the receipt at the absolute top-left of the physical page */
           #printable-receipt {
             position: fixed !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* A4 Width */
-            height: 297mm !important; /* A4 Height */
+            width: 210mm !important;
+            height: 297mm !important;
             background-color: white !important;
             margin: 0 !important;
             padding: 15mm !important;
@@ -155,17 +174,22 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
             z-index: 99999 !important;
             border: none !important;
             display: block !important;
-          }
-
-          /* Hide UI elements specifically */
-          .no-print, button, .bg-black/80 {
-            display: none !important;
-          }
-          
-          /* Force background colors and images for stamp/logo */
-          * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+          }
+          .no-print {
+            display: none !important;
+          }
+          /* Ensure backgrounds print */
+          .bg-blue-900 {
+            background-color: #1e3a8a !important;
+            color: white !important;
+          }
+          .bg-red-600 {
+            background-color: #dc2626 !important;
+          }
+          .bg-gray-50 {
+            background-color: #f9fafb !important;
           }
         }
       `}</style>
