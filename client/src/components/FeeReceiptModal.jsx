@@ -122,31 +122,50 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
 
       <style>{`
         @media print {
+          /* Reset Page */
           @page {
             size: A4;
             margin: 0;
           }
-          body {
-            visibility: hidden;
-            background: white !important;
+          
+          /* Hide EVERYTHING in the document */
+          html, body, #root, #root * {
+            visibility: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
           }
-          .no-print, nav, header, footer, button {
-            display: none !important;
-          }
-          #printable-receipt {
+
+          /* Show ONLY the printable receipt and its children */
+          #printable-receipt, #printable-receipt * {
             visibility: visible !important;
-            position: absolute !important;
+          }
+
+          /* Position the receipt at the absolute top-left of the physical page */
+          #printable-receipt {
+            position: fixed !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important;
-            height: auto !important;
-            border: none !important;
+            width: 210mm !important; /* A4 Width */
+            height: 297mm !important; /* A4 Height */
+            background-color: white !important;
             margin: 0 !important;
             padding: 15mm !important;
+            box-sizing: border-box !important;
+            z-index: 99999 !important;
+            border: none !important;
             display: block !important;
           }
-          #printable-receipt * {
-            visibility: visible !important;
+
+          /* Hide UI elements specifically */
+          .no-print, button, .bg-black/80 {
+            display: none !important;
+          }
+          
+          /* Force background colors and images for stamp/logo */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
         }
       `}</style>
