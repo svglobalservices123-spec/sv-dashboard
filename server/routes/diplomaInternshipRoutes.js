@@ -36,6 +36,7 @@ const diplomaDocsUpload = upload.fields([
 router.post('/submit', diplomaDocsUpload, diplomaInternshipController.submitApplication);
 router.get('/applications', diplomaInternshipController.getAllApplications);
 router.get('/applications/:id', diplomaInternshipController.getApplicationDetails);
+router.put('/applications/:id', diplomaDocsUpload, diplomaInternshipController.updateApplication);
 router.delete('/applications/:id', diplomaInternshipController.deleteApplication);
 router.get('/export', diplomaInternshipController.exportToExcel);
 

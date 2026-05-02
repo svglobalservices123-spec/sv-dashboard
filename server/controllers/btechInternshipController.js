@@ -171,3 +171,57 @@ exports.deleteApplication = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.updateApplication = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body };
+    const files = req.files || {};
+
+    if (!BTECH_FOLDER_ID) {
+      throw new Error('GOOGLE_DRIVE_BTECH_FOLDER_ID not configured on server.');
+    }
+
+    const uploadTasks = [];
+    const docKeys = ['collegeIdCard', 'aadharCard', 'sscMemo', 'photo'];
+    const uploadedDocs = {};
+
+    for (const key of docKeys) {
+      if (files[key] && files[key][0]) {
+        const file = files[key][0];
+        const fileName = `BTECH_${updateData.studentFullName || 'Updated'}_${key}_${Date.now()}${path.extname(file.originalname)}`;
+        
+        uploadTasks.push(
+          uploadFileToDrive(file.path, fileName, BTECH_FOLDER_ID).then(result => {
+            uploadedDocs[key] = {
+              id: result.id,
+              url: result.url
+            };
+            if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+          })
+        );
+      }
+    }
+
+    await Promise.all(uploadTasks);
+
+    Object.assign(updateData, uploadedDocs);
+
+    const application = await BtechInternship.findByIdAndUpdate(id, updateData, { new: true });
+    
+    if (!application) {
+      return res.status(404).json({ success: false, message: 'Application not found' });
+    }
+
+    res.json({ success: true, message: 'Application updated successfully', application });
+  } catch (error) {
+    if (req.files) {
+      Object.values(req.files).forEach(fileArr => {
+        fileArr.forEach(file => {
+          if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+        });
+      });
+    }
+    next(error);
+  }
+};

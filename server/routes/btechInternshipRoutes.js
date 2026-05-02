@@ -36,6 +36,7 @@ const btechDocsUpload = upload.fields([
 router.post('/submit', btechDocsUpload, btechInternshipController.submitApplication);
 router.get('/applications', btechInternshipController.getAllApplications);
 router.get('/applications/:id', btechInternshipController.getApplicationDetails);
+router.put('/applications/:id', btechDocsUpload, btechInternshipController.updateApplication);
 router.delete('/applications/:id', btechInternshipController.deleteApplication);
 router.get('/export', btechInternshipController.exportToExcel);
 
