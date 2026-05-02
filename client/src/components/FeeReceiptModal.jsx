@@ -18,45 +18,48 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
     font-family: Arial, Helvetica, sans-serif;
     background: white;
     color: #1e293b;
-    padding: 40px 50px;
+    padding: 25px 40px;
+    height: 148.5mm; /* Half of A4 page */
+    position: relative;
+    overflow: hidden;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
-  .header img { height: 70px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; }
+  .header img { height: 50px; }
   .header-right { text-align: right; }
-  .header-right h1 { font-size: 28px; color: #1e3a8a; letter-spacing: -1px; margin-bottom: 6px; }
-  .header-right p { font-size: 11px; color: #6b7280; font-weight: 600; }
+  .header-right h1 { font-size: 22px; color: #1e3a8a; letter-spacing: -1px; margin-bottom: 4px; }
+  .header-right p { font-size: 10px; color: #6b7280; font-weight: 600; }
   .header-right .date-val { color: #1e3a8a; }
-  .company-info { font-size: 9px; color: #9ca3af; margin-top: 10px; line-height: 1.6; }
-  .blue-bar { height: 4px; background: #1e3a8a; margin-bottom: 25px; }
-  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; margin-bottom: 25px; }
+  .company-info { font-size: 8px; color: #9ca3af; margin-top: 6px; line-height: 1.5; }
+  .blue-bar { height: 3px; background: #1e3a8a; margin-bottom: 15px; }
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 30px; margin-bottom: 15px; }
   .field-item { }
   .field-item.full { grid-column: span 2; }
-  .field-label { font-size: 9px; font-weight: 900; color: #9ca3af; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
-  .field-value { font-size: 16px; font-weight: 700; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-  .purpose-box { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; padding: 16px 20px; margin-bottom: 25px; }
-  .purpose-box .field-label { margin-bottom: 6px; }
+  .field-label { font-size: 8px; font-weight: 900; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; }
+  .field-value { font-size: 13px; font-weight: 700; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+  .purpose-box { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 6px; padding: 12px 16px; margin-bottom: 15px; }
+  .purpose-box .field-label { margin-bottom: 4px; }
   .purpose-box .field-value { border-bottom: none; padding-bottom: 0; color: #1e3a8a; }
-  .pay-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-  .pay-table thead th { text-align: left; padding: 12px 0; font-size: 10px; font-weight: 900; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid #e2e8f0; }
+  .pay-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+  .pay-table thead th { text-align: left; padding: 8px 0; font-size: 9px; font-weight: 900; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #e2e8f0; }
   .pay-table thead th:nth-child(2), .pay-table thead th:nth-child(3) { text-align: right; }
-  .pay-table tbody td { padding: 18px 0; font-weight: 700; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9; }
+  .pay-table tbody td { padding: 10px 0; font-weight: 700; font-size: 12px; color: #0f172a; border-bottom: 1px solid #f1f5f9; }
   .pay-table tbody td:nth-child(2) { text-align: right; color: #6b7280; }
   .pay-table tbody td:nth-child(3) { text-align: right; color: #1e3a8a; font-weight: 900; }
-  .total-row td { background: #1e3a8a !important; color: white !important; padding: 14px 16px !important; font-weight: 900 !important; }
-  .total-row td:first-child { text-align: right; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
-  .total-row td:last-child { text-align: right; font-size: 22px; }
-  .footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; }
-  .terms h4 { font-size: 10px; font-weight: 900; color: #1e3a8a; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid #dc2626; display: inline-block; }
-  .terms ul { list-style: none; font-size: 9px; color: #6b7280; line-height: 1.8; }
+  .total-row td { background: #1e3a8a !important; color: white !important; padding: 10px 12px !important; font-weight: 900 !important; }
+  .total-row td:first-child { text-align: right; text-transform: uppercase; letter-spacing: 1.5px; font-size: 10px !important; }
+  .total-row td:last-child { text-align: right; font-size: 16px !important; }
+  .footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 25px; }
+  .terms h4 { font-size: 9px; font-weight: 900; color: #1e3a8a; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 2px solid #dc2626; display: inline-block; }
+  .terms ul { list-style: none; font-size: 8px; color: #6b7280; line-height: 1.6; }
   .terms ul li::before { content: "• "; }
-  .sig-section { text-align: center; min-width: 200px; position: relative; }
-  .sig-section .stamp { height: 100px; opacity: 0.7; margin-bottom: -30px; }
-  .sig-line { border-top: 2px solid #1e3a8a; padding-top: 8px; }
-  .sig-line p { font-size: 10px; font-weight: 900; color: #1e3a8a; text-transform: uppercase; letter-spacing: 2px; }
-  .sig-line .sub { font-size: 8px; color: #9ca3af; font-style: italic; margin-top: 3px; font-weight: 600; }
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 6px; background: #dc2626; }
+  .sig-section { text-align: center; min-width: 160px; position: relative; }
+  .sig-section .stamp { height: 75px; opacity: 0.7; margin-bottom: -20px; }
+  .sig-line { border-top: 2px solid #1e3a8a; padding-top: 6px; }
+  .sig-line p { font-size: 9px; font-weight: 900; color: #1e3a8a; text-transform: uppercase; letter-spacing: 1.5px; }
+  .sig-line .sub { font-size: 7px; color: #9ca3af; font-style: italic; margin-top: 2px; font-weight: 600; }
+  .bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: #dc2626; }
 </style>
 </head>
 <body>
@@ -170,7 +173,7 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
     iframe.style.top = '-10000px';
     iframe.style.left = '-10000px';
     iframe.style.width = '210mm';
-    iframe.style.height = '297mm';
+    iframe.style.height = '148.5mm';
     iframe.style.border = 'none';
     document.body.appendChild(iframe);
 
