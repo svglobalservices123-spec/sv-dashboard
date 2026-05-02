@@ -34,6 +34,7 @@ export const submitDiplomaInternship = (formData) => api.post('/diploma-internsh
 export const getDiplomaInternships = (filters = {}) => api.get('/diploma-internship/applications', { params: filters });
 export const getDiplomaInternshipDetails = (id) => api.get(`/diploma-internship/applications/${id}`);
 export const deleteDiplomaInternship = (id) => api.delete(`/diploma-internship/applications/${id}`);
+export const updateDiplomaInternship = (id, data) => api.put(`/diploma-internship/applications/${id}`, data);
 export const exportDiplomaInternships = (filters = {}) => api.get('/diploma-internship/export', { params: filters, responseType: 'blob' });
 
 // Btech/Degree Internship
@@ -43,6 +44,7 @@ export const submitBtechInternship = (formData) => api.post('/btech-internship/s
 export const getBtechInternships = (filters = {}) => api.get('/btech-internship/applications', { params: filters });
 export const getBtechInternshipDetails = (id) => api.get(`/btech-internship/applications/${id}`);
 export const deleteBtechInternship = (id) => api.delete(`/btech-internship/applications/${id}`);
+export const updateBtechInternship = (id, data) => api.put(`/btech-internship/applications/${id}`, data);
 export const exportBtechInternships = (filters = {}) => api.get('/btech-internship/export', { params: filters, responseType: 'blob' });
 
 

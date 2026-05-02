@@ -3,7 +3,7 @@ import { getDiplomaInternships, deleteDiplomaInternship, exportDiplomaInternship
 import AdminLayout from '../components/AdminLayout';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone, Globe, Plus } from 'lucide-react';
+import { Search, Eye, Trash2, Users, Calendar, Filter, RefreshCw, FileSpreadsheet, MapPin, Briefcase, Phone, Globe, Plus, Edit2, GraduationCap as GradIcon } from 'lucide-react';
 
 
 const AdminDiplomaInternship = () => {
@@ -72,8 +72,37 @@ const AdminDiplomaInternship = () => {
   const cities = ['all', ...new Set(applications.map(a => a.city).filter(Boolean))];
   const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
+  const ojtCount = filtered.filter(app => app.trainingMode === 'OJT').length;
+  const inHandsCount = filtered.filter(app => app.trainingMode === 'In Hands Training').length;
+
   return (
     <AdminLayout title={<>Diploma <span className="text-secondary not-italic uppercase">Industrial Training - TSSBTET</span></>} subtitle="Manage specialized industrial training applications">
+        
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/20 flex items-center gap-6">
+            <div className="bg-primary/10 p-4 rounded-2xl text-primary"><Users size={24} /></div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Applications</p>
+              <h3 className="text-3xl font-display font-black text-dark tracking-tighter">{filtered.length}</h3>
+            </div>
+          </div>
+          <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/20 flex items-center gap-6">
+            <div className="bg-emerald-500/10 p-4 rounded-2xl text-emerald-600"><Briefcase size={24} /></div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">OJT (Stipend)</p>
+              <h3 className="text-3xl font-display font-black text-dark tracking-tighter">{ojtCount}</h3>
+            </div>
+          </div>
+          <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/20 flex items-center gap-6">
+            <div className="bg-secondary/10 p-4 rounded-2xl text-secondary"><GradIcon size={24} /></div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">In-Hands Training</p>
+              <h3 className="text-3xl font-display font-black text-dark tracking-tighter">{inHandsCount}</h3>
+            </div>
+          </div>
+        </div>
+
         {/* Filters Panel */}
         <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/20">
           <div className="relative w-full xl:w-[400px]">
@@ -190,8 +219,9 @@ const AdminDiplomaInternship = () => {
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex justify-end gap-3">
-                        <Link to={`/admin/diploma-internship/${app._id}`} className="p-3 bg-primary/5 text-primary rounded-xl hover:bg-primary hover:text-white transition-all shadow-sm"><Eye size={18} /></Link>
-                        <button onClick={() => handleDelete(app._id)} className="p-3 bg-secondary/5 text-secondary rounded-xl hover:bg-secondary hover:text-white transition-all shadow-sm"><Trash2 size={18} /></button>
+                        <Link to={`/admin/diploma-internship/${app._id}`} className="p-3 bg-primary/5 text-primary rounded-xl hover:bg-primary hover:text-white transition-all shadow-sm" title="View Details"><Eye size={18} /></Link>
+                        <button onClick={() => navigate(`/admin/diploma-internship/edit/${app._id}`)} className="p-3 bg-emerald-500/5 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm" title="Edit Details"><Edit2 size={18} /></button>
+                        <button onClick={() => handleDelete(app._id)} className="p-3 bg-secondary/5 text-secondary rounded-xl hover:bg-secondary hover:text-white transition-all shadow-sm" title="Delete"><Trash2 size={18} /></button>
                       </div>
                     </td>
                   </tr>
