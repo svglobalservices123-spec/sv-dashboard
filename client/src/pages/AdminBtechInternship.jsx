@@ -68,7 +68,7 @@ const AdminBtechInternship = () => {
   const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
   return (
-    <AdminLayout title={<>Andhra Pradesh- <span className="text-emerald-500 not-italic uppercase">Diploma Industrial Training</span></>} subtitle="Manage specialized industrial training applications">
+    <AdminLayout title={<>APSBTET <span className="text-emerald-500 not-italic uppercase">Industrial Training</span></>} subtitle="Manage specialized industrial training applications">
       {/* Filters Panel */}
       <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/20">
         <div className="relative w-full xl:w-[400px]">
@@ -120,7 +120,7 @@ const AdminBtechInternship = () => {
               <tr className="bg-gray-50/80 border-b border-gray-100">
                 <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Student</th>
                 <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Academic</th>
-                <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">State</th>
+                <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Board</th>
                 <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Training</th>
                 <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Applied Date</th>
                 <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Actions</th>
@@ -163,7 +163,7 @@ const AdminBtechInternship = () => {
                   </td>
                   <td className="px-8 py-6">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-100">
-                      <Globe size={10}/>{app.state}
+                      <Globe size={10}/>APSBTET
                     </span>
                   </td>
                   <td className="px-8 py-6">

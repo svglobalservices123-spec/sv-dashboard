@@ -73,7 +73,7 @@ const AdminDiplomaInternship = () => {
   const courses = ['all', ...new Set(applications.map(a => a.course).filter(Boolean))];
 
   return (
-    <AdminLayout title={<>Diploma <span className="text-secondary not-italic uppercase">Industrial Training - Telangana</span></>} subtitle="Manage specialized industrial training applications">
+    <AdminLayout title={<>TSSBTET <span className="text-secondary not-italic uppercase">Industrial Training</span></>} subtitle="Manage specialized industrial training applications">
         {/* Filters Panel */}
         <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/20">
           <div className="relative w-full xl:w-[400px]">
@@ -128,7 +128,7 @@ const AdminDiplomaInternship = () => {
                 <tr className="bg-gray-50/80 border-b border-gray-100">
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Student</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Academic</th>
-                  <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">State</th>
+                  <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Board</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Training</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Applied Date</th>
                   <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Actions</th>
@@ -172,7 +172,7 @@ const AdminDiplomaInternship = () => {
                     <td className="px-8 py-6">
                         <div className="flex items-center gap-2">
                             <Globe size={12} className="text-emerald-500" />
-                            <p className="text-[11px] font-black text-dark uppercase tracking-tight">{app.state || 'N/A'}</p>
+                            <p className="text-[11px] font-black text-dark uppercase tracking-tight">TSSBTET</p>
                         </div>
                     </td>
                     <td className="px-8 py-6">

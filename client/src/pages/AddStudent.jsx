@@ -21,7 +21,7 @@ const AddStudent = () => {
     'VLSI & PCB',
     'WEB TECHNOLOGIES'
   ];
-  const courseTypes = ['Diploma', 'B tech', 'Degree', 'Other'];
+  const courseTypes = ['TSSBTET', 'APSBTET', 'B tech', 'Degree', 'Other'];
   const years = ['1st year', '2nd year', '3rd year', '4th year', 'Other'];
 
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });

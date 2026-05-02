@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllStudents, deleteStudent, getDashboardStats, exportStudents } from '../utils/api';
+import { getAllStudents, deleteStudent, getDashboardStats, exportStudents, getDiplomaInternships, getBtechInternships } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -7,7 +7,7 @@ import { Search, Eye, Trash2, Users, IndianRupee, Clock, RefreshCw, FileSpreadsh
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
-  const [stats, setStats] = useState({ totalStudents: 0, totalPayments: 0, pendingPayments: 0, totalRevenue: 0 });
+  const [stats, setStats] = useState({ totalStudents: 0, totalPayments: 0, pendingPayments: 0, totalRevenue: 0, tssbtetCount: 0, apsbtetCount: 0 });
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -18,9 +18,18 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [studentsRes, statsRes] = await Promise.all([getAllStudents(), getDashboardStats()]);
+      const [studentsRes, statsRes, diplomaRes, btechRes] = await Promise.all([
+        getAllStudents(),
+        getDashboardStats(),
+        getDiplomaInternships(),
+        getBtechInternships()
+      ]);
       setStudents(studentsRes.data);
-      setStats(statsRes.data);
+      setStats({
+        ...statsRes.data,
+        tssbtetCount: diplomaRes.data.length,
+        apsbtetCount: btechRes.data.length
+      });
     } catch (error) {
       toast.error('Failed to load dashboard data.');
     } finally {
@@ -77,9 +86,11 @@ const AdminDashboard = () => {
   return (
     <AdminLayout title={<>Admin <span className="text-secondary not-italic">Dashboard</span></>} subtitle="Manage enrollments and real-time payments">
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10">
-          <StatCard icon={<Users size={24} className="text-primary" />} label="Total Students" value={stats.totalStudents} color="bg-primary/5" />
-          <StatCard icon={<IndianRupee size={24} className="text-green-600" />} label="Paid Payments" value={stats.totalPayments} color="bg-green-50" />
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6 mb-10">
+          <StatCard icon={<Users size={24} className="text-primary" />} label="Total Registry" value={stats.totalStudents} color="bg-primary/5" />
+          <StatCard icon={<GraduationCap size={24} className="text-indigo-600" />} label="TSSBTET" value={stats.tssbtetCount} color="bg-indigo-50" />
+          <StatCard icon={<GraduationCap size={24} className="text-emerald-600" />} label="APSBTET" value={stats.apsbtetCount} color="bg-emerald-50" />
+          <StatCard icon={<IndianRupee size={24} className="text-green-600" />} label="Paid" value={stats.totalPayments} color="bg-green-50" />
           <StatCard icon={<Clock size={24} className="text-amber-600" />} label="Pending" value={stats.pendingPayments} color="bg-amber-50" />
           <StatCard icon={<IndianRupee size={24} className="text-secondary" />} label="Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} color="bg-secondary/5" />
         </div>

@@ -117,7 +117,7 @@ const DiplomaInternshipDetails = () => {
             <DetailItem label="Gender" value={app.gender} icon={<Users size={10} />} />
             <DetailItem label="Date of Birth" value={app.dob} icon={<Calendar size={10} />} />
             <DetailItem label="Location / City" value={app.city} icon={<MapPin size={10} />} />
-            <DetailItem label="State" value={app.state} icon={<Globe size={10} />} />
+            <DetailItem label="Board" value="TSSBTET" icon={<Globe size={10} />} />
           </DetailSection>
 
           {/* Column 2: Academic */}
