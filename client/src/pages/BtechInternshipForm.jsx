@@ -11,7 +11,7 @@ import {
 
 const ProgressBar = ({ step }) => {
   const pct = (step / 6) * 100;
-  const labels = ["Basic Identification", "Personal Background", "Academic Records", "Training Preferences", "Document Vault", "Final Confirmation"];
+  const labels = ["College & Identity", "Contact & Personal", "Background Records", "Training Preferences", "Document Vault", "Final Confirmation"];
   return (
     <div className="w-full mb-12">
       <div className="flex justify-between items-end mb-4">
@@ -97,9 +97,9 @@ const BtechInternshipForm = () => {
   const prevStep = () => { setStep(step - 1); window.scrollTo(0, 0); };
 
   const validateStep = () => {
-    if (step === 1) { const { studentEmail, studentFullName, fatherName, studentPhone, parentPhone, gender, collegeName, branch, city } = formData; if (!studentEmail || !studentFullName || !fatherName || !studentPhone || !parentPhone || !gender || !collegeName || !branch || !city) { toast.error('Please fill all required fields'); return false; } if (branch === 'others' && !formData.otherBranch) { toast.error('Please specify your branch'); return false; } }
-    else if (step === 2) { const { age, dob, caste, aadharNumber, state } = formData; if (!age || !dob || !caste || !aadharNumber || !state) { toast.error('Please fill all required fields including State'); return false; } }
-    else if (step === 3) { const { rollNumber, degreePercentage } = formData; if (!rollNumber || !degreePercentage) { toast.error('Please fill all required fields'); return false; } }
+    if (step === 1) { const { collegeName, branch, rollNumber, degreePercentage, studentFullName, studentEmail } = formData; if (!collegeName || !branch || !rollNumber || !degreePercentage || !studentFullName || !studentEmail) { toast.error('Please fill all required fields'); return false; } if (branch === 'others' && !formData.otherBranch) { toast.error('Please specify your branch'); return false; } }
+    else if (step === 2) { const { studentPhone, parentPhone, gender, dob, city } = formData; if (!studentPhone || !parentPhone || !gender || !dob || !city) { toast.error('Please fill all required fields'); return false; } }
+    else if (step === 3) { const { fatherName, age, caste, aadharNumber, state } = formData; if (!fatherName || !age || !caste || !aadharNumber || !state) { toast.error('Please fill all required fields including State'); return false; } }
     else if (step === 4) { if (!formData.trainingMode) { toast.error('Please choose mode of training'); return false; } if (formData.trainingMode === 'In Hands Training' && !formData.course) { toast.error('Please select a course'); return false; } if (formData.course === 'Other' && !formData.otherCourse) { toast.error('Please specify your course'); return false; } }
     else if (step === 5) { if (!files.collegeIdCard || !files.aadharCard || !files.sscMemo || !files.photo) { toast.error('Please upload all required documents'); return false; } }
     return true;
@@ -145,15 +145,42 @@ const BtechInternshipForm = () => {
           <form onSubmit={(e) => e.preventDefault()} className="space-y-12">
             {step === 1 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <IW label="Student Gmail" icon={<Mail size={12} />} required><input type="email" name="studentEmail" value={formData.studentEmail} onChange={hic} className={ic} placeholder="name@gmail.com" /></IW>
+                <IW label="College Name" icon={<GraduationCap size={12} />} required><input type="text" name="collegeName" value={formData.collegeName} onChange={hic} className={ic} placeholder="Full College Name" /></IW>
+                <IW label="Branch" icon={<GraduationCap size={12} />} required>
+                  <select name="branch" value={formData.branch} onChange={hic} className={ic + " cursor-pointer"}>
+                    <option value="">Select Branch</option>
+                    <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
+                    <option value="Information Technology (IT)">Information Technology (IT)</option>
+                    <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
+                    <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                    <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
+                    <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
+                    <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
+                    <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
+                    <option value="others">others</option>
+                  </select>
+                </IW>
+                {formData.branch === 'others' && (
+                  <IW label="Enter Branch / Batch" icon={<GraduationCap size={12} />} required>
+                    <input type="text" name="otherBranch" value={formData.otherBranch} onChange={hic} className={ic} placeholder="Specify your branch/batch" />
+                  </IW>
+                )}
+                <IW label="Roll Number" icon={<Fingerprint size={12} />} required><input type="text" name="rollNumber" value={formData.rollNumber} onChange={hic} className={ic} placeholder="College Roll No" /></IW>
+                <IW label="Diploma GPA Percentage (%)" icon={<CheckCircle size={12} />} required><input type="text" name="degreePercentage" value={formData.degreePercentage} onChange={hic} className={ic} placeholder="e.g. 75% or 8.2 CGPA" /></IW>
                 <IW label="Full Name" icon={<User size={12} />} required><input type="text" name="studentFullName" value={formData.studentFullName} onChange={hic} className={ic} placeholder="e.g. Rahul Sharma" /></IW>
-                <IW label="Father Name" icon={<User size={12} />} required><input type="text" name="fatherName" value={formData.fatherName} onChange={hic} className={ic} placeholder="Enter Father Name" /></IW>
-                <IW label="Mother Name" icon={<User size={12} />}><input type="text" name="motherName" value={formData.motherName} onChange={hic} className={ic} placeholder="Enter Mother Name" /></IW>
+                <IW label="Student Gmail" icon={<Mail size={12} />} required><input type="email" name="studentEmail" value={formData.studentEmail} onChange={hic} className={ic} placeholder="name@gmail.com" /></IW>
+              </div>
+            )}
+            {step === 2 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <IW label="Student Phone Number" icon={<Phone size={12} />} required><input type="tel" name="studentPhone" value={formData.studentPhone} onChange={hic} className={ic} placeholder="+91 XXXXX XXXXX" /></IW>
                 <IW label="Parent Phone Number" icon={<Phone size={12} />} required><input type="tel" name="parentPhone" value={formData.parentPhone} onChange={hic} className={ic} placeholder="+91 XXXXX XXXXX" /></IW>
                 <IW label="Gender" icon={<Users size={12} />} required>
                   <select name="gender" value={formData.gender} onChange={hic} className={ic + " cursor-pointer"}><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
                 </IW>
+                <IW label="Date of Birth" icon={<Calendar size={12} />} required><input type="date" name="dob" value={formData.dob} onChange={hic} className={ic} /></IW>
                 <IW label="Location" icon={<MapPin size={12} />} required>
                   <select name="city" value={formData.city} onChange={hic} className={ic + " cursor-pointer"}>
                     <option value="">Select Location</option>
@@ -164,49 +191,19 @@ const BtechInternshipForm = () => {
                     <option value="Tirupati">Tirupati</option>
                   </select>
                 </IW>
-
-                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4 border-t border-gray-100 pt-8">
-                  <IW label="College Name" icon={<GraduationCap size={12} />} required><input type="text" name="collegeName" value={formData.collegeName} onChange={hic} className={ic} placeholder="Full College Name" /></IW>
-                  <IW label="Branch" icon={<GraduationCap size={12} />} required>
-                    <select name="branch" value={formData.branch} onChange={hic} className={ic + " cursor-pointer"}>
-                      <option value="">Select Branch</option>
-                      <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
-                      <option value="Information Technology (IT)">Information Technology (IT)</option>
-                      <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
-                      <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="Cyber Security">Cyber Security</option>
-                      <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
-                      <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
-                      <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
-                      <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
-                      <option value="others">others</option>
-                    </select>
-                  </IW>
-                  {formData.branch === 'others' && (
-                    <IW label="Enter Branch / Batch" icon={<GraduationCap size={12} />} required>
-                      <input type="text" name="otherBranch" value={formData.otherBranch} onChange={hic} className={ic} placeholder="Specify your branch/batch" />
-                    </IW>
-                  )}
-                </div>
               </div>
             )}
-            {step === 2 && (
+            {step === 3 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <IW label="Father Name" icon={<User size={12} />} required><input type="text" name="fatherName" value={formData.fatherName} onChange={hic} className={ic} placeholder="Enter Father Name" /></IW>
+                <IW label="Mother Name" icon={<User size={12} />}><input type="text" name="motherName" value={formData.motherName} onChange={hic} className={ic} placeholder="Enter Mother Name" /></IW>
                 <IW label="Age (As per Aadhar Card)" icon={<Calendar size={12} />} required><input type="number" name="age" value={formData.age} onChange={hic} className={ic} placeholder="e.g. 21" /></IW>
-                <IW label="Date of Birth" icon={<Calendar size={12} />} required><input type="date" name="dob" value={formData.dob} onChange={hic} className={ic} /></IW>
                 <IW label="Caste" icon={<Users size={12} />} required><input type="text" name="caste" value={formData.caste} onChange={hic} className={ic} placeholder="e.g. General/OBC/SC/ST" /></IW>
                 <IW label="Aadhar Card Number" icon={<Fingerprint size={12} />} required><input type="text" name="aadharNumber" value={formData.aadharNumber} onChange={hic} className={ic} placeholder="XXXX XXXX XXXX" /></IW>
                 <IW label="SSC Hall Ticket Number" icon={<ShieldCheck size={12} />}><input type="text" name="sscHallTicket" value={formData.sscHallTicket} onChange={hic} className={ic} placeholder="Roll No" /></IW>
                 <IW label="State" icon={<Globe size={12} />} required>
                   <select name="state" value={formData.state} onChange={hic} className={ic + " cursor-pointer"}><option value="">Select State</option><option value="Telangana">Telangana</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Tamil Nadu">Tamil Nadu</option></select>
                 </IW>
-              </div>
-            )}
-            {step === 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <IW label="Roll Number" icon={<Fingerprint size={12} />} required><input type="text" name="rollNumber" value={formData.rollNumber} onChange={hic} className={ic} placeholder="College Roll No" /></IW>
-                <IW label="Degree Percentage (%)" icon={<CheckCircle size={12} />} required><input type="text" name="degreePercentage" value={formData.degreePercentage} onChange={hic} className={ic} placeholder="e.g. 75% or 8.2 CGPA" /></IW>
               </div>
             )}
             {step === 4 && (
