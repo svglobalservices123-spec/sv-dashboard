@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const FeeReceiptForm = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,38 @@ const FeeReceiptForm = () => {
     date: new Date().toISOString().split('T')[0]
   });
   const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const isEdit = !!id;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isEdit) {
+      const fetchReceipt = async () => {
+        try {
+          const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/fee-receipt/${id}`);
+          const data = res.data.data;
+          if (data.date) data.date = new Date(data.date).toISOString().split('T')[0];
+          
+          setFormData({
+            name: data.name || '',
+            rollNumber: data.rollNumber || '',
+            branch: data.branch || '',
+            phone: data.phone || '',
+            collegeName: data.collegeName || '',
+            purpose: data.purpose || '',
+            paymentMode: data.paymentMode || 'Online',
+            paidFee: data.paidFee !== undefined ? data.paidFee.toString() : (data.amount || '').toString(),
+            due: data.due !== undefined ? data.due.toString() : '',
+            totalFee: data.totalFee !== undefined ? data.totalFee.toString() : (data.amount || '').toString(),
+            date: data.date || new Date().toISOString().split('T')[0]
+          });
+        } catch (error) {
+          toast.error('Failed to load receipt details');
+        }
+      };
+      fetchReceipt();
+    }
+  }, [id, isEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,11 +75,16 @@ const FeeReceiptForm = () => {
         ...formData,
         amount: formData.paidFee // For backward compatibility
       };
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/fee-receipt`, dataToSubmit);
-      toast.success('Receipt generated successfully');
+      if (isEdit) {
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/fee-receipt/${id}`, dataToSubmit);
+        toast.success('Receipt updated successfully');
+      } else {
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/fee-receipt`, dataToSubmit);
+        toast.success('Receipt generated successfully');
+      }
       navigate('/accounts-dashboard');
     } catch (error) {
-      toast.error('Failed to create receipt');
+      toast.error(`Failed to ${isEdit ? 'update' : 'create'} receipt`);
     } finally {
       setLoading(false);
     }
@@ -81,7 +117,7 @@ const FeeReceiptForm = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full -mr-16 -mt-16"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-12 -mb-12"></div>
             
-            <h2 className="text-3xl font-black text-white tracking-tight mb-2">Student Fee Receipt Form</h2>
+            <h2 className="text-3xl font-black text-white tracking-tight mb-2">{isEdit ? 'Update Fee Receipt' : 'Student Fee Receipt Form'}</h2>
             <p className="text-blue-200 text-sm font-medium">Internal System - SV Global Services</p>
           </div>
 
@@ -234,7 +270,7 @@ const FeeReceiptForm = () => {
                 disabled={loading}
                 className={`w-full md:w-auto px-10 py-5 bg-blue-700 hover:bg-blue-800 text-white font-black rounded-2xl transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 tracking-widest uppercase text-xs ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                {loading ? 'Processing...' : 'Generate Receipt'}
+                {loading ? 'Processing...' : (isEdit ? 'Update Receipt' : 'Generate Receipt')}
                 {!loading && <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>}
               </button>
             </div>

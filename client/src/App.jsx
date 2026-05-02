@@ -142,6 +142,11 @@ function App() {
             <FeeReceiptForm />
           </AccountsProtectedRoute>
         } />
+        <Route path="/accounts-receipt/edit/:id" element={
+          <AccountsProtectedRoute>
+            <FeeReceiptForm />
+          </AccountsProtectedRoute>
+        } />
 
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />

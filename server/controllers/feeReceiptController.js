@@ -12,6 +12,32 @@ exports.createFeeReceipt = async (req, res) => {
   }
 };
 
+// Get single fee receipt by ID
+exports.getFeeReceiptById = async (req, res) => {
+  try {
+    const receipt = await FeeReceipt.findById(req.params.id);
+    if (!receipt) {
+      return res.status(404).json({ success: false, message: 'Receipt not found' });
+    }
+    res.status(200).json({ success: true, data: receipt });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Update fee receipt
+exports.updateFeeReceipt = async (req, res) => {
+  try {
+    const receipt = await FeeReceipt.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!receipt) {
+      return res.status(404).json({ success: false, message: 'Receipt not found' });
+    }
+    res.status(200).json({ success: true, data: receipt });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // Get all fee receipts with filters
 exports.getFeeReceipts = async (req, res) => {
   try {

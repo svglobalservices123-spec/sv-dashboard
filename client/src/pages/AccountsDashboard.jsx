@@ -244,14 +244,21 @@ const AccountsDashboard = () => {
                         </div>
                       </td>
                       <td className="px-6 py-5">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-2">
                           <button 
                             onClick={() => openReceipt(r)}
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-700 hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100"
+                            className="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-700 hover:text-white rounded-lg font-bold text-xs transition-all border border-blue-100"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                            View & Print
+                            Print
                           </button>
+                          <Link 
+                            to={`/accounts-receipt/edit/${r._id}`}
+                            className="flex items-center gap-2 px-3 py-2 bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white rounded-lg font-bold text-xs transition-all border border-amber-100"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            Edit
+                          </Link>
                         </div>
                       </td>
                     </tr>
