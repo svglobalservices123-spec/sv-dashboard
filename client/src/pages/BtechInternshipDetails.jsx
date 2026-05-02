@@ -105,7 +105,7 @@ const BtechInternshipDetails = () => {
             <DetailItem label="Parent Contact" value={app.parentPhone} icon={<Phone size={10} />} />
             <DetailItem label="Gender" value={app.gender} icon={<Users size={10} />} />
             <DetailItem label="Date of Birth" value={app.dob} icon={<Calendar size={10} />} />
-            <DetailItem label="Board" value="APSBTET" icon={<Globe size={10} />} />
+            <DetailItem label="State" value={app.state} icon={<Globe size={10} />} />
           </DetailSection>
 
           {/* Column 2: Academic */}

@@ -8,8 +8,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const menuItems = [
     { title: 'Dashboard', icon: <BarChart3 size={20} />, path: '/admin' },
-    { title: 'TSSBTET', icon: <Users size={20} />, path: '/admin/diploma-internship' },
-    { title: 'APSBTET', icon: <GraduationCap size={20} />, path: '/admin/btech-internship' },
+    { title: 'Diploma Training - TS', icon: <Users size={20} />, path: '/admin/diploma-internship' },
+    { title: 'Diploma Training - AP', icon: <GraduationCap size={20} />, path: '/admin/btech-internship' },
     { title: 'Add Student', icon: <UserPlus size={20} />, path: '/admin/add-student' },
 
     { title: 'Settings', icon: <Settings size={20} />, path: '/admin/settings' },
