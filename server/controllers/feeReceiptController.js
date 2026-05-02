@@ -38,6 +38,19 @@ exports.updateFeeReceipt = async (req, res) => {
   }
 };
 
+// Delete fee receipt
+exports.deleteFeeReceipt = async (req, res) => {
+  try {
+    const receipt = await FeeReceipt.findByIdAndDelete(req.params.id);
+    if (!receipt) {
+      return res.status(404).json({ success: false, message: 'Receipt not found' });
+    }
+    res.status(200).json({ success: true, message: 'Receipt deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Get all fee receipts with filters
 exports.getFeeReceipts = async (req, res) => {
   try {
