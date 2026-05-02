@@ -48,17 +48,28 @@ const AccountsDashboard = () => {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/fee-receipt/export`, {
+      const params = new URLSearchParams();
+      if (filters.startDate) params.append('startDate', filters.startDate);
+      if (filters.endDate) params.append('endDate', filters.endDate);
+      if (filters.collegeName) params.append('collegeName', filters.collegeName);
+      if (filters.branch) params.append('branch', filters.branch);
+      if (filters.name) params.append('name', filters.name);
+
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/fee-receipt/export?${params.toString()}`, {
         responseType: 'blob'
       });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      
+      const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'fee_receipts.xlsx');
+      link.setAttribute('download', `fee_receipts_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (error) {
+      console.error('Export error:', error);
       toast.error('Export failed');
     }
   };

@@ -92,28 +92,68 @@ exports.getFeeReceipts = async (req, res) => {
   }
 };
 
-// Export fee receipts to Excel
+// Export fee receipts to Excel with filters
 exports.exportToExcel = async (req, res) => {
   try {
-    const receipts = await FeeReceipt.find().sort({ createdAt: -1 });
+    const { startDate, endDate, collegeName, branch, name } = req.query;
+    let query = {};
+
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate)
+      };
+    }
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' };
+    }
+
+    if (collegeName) {
+      query.collegeName = { $regex: collegeName, $options: 'i' };
+    }
+
+    if (branch) {
+      query.branch = { $regex: branch, $options: 'i' };
+    }
+
+    const receipts = await FeeReceipt.find(query).sort({ createdAt: -1 });
     
     const data = receipts.map(r => ({
-      'Date': new Date(r.date).toLocaleDateString(),
-      'Name': r.name,
-      'Roll Number': r.rollNumber,
-      'Branch': r.branch,
-      'Phone': r.phone,
-      'College Name': r.collegeName,
-      'Purpose': r.purpose,
-      'Payment Mode': r.paymentMode,
-      'Paid Fee': r.paidFee !== undefined ? r.paidFee : r.amount,
+      'Date': r.date ? new Date(r.date).toLocaleDateString() : 'N/A',
+      'Name': r.name || 'N/A',
+      'Roll Number': r.rollNumber || 'N/A',
+      'Branch': r.branch || 'N/A',
+      'Phone': r.phone || 'N/A',
+      'College Name': r.collegeName || 'N/A',
+      'Purpose': r.purpose || 'N/A',
+      'Payment Mode': r.paymentMode || 'N/A',
+      'Paid Fee': r.paidFee !== undefined ? r.paidFee : (r.amount || 0),
       'Due': r.due !== undefined ? r.due : 0,
-      'Total Fee': r.totalFee !== undefined ? r.totalFee : r.amount,
-      'Created At': new Date(r.createdAt).toLocaleString()
+      'Total Fee': r.totalFee !== undefined ? r.totalFee : (r.amount || 0),
+      'Created At': r.createdAt ? new Date(r.createdAt).toLocaleString() : 'N/A'
     }));
 
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
+    
+    // Add column widths for better readability
+    const wscols = [
+      { wch: 15 }, // Date
+      { wch: 25 }, // Name
+      { wch: 20 }, // Roll Number
+      { wch: 15 }, // Branch
+      { wch: 15 }, // Phone
+      { wch: 30 }, // College Name
+      { wch: 20 }, // Purpose
+      { wch: 15 }, // Payment Mode
+      { wch: 12 }, // Paid Fee
+      { wch: 12 }, // Due
+      { wch: 12 }, // Total Fee
+      { wch: 20 }  // Created At
+    ];
+    worksheet['!cols'] = wscols;
+
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Fee Receipts');
 
     const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
@@ -122,6 +162,7 @@ exports.exportToExcel = async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename=fee_receipts.xlsx');
     res.send(buffer);
   } catch (error) {
+    console.error('Export Error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

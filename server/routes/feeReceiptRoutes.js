@@ -11,9 +11,9 @@ const {
 
 router.post('/', createFeeReceipt);
 router.get('/', getFeeReceipts);
+router.get('/export', exportToExcel);
 router.get('/:id', getFeeReceiptById);
 router.put('/:id', updateFeeReceipt);
 router.delete('/:id', deleteFeeReceipt);
-router.get('/export', exportToExcel);
 
 module.exports = router;
