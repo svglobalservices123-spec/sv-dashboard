@@ -12,7 +12,8 @@ const AccountsDashboard = () => {
     startDate: '',
     endDate: '',
     collegeName: '',
-    branch: ''
+    branch: '',
+    name: ''
   });
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +27,7 @@ const AccountsDashboard = () => {
       if (filters.endDate) params.append('endDate', filters.endDate);
       if (filters.collegeName) params.append('collegeName', filters.collegeName);
       if (filters.branch) params.append('branch', filters.branch);
+      if (filters.name) params.append('name', filters.name);
 
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/fee-receipt?${params.toString()}`);
       setReceipts(response.data.data);
@@ -148,7 +150,17 @@ const AccountsDashboard = () => {
         {/* Filters & Actions */}
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mb-8">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 flex-1 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 flex-1 w-full">
+              <div>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">Student Name</label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: John Doe"
+                  value={filters.name}
+                  onChange={(e) => setFilters({...filters, name: e.target.value})}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-600 outline-none font-medium"
+                />
+              </div>
               <div>
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1.5">Start Date</label>
                 <input 

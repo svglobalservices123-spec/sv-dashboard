@@ -54,7 +54,7 @@ exports.deleteFeeReceipt = async (req, res) => {
 // Get all fee receipts with filters
 exports.getFeeReceipts = async (req, res) => {
   try {
-    const { startDate, endDate, collegeName, branch } = req.query;
+    const { startDate, endDate, collegeName, branch, name } = req.query;
     let query = {};
 
     if (startDate && endDate) {
@@ -62,6 +62,10 @@ exports.getFeeReceipts = async (req, res) => {
         $gte: new Date(startDate),
         $lte: new Date(endDate)
       };
+    }
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' };
     }
 
     if (collegeName) {
