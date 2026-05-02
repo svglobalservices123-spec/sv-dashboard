@@ -8,7 +8,10 @@ const feeReceiptSchema = new mongoose.Schema({
   collegeName: { type: String, required: true },
   purpose: { type: String, required: true },
   paymentMode: { type: String, enum: ['Online', 'Cash'], required: true },
-  amount: { type: Number, required: true },
+  paidFee: { type: Number, required: true },
+  due: { type: Number, required: true },
+  totalFee: { type: Number, required: true },
+  amount: { type: Number },
   date: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now }
 });

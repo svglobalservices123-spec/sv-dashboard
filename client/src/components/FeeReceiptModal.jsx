@@ -118,11 +118,19 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
     <tr>
       <td>Registration / Training Fee</td>
       <td>${receipt.paymentMode}</td>
-      <td>₹${receipt.amount.toLocaleString()}</td>
+      <td>₹${(receipt.totalFee !== undefined ? receipt.totalFee : receipt.amount).toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: right; color: #6b7280; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Fee Paid</td>
+      <td style="color: #16a34a;">₹${(receipt.paidFee !== undefined ? receipt.paidFee : receipt.amount).toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: right; color: #6b7280; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Balance Due</td>
+      <td style="color: #dc2626;">₹${(receipt.due !== undefined ? receipt.due : 0).toLocaleString()}</td>
     </tr>
     <tr class="total-row">
       <td colspan="2">Total Amount Paid</td>
-      <td>₹${receipt.amount.toLocaleString()}</td>
+      <td>₹${(receipt.paidFee !== undefined ? receipt.paidFee : receipt.amount).toLocaleString()}</td>
     </tr>
   </tbody>
 </table>
@@ -278,11 +286,19 @@ const FeeReceiptModal = ({ receipt, onClose }) => {
                 <tr className="border-b border-gray-100">
                   <td className="py-5 font-bold text-slate-900 text-sm">Registration / Training Fee</td>
                   <td className="py-5 text-right font-bold text-gray-500 text-sm">{receipt.paymentMode}</td>
-                  <td className="py-5 text-right font-black text-blue-900 text-sm">₹{receipt.amount.toLocaleString()}</td>
+                  <td className="py-5 text-right font-black text-blue-900 text-sm">₹{(receipt.totalFee !== undefined ? receipt.totalFee : receipt.amount).toLocaleString()}</td>
+                </tr>
+                <tr className="border-b border-gray-50">
+                  <td colSpan="2" className="py-3 px-4 text-right font-bold text-gray-400 text-xs uppercase tracking-widest">Fee Paid</td>
+                  <td className="py-3 px-4 text-right font-black text-green-600 text-sm">₹{(receipt.paidFee !== undefined ? receipt.paidFee : receipt.amount).toLocaleString()}</td>
+                </tr>
+                <tr className="border-b border-gray-50">
+                  <td colSpan="2" className="py-3 px-4 text-right font-bold text-gray-400 text-xs uppercase tracking-widest">Balance Due</td>
+                  <td className="py-3 px-4 text-right font-black text-red-600 text-sm">₹{(receipt.due !== undefined ? receipt.due : 0).toLocaleString()}</td>
                 </tr>
                 <tr style={{ backgroundColor: '#1e3a8a', color: 'white' }}>
                   <td colSpan="2" className="py-3 px-4 text-right font-black uppercase tracking-widest text-xs">Total Amount Paid</td>
-                  <td className="py-3 px-4 text-right font-black text-xl">₹{receipt.amount.toLocaleString()}</td>
+                  <td className="py-3 px-4 text-right font-black text-xl">₹{(receipt.paidFee !== undefined ? receipt.paidFee : receipt.amount).toLocaleString()}</td>
                 </tr>
               </tbody>
             </table>

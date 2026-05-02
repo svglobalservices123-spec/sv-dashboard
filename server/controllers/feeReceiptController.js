@@ -36,7 +36,7 @@ exports.getFeeReceipts = async (req, res) => {
     const receipts = await FeeReceipt.find(query).sort({ createdAt: -1 });
     
     // Calculate totals
-    const totalAmount = receipts.reduce((acc, curr) => acc + curr.amount, 0);
+    const totalAmount = receipts.reduce((acc, curr) => acc + (curr.paidFee !== undefined ? curr.paidFee : (curr.amount || 0)), 0);
     
     res.status(200).json({
       success: true,
@@ -63,7 +63,9 @@ exports.exportToExcel = async (req, res) => {
       'College Name': r.collegeName,
       'Purpose': r.purpose,
       'Payment Mode': r.paymentMode,
-      'Amount': r.amount,
+      'Paid Fee': r.paidFee !== undefined ? r.paidFee : r.amount,
+      'Due': r.due !== undefined ? r.due : 0,
+      'Total Fee': r.totalFee !== undefined ? r.totalFee : r.amount,
       'Created At': new Date(r.createdAt).toLocaleString()
     }));
 

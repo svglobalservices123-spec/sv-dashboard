@@ -196,7 +196,7 @@ const AccountsDashboard = () => {
                   <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Student Information</th>
                   <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Roll Number</th>
                   <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">College & Branch</th>
-                  <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount</th>
+                  <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount Paid</th>
                   <th className="px-6 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Actions</th>
                 </tr>
               </thead>
@@ -236,7 +236,12 @@ const AccountsDashboard = () => {
                         </div>
                       </td>
                       <td className="px-6 py-5">
-                        <span className="text-lg font-black text-blue-900">₹{r.amount.toLocaleString()}</span>
+                        <div className="flex flex-col">
+                          <span className="text-lg font-black text-blue-900">₹{(r.paidFee !== undefined ? r.paidFee : r.amount).toLocaleString()}</span>
+                          {r.due !== undefined && r.due > 0 && (
+                            <span className="text-[10px] text-red-600 font-bold uppercase tracking-tighter mt-0.5">Due: ₹{r.due.toLocaleString()}</span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex justify-center">

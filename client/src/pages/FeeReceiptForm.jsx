@@ -12,21 +12,39 @@ const FeeReceiptForm = () => {
     collegeName: '',
     purpose: '',
     paymentMode: 'Online',
-    amount: '',
+    paidFee: '',
+    due: '',
+    totalFee: '',
     date: new Date().toISOString().split('T')[0]
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+      
+      // Auto-calculate Total Fee if Paid Fee and Due are present
+      if (name === 'paidFee' || name === 'due') {
+        const paid = parseFloat(updated.paidFee) || 0;
+        const dueAmt = parseFloat(updated.due) || 0;
+        updated.totalFee = (paid + dueAmt).toString();
+      }
+      
+      return updated;
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/fee-receipt`, formData);
+      const dataToSubmit = {
+        ...formData,
+        amount: formData.paidFee // For backward compatibility
+      };
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/fee-receipt`, dataToSubmit);
       toast.success('Receipt generated successfully');
       navigate('/accounts-dashboard');
     } catch (error) {
@@ -136,17 +154,6 @@ const FeeReceiptForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Amount (₹)</label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold text-sm">₹</span>
-                    <input 
-                      type="number" name="amount" required value={formData.amount} onChange={handleChange}
-                      placeholder="0.00"
-                      className="w-full pl-8 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-600 focus:bg-white outline-none transition-all font-black text-blue-900"
-                    />
-                  </div>
-                </div>
-                <div>
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Transaction Date</label>
                   <input 
                     type="date" name="date" required value={formData.date} onChange={handleChange}
@@ -174,6 +181,43 @@ const FeeReceiptForm = () => {
                     </label>
                   </div>
                 </div>
+                
+                <div>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Paid Fee (₹)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold text-sm">₹</span>
+                    <input 
+                      type="number" name="paidFee" required value={formData.paidFee} onChange={handleChange}
+                      placeholder="0.00"
+                      className="w-full pl-8 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-600 focus:bg-white outline-none transition-all font-black text-blue-900"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Due (₹)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold text-sm">₹</span>
+                    <input 
+                      type="number" name="due" required value={formData.due} onChange={handleChange}
+                      placeholder="0.00"
+                      className="w-full pl-8 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-600 focus:bg-white outline-none transition-all font-black text-blue-900"
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Total Fee (₹)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold text-sm">₹</span>
+                    <input 
+                      type="number" name="totalFee" required value={formData.totalFee} onChange={handleChange}
+                      placeholder="0.00"
+                      className="w-full pl-8 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-red-600 focus:bg-white outline-none transition-all font-black text-blue-900"
+                    />
+                  </div>
+                </div>
+
               </div>
             </div>
 
