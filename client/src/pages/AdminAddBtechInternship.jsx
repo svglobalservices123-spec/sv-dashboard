@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { submitBtechInternship } from '../utils/api';
+import { submitBtechInternship, getBtechInternshipDetails, updateBtechInternship } from '../utils/api';
 import AdminLayout from '../components/AdminLayout';
 import {
   User, Mail, Phone, Calendar, Users, Fingerprint,
@@ -54,6 +54,8 @@ const FileField = ({ label, name, onChange, required = false }) => (
 );
 
 const AdminAddBtechInternship = () => {
+  const { id } = useParams();
+  const isEdit = !!id;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -71,6 +73,22 @@ const AdminAddBtechInternship = () => {
     photo: null
   });
 
+  useEffect(() => {
+    if (isEdit) {
+      const fetchDetails = async () => {
+        try {
+          const res = await getBtechInternshipDetails(id);
+          const data = res.data;
+          if (data.dob) data.dob = new Date(data.dob).toISOString().split('T')[0];
+          setFormData(data);
+        } catch (error) {
+          toast.error('Failed to load application details.');
+        }
+      };
+      fetchDetails();
+    }
+  }, [id, isEdit]);
+
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
   const handleFileChange = (e) => setFiles({ ...files, [e.target.name]: e.target.files[0] });
 
@@ -78,24 +96,39 @@ const AdminAddBtechInternship = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = new FormData();
-      Object.keys(formData).forEach(key => data.append(key, formData[key]));
-      Object.keys(files).forEach(key => {
-        if (files[key]) data.append(key, files[key]);
-      });
+      if (isEdit) {
+        const data = new FormData();
+        Object.keys(formData).forEach(key => {
+          if (formData[key] !== null && formData[key] !== undefined) {
+             data.append(key, formData[key]);
+          }
+        });
+        Object.keys(files).forEach(key => {
+          if (files[key]) data.append(key, files[key]);
+        });
 
-      await submitBtechInternship(data);
-      toast.success('Btech Internship record added!');
+        await updateBtechInternship(id, data);
+        toast.success('Btech Internship record updated!');
+      } else {
+        const data = new FormData();
+        Object.keys(formData).forEach(key => data.append(key, formData[key]));
+        Object.keys(files).forEach(key => {
+          if (files[key]) data.append(key, files[key]);
+        });
+
+        await submitBtechInternship(data);
+        toast.success('Btech Internship record added!');
+      }
       navigate('/admin/btech-internship');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to add record.');
+      toast.error(error.response?.data?.message || `Failed to ${isEdit ? 'update' : 'add'} record.`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <AdminLayout title="Manual Enrollment" subtitle="Add degree internship application manually">
+    <AdminLayout title={isEdit ? "Update Application" : "Manual Enrollment"} subtitle={isEdit ? `Editing details for ${formData.studentFullName}` : "Add degree internship application manually"}>
       <form onSubmit={handleSubmit} className="space-y-8 pb-20 max-w-6xl">
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-8 md:p-12 space-y-12">
 
@@ -176,7 +209,7 @@ const AdminAddBtechInternship = () => {
 
           <div className="pt-8 border-t border-gray-100 flex justify-end">
             <button type="submit" disabled={loading} className="w-full md:w-auto flex items-center justify-center gap-4 px-12 py-5 bg-emerald-600 text-white rounded-2xl hover:scale-[1.02] active:scale-95 transition-all font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-emerald-500/40 disabled:opacity-50">
-              {loading ? <><Loader2 className="animate-spin" size={18} /> Authorizing Entry...</> : <><Send size={18} /> Register Application</>}
+              {loading ? <><Loader2 className="animate-spin" size={18} /> Processing...</> : <><Send size={18} /> {isEdit ? 'Update Application' : 'Register Application'}</>}
             </button>
           </div>
         </div>

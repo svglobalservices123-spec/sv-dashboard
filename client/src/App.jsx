@@ -79,6 +79,12 @@ function App() {
             <AdminAddDiplomaInternship />
           </ProtectedRoute>
         } />
+        
+        <Route path="/admin/diploma-internship/edit/:id" element={
+          <ProtectedRoute>
+            <AdminAddDiplomaInternship />
+          </ProtectedRoute>
+        } />
 
         <Route path="/admin/btech-internship" element={
           <ProtectedRoute>
@@ -93,6 +99,12 @@ function App() {
         } />
 
         <Route path="/admin/btech-internship/add" element={
+          <ProtectedRoute>
+            <AdminAddBtechInternship />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/btech-internship/edit/:id" element={
           <ProtectedRoute>
             <AdminAddBtechInternship />
           </ProtectedRoute>
