@@ -3,7 +3,7 @@ import { getAllStudents, deleteStudent, getDashboardStats, exportStudents, getDi
 import AdminLayout from '../components/AdminLayout';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Eye, Trash2, Users, IndianRupee, Clock, RefreshCw, FileSpreadsheet } from 'lucide-react';
+import { Search, Eye, Trash2, Users, IndianRupee, Clock, RefreshCw, FileSpreadsheet, GraduationCap } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
