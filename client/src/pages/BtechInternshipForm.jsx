@@ -134,9 +134,9 @@ const BtechInternshipForm = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dark">Andhra Pradesh Diploma Training Registration Portal</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-display font-black text-dark tracking-tighter italic">
-            Andhra Pradesh- <span className="text-emerald-600 not-italic">Diploma Industrial Training</span>
+            Andhra Pradesh <span className="text-emerald-600 not-italic"> Diploma Industrial Training - APSBTET</span>
           </h1>
-          <p className="text-gray-500 font-medium max-w-xl mx-auto">6-Month Industrial Training Registration Form (For 5th & 6th Semester Students)
+          <p className="text-gray-500 font-medium max-w-xl mx-auto">Industrial Training Registration Form (For 5th & 6th Semester Students)
           </p>
         </header>
 

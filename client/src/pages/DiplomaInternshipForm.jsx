@@ -14,9 +14,9 @@ import {
 const ProgressBar = ({ step }) => {
   const percentage = (step / 6) * 100;
   const stepLabels = [
-    "Basic Identification",
-    "Personal Background",
-    "Academic Records",
+    "College & Identity",
+    "Contact & Personal",
+    "Background Records",
     "Training Preferences",
     "Document Vault",
     "Final Confirmation"
@@ -171,8 +171,8 @@ const DiplomaInternshipForm = () => {
 
   const validateStep = () => {
     if (step === 1) {
-      const { studentEmail, studentFullName, studentPhone, parentPhone, gender, dob, collegeName, branch, city } = formData;
-      if (!studentEmail || !studentFullName || !studentPhone || !parentPhone || !gender || !dob || !collegeName || !branch || !city) {
+      const { collegeName, branch, rollNumber, gpa, studentFullName, studentEmail } = formData;
+      if (!collegeName || !branch || !rollNumber || !gpa || !studentFullName || !studentEmail) {
         toast.error('Please fill all required fields');
         return false;
       }
@@ -181,14 +181,14 @@ const DiplomaInternshipForm = () => {
         return false;
       }
     } else if (step === 2) {
-      const { fatherName, age, caste, aadharNumber, state } = formData;
-      if (!fatherName || !age || !caste || !aadharNumber || !state) {
+      const { studentPhone, parentPhone, gender, dob, city } = formData;
+      if (!studentPhone || !parentPhone || !gender || !dob || !city) {
         toast.error('Please fill all required fields');
         return false;
       }
     } else if (step === 3) {
-      const { rollNumber, gpa } = formData;
-      if (!rollNumber || !gpa) {
+      const { fatherName, age, caste, aadharNumber, state } = formData;
+      if (!fatherName || !age || !caste || !aadharNumber || !state) {
         toast.error('Please fill all required fields');
         return false;
       }
@@ -256,9 +256,9 @@ const DiplomaInternshipForm = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dark">Official Registration Portal</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-display font-black text-dark tracking-tighter italic">
-            Diploma <span className="text-secondary not-italic">Industrial Training - Telangana</span>
+            Diploma <span className="text-secondary not-italic">Industrial Training - TSSBTET</span>
           </h1>
-          <p className="text-gray-500 font-medium max-w-xl mx-auto italic">6-Month Industrial Training Registration Form (For 5th & 6th Semester Students)
+          <p className="text-gray-500 font-medium max-w-xl mx-auto italic">Industrial Training Registration Form (For 5th & 6th Semester Students)
           </p>
         </header>
 
@@ -267,15 +267,51 @@ const DiplomaInternshipForm = () => {
 
 
           <form onSubmit={(e) => e.preventDefault()} className="space-y-12">
-            {/* Step 1: Basic Details */}
+            {/* Step 1: College & Identity */}
             {step === 1 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <InputWrapper label="College Name" icon={<GraduationCap size={12} />} required>
+                  <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Full College Name" />
+                </InputWrapper>
+                <InputWrapper label="Branch" icon={<GraduationCap size={12} />} required>
+                  <select name="branch" value={formData.branch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
+                    <option value="">Select Branch</option>
+                    <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
+                    <option value="Information Technology (IT)">Information Technology (IT)</option>
+                    <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
+                    <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                    <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
+                    <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
+                    <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
+                    <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
+                    <option value="others">others</option>
+                  </select>
+                </InputWrapper>
+                {formData.branch === 'others' && (
+                  <InputWrapper label="Enter Branch / Batch" icon={<GraduationCap size={12} />} required>
+                    <input type="text" name="otherBranch" value={formData.otherBranch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Specify your branch/batch" />
+                  </InputWrapper>
+                )}
+                <InputWrapper label="Roll Number" icon={<Fingerprint size={12} />} required>
+                  <input type="text" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="College Roll No" />
+                </InputWrapper>
+                <InputWrapper label="Diploma GPA Percentage (%)" icon={<CheckCircle size={12} />} required>
+                  <input type="text" name="gpa" value={formData.gpa} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. 8.5 or 85%" />
+                </InputWrapper>
                 <InputWrapper label="Full Name" icon={<User size={12} />} required>
                   <input type="text" name="studentFullName" value={formData.studentFullName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. Rahul Sharma" />
                 </InputWrapper>
                 <InputWrapper label="Student Gmail" icon={<Mail size={12} />} required>
                   <input type="email" name="studentEmail" value={formData.studentEmail} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="name@gmail.com" />
                 </InputWrapper>
+              </div>
+            )}
+
+            {/* Step 2: Contact & Personal Details */}
+            {step === 2 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <InputWrapper label="Student Phone Number" icon={<Phone size={12} />} required>
                   <input type="tel" name="studentPhone" value={formData.studentPhone} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="+91 XXXXX XXXXX" />
                 </InputWrapper>
@@ -303,38 +339,11 @@ const DiplomaInternshipForm = () => {
                     <option value="Tirupati">Tirupati</option>
                   </select>
                 </InputWrapper>
-
-                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4 border-t border-gray-100 pt-8">
-                  <InputWrapper label="College Name" icon={<GraduationCap size={12} />} required>
-                    <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Full College Name" />
-                  </InputWrapper>
-                  <InputWrapper label="Branch" icon={<GraduationCap size={12} />} required>
-                    <select name="branch" value={formData.branch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary cursor-pointer">
-                      <option value="">Select Branch</option>
-                      <option value="Computer Science Engineering (CSE)">Computer Science Engineering (CSE)</option>
-                      <option value="Information Technology (IT)">Information Technology (IT)</option>
-                      <option value="Artificial Intelligence (AI)">Artificial Intelligence (AI)</option>
-                      <option value="Artificial Intelligence & Machine Learning (AI-ML)">Artificial Intelligence & Machine Learning (AI-ML)</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="Cyber Security">Cyber Security</option>
-                      <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
-                      <option value="Electrical & Electronics Engineering (EEE)">Electrical & Electronics Engineering (EEE)</option>
-                      <option value="Mechanical Engineering (ME)">Mechanical Engineering (ME)</option>
-                      <option value="Civil Engineering (CE)">Civil Engineering (CE)</option>
-                      <option value="others">others</option>
-                    </select>
-                  </InputWrapper>
-                  {formData.branch === 'others' && (
-                    <InputWrapper label="Enter Branch / Batch" icon={<GraduationCap size={12} />} required>
-                      <input type="text" name="otherBranch" value={formData.otherBranch} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Specify your branch/batch" />
-                    </InputWrapper>
-                  )}
-                </div>
               </div>
             )}
 
-            {/* Step 2: Personal Details */}
-            {step === 2 && (
+            {/* Step 3: Family & Background */}
+            {step === 3 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <InputWrapper label="Father Name" icon={<User size={12} />} required>
                   <input type="text" name="fatherName" value={formData.fatherName} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="Enter Father Name" />
@@ -361,18 +370,6 @@ const DiplomaInternshipForm = () => {
                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Tamil Nadu">Tamil Nadu</option>
                   </select>
-                </InputWrapper>
-              </div>
-            )}
-
-            {/* Step 3: College Details */}
-            {step === 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <InputWrapper label="Roll Number" icon={<Fingerprint size={12} />} required>
-                  <input type="text" name="rollNumber" value={formData.rollNumber} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="College Roll No" />
-                </InputWrapper>
-                <InputWrapper label="Diploma GPA Percentage (%)" icon={<CheckCircle size={12} />} required>
-                  <input type="text" name="gpa" value={formData.gpa} onChange={handleInputChange} className="input-field py-4 bg-muted/30 border-transparent focus:bg-white focus:border-primary" placeholder="e.g. 8.5 or 85%" />
                 </InputWrapper>
               </div>
             )}
